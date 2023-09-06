@@ -12,4 +12,3 @@ $capabilities = array(
         )
     ),
 );
-?>

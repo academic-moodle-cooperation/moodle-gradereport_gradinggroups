@@ -1,11 +1,11 @@
 Grade Grouptool Module
 ================
 
-This file is part of the  plugin for Moodle - <http://moodle.org/>
+This file is part of the Groupgrade  plugin for Moodle - <http://moodle.org/>
 
-*Author:*    
+*Author:* Anne Kreppenhofer 
 
-*Copyright:* 2014 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
+*Copyright:* 2023 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
 
 *License:*   [GNU GPL v3 or later](http://www.gnu.org/copyleft/gpl.html)
 

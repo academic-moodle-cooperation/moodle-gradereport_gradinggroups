@@ -35,7 +35,6 @@ $id = required_param('id', PARAM_INT);   // Course.
 $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 require_course_login($course);
 $context = context_course::instance($course->id);
-
 // require_capability('gradereport/overview:view', $context);
 $url = '/grade/report/gradinggroups/index.php';
 $PAGE->set_url($url, ['id' => $id]);
@@ -45,5 +44,6 @@ $access = true;
 global $PAGE, $OUTPUT, $USER;
 
 echo $OUTPUT->header();
+
 view_grading($context,$id,$course,get_coursemodule_from_id('grouptool', $id));
 echo $OUTPUT->footer();

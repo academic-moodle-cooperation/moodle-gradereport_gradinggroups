@@ -54,11 +54,11 @@ $gpr = new grade_plugin_return(
 if (!isset($USER->grade_last_report)) {
     $USER->grade_last_report = array();
 }
-$USER->grade_last_report[$course->id] = 'grader';
+$USER->grade_last_report[$course->id] = 'gradinggroups';
 
 $access = true;
 global $PAGE, $OUTPUT, $USER;
 $report = new grade_report_gradinggroups($id, $gpr, $context, $PAGE);
-print_grade_page_head($id, 'report','grader');
+print_grade_page_head($id, 'report','gradinggroups');
 view_grading($context,$id,$course,get_coursemodule_from_id('grouptool', $id));
 echo $OUTPUT->footer();

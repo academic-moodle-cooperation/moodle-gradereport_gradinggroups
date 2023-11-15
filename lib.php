@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of gradinggroups for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,6 +17,14 @@
 require_once($CFG->dirroot . '/grade/report/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
+/**
+ * Gradegroup class
+ *
+ * @package    gradereport_gradinggroups
+ * @author     Anne Kreppenhofer
+ * @copyright  2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class grade_report_gradinggroups extends grade_report {
 
     public function __construct($courseid, $gpr, $context, $page = null)

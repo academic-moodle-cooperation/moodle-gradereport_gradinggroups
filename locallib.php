@@ -164,14 +164,14 @@ function view_grading($context, $id, $course, $cm) {
                 ]);
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered').$preview;
                 if ($overwrite) {
-                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'grouptool'),
+                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
                             $continue, $cancel);
                 } else {
-                    echo $preview.confirm(get_string('copy_grades_confirm', 'grouptool'), $continue,
+                    echo $preview.confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
                             $cancel);
                 }
             } else {
-                $boxcontent = $OUTPUT->notification(get_string('no_target_selected', 'grouptool'),
+                $boxcontent = $OUTPUT->notification(get_string('no_target_selected', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR);
                 echo $OUTPUT->box($boxcontent, 'generalbox');
                 unset($boxcontent);
@@ -215,22 +215,22 @@ function view_grading($context, $id, $course, $cm) {
                 ]);
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered').$preview;
                 if ($overwrite) {
-                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'grouptool'),
+                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
                             $continue, $cancel);
                 } else {
-                    echo $preview.confirm(get_string('copy_grades_confirm', 'grouptool'), $continue,
+                    echo $preview.confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
                             $cancel);
                 }
             } else {
                 if (empty($selected)) {
-                    $boxcontent = $OUTPUT->notification(get_string('no_target_selected', 'grouptool'),
+                    $boxcontent = $OUTPUT->notification(get_string('no_target_selected', 'gradereport_gradinggroups'),
                         \core\output\notification::NOTIFY_ERROR);
                     echo $OUTPUT->box($boxcontent, 'generalbox');
                     unset($boxcontent);
                     $step = 0;
                 }
                 if (count($missingsource) != 0) {
-                    $boxcontent = $OUTPUT->notification(get_string('sources_missing', 'grouptool'),
+                    $boxcontent = $OUTPUT->notification(get_string('sources_missing', 'gradereport_gradinggroups'),
                         \core\output\notification::NOTIFY_ERROR);
                     echo $OUTPUT->box($boxcontent, 'generalbox');
                     unset($boxcontent);
@@ -247,12 +247,12 @@ function view_grading($context, $id, $course, $cm) {
         list($error, $info) = copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm,
             $overwrite);
         if ($error) {
-            $boxcontent = $OUTPUT->notification(get_string('copy_grades_errors', 'grouptool'),
+            $boxcontent = $OUTPUT->notification(get_string('copy_grades_errors', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR).$info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
         } else {
-            $boxcontent = $OUTPUT->notification(get_string('copy_grades_success', 'grouptool'),
+            $boxcontent = $OUTPUT->notification(get_string('copy_grades_success', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_SUCCESS).$info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
@@ -387,7 +387,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                         }
                         $fullname = fullname($groupmembers[$currentgrade->userid]);
                         $rowcells[] = new html_table_cell($fullname);
-                        $cell = new html_table_cell(get_string('skipped', 'grouptool'));
+                        $cell = new html_table_cell(get_string('skipped', 'gradereport_gradinggroups'));
                         $cell->colspan = 2;
                         $rowcells[] = $cell;
                         $row = new html_table_row();
@@ -411,7 +411,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'feedback' => $sourcegrade->feedback
                 ];
                 $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
-                    'grouptool',
+                    'gradereport_gradinggroups',
                     $details),
                     $currentgrade->feedbackformat);
                 $currentgrade->usermodified = $USER->id;
@@ -476,7 +476,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                         get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback
                 ];
-                $temp = get_string('copied_grade_feedback', 'grouptool', $data);
+                $temp = get_string('copied_grade_feedback', 'gradereport_gradinggroups', $data);
                 $grpinfo .= html_writer::tag('div', $formattedgrade.html_writer::empty_tag('br').
                     format_text($temp,
                         $sourcegrade->feedbackformat));
@@ -523,7 +523,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     }
                     $fullname = fullname($targetusers[$currentgrade->userid]);
                     $rowcells[] = new html_table_cell($fullname);
-                    $cell = new html_table_cell(get_string('skipped', 'grouptool'));
+                    $cell = new html_table_cell(get_string('skipped', 'gradereport_gradinggroups'));
                     $cell->colspan = 2;
                     $rowcells[] = $cell;
                     $row = new html_table_row();
@@ -548,7 +548,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'feedback' => $sourcegrade->feedback
             ];
             $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
-                'grouptool',
+                'gradereport_gradinggroups',
                 $details),
                 $currentgrade->feedbackformat);
             $currentgrade->usermodified   = $USER->id;
@@ -610,7 +610,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             ];
             $info .= html_writer::tag('div', get_string('grade', 'grades').": ".
                 $formattedgrade.html_writer::empty_tag('br').
-                format_text(get_string('copied_grade_feedback', 'grouptool',
+                format_text(get_string('copied_grade_feedback', 'gradereport_gradinggroups',
                     $details),
                     $sourcegrade->feedbackformat),
                 ['class' => 'gradeinfo']);
@@ -732,7 +732,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     $table = new html_table();
 
     if ($activity == 0) {
-        return $OUTPUT->box($OUTPUT->notification(get_string('chooseactivity', 'grouptool'),
+        return $OUTPUT->box($OUTPUT->notification(get_string('chooseactivity', 'gradereport_gradinggroups'),
             \core\output\notification::NOTIFY_ERROR), 'generalbox centered');
     }
 
@@ -749,17 +749,17 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             'name',
             'gradeinfo'
         ];
-        $button = html_writer::tag('button', get_string('copy', 'grouptool'), [
+        $button = html_writer::tag('button', get_string('copy', 'gradereport_gradinggroups'), [
             'name'  => 'copygrades',
             'type'  => 'submit',
             'value' => 'true',
             'class' => 'btn btn-primary'
         ]);
-        $buttontext = get_string('copy_refgrades_feedback', 'grouptool');
+        $buttontext = get_string('copy_refgrades_feedback', 'gradereport_gradinggroups');
         $tableheaders = [
             '',
             get_string('name'),
-            get_string('reference_grade_feedback', 'grouptool')
+            get_string('reference_grade_feedback', 'gradereport_gradinggroups')
         ];
 
         $groups = groups_get_all_groups($course->id, 0, $grouping);
@@ -775,7 +775,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             if (in_array($group->id, $missingsource)) {
                 $error = ' error';
                 $gradeinfo[] = html_writer::tag('div', get_string('missing_source_selection',
-                    'grouptool'));
+                    'gradereport_gradinggroups'));
             }
 
             $userwithgrades = [];
@@ -858,7 +858,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $select = new html_table_cell(html_writer::tag('div', $checkbox, ['class' => 'form-check']));
             $name = new html_table_cell($group->name);
             if (empty($gradeinfo)) {
-                $gradeinfo = new html_table_cell(get_string('no_grades_present', 'grouptool'));
+                $gradeinfo = new html_table_cell(get_string('no_grades_present', 'gradereport_gradinggroups'));
             } else {
                 $gradeinfo = new html_table_cell(implode("\n", $gradeinfo));
             }
@@ -882,12 +882,12 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             'copybutton'
         ];
         $tableheaders = [
-            get_string('target', 'grouptool'),
+            get_string('target', 'gradereport_gradinggroups'),
             get_string('fullname'),
             get_string('idnumber'),
             get_string('grade', 'grades'),
             get_string('feedback'),
-            get_string('source', 'grouptool')
+            get_string('source', 'gradereport_gradinggroups')
         ];
 
         $groupmembers = groups_get_members($filter);
@@ -921,10 +921,10 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row[] = html_writer::tag('div', shorten_text(strip_tags($finalgrade->str_feedback), 15),
                     ['class' => 'feedback'.$groupmember->id]);
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
-                    $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'grouptool'));
+                    $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));
                 } else {
                     $row[] = html_writer::tag('button',
-                        get_string('copygrade', 'grouptool'),
+                        get_string('copygrade', 'gradereport_gradinggroups'),
                         [
                             'type'  => 'submit',
                             'name'  => 'source',
@@ -935,7 +935,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $data[] = $row;
             }
         } else {
-            return $OUTPUT->box($OUTPUT->notification(get_string('no_grades_present', 'grouptool'),
+            return $OUTPUT->box($OUTPUT->notification(get_string('no_grades_present', 'gradereport_gradinggroups'),
                 \core\output\notification::NOTIFY_ERROR), 'generalbox centered');
         }
     } else {
@@ -944,15 +944,15 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
 
     if (empty($data)) {
         if ($filter == GROUPTOOL_FILTER_ALL) {
-            return $OUTPUT->box($OUTPUT->notification(get_string('no_data_to_display', 'grouptool'),
+            return $OUTPUT->box($OUTPUT->notification(get_string('no_data_to_display', 'gradereport_gradinggroups'),
                 \core\output\notification::NOTIFY_ERROR), 'generalbox centered');
         } else if ($filter == GROUPTOOL_FILTER_NONCONFLICTING) {
-            return $OUTPUT->box($OUTPUT->notification(get_string('no_conflictfree_to_display', 'grouptool'),
+            return $OUTPUT->box($OUTPUT->notification(get_string('no_conflictfree_to_display', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR), 'centered').
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
                     GROUPTOOL_FILTER_ALL, $selected, $context, $course, $missingsource);
         } else {
-            return $OUTPUT->box($OUTPUT->notification(get_string('no_groupmembers_to_display', 'grouptool'),
+            return $OUTPUT->box($OUTPUT->notification(get_string('no_groupmembers_to_display', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR), 'centered').
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
                     GROUPTOOL_FILTER_ALL, $selected, $context, $course, $missingsource);

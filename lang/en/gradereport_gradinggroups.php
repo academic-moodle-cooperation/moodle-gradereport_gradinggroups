@@ -26,3 +26,29 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Groupgrade';
+$string['copy_grades_overwrite_confirm'] = 'Continue copying these grades? Existing previous grades get overwritten!';
+$string['copy_grades_confirm'] = 'Continue copying these grades?';
+$string['no_target_selected'] = 'There\'s no destination for the copy operation selected. You must select at least 1 destination!';
+$string['sources_missing'] = 'There\'s at least 1 group without a chosen source to copy from!';
+$string['copy_grades_errors'] = 'At least 1 error occurred during copying of grades:';
+$string['copy_grades_success'] = 'The following grades where successfully updated:';
+$string['skipped'] = 'Skipped';
+$string['copied_grade_feedback'] = 'Group grading<br />
++Submission from: <strong>{$a->student}</strong><br />
++Graded by: <strong>{$a->teacher}</strong><br />
++Original Date/Time: <strong>{$a->date}</strong><br />
++Feedback: <strong>{$a->feedback}</strong>';
+$string['chooseactivity'] = 'You have to choose an activity before data can be displayed!';
+$string['copy'] = 'Copy';
+$string['copy_refgrades_feedback'] = 'Copy reference grades and feedback for selected groups other group members';
+$string['reference_grade_feedback'] = 'Reference-grade / Feedback';
+$string['missing_source_selection'] = 'No source selected!';
+$string['no_grades_present'] = 'No grades to show';
+$string['target'] = 'Target';
+$string['source'] = 'Source';
+$string['not_graded_by_me'] = 'Graded by another user';
+$string['copygrade'] = 'Copy grade';
+$string['no_grades_present'] = 'No grades to show';
+$string['no_data_to_display'] = 'No group(s) data to display!';
+$string['no_conflictfree_to_display'] = 'No conflict-free groups to display. So we try to display all instead!';
+$string['no_groupmembers_to_display'] = 'No group members to display. So we try to display all groups instead!';

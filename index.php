@@ -27,7 +27,7 @@ require_once $CFG->libdir.'/gradelib.php';
 require_once $CFG->dirroot.'/grade/lib.php';
 require_once $CFG->dirroot.'/grade/report/overview/lib.php';
 require_once($CFG->dirroot.'/grade/report/gradinggroups/locallib.php');
-
+require_once($CFG->dirroot.'/grade/report/gradinggroups/lib.php');
 
 global $DB,$OUTPUT,$PAGE;
 
@@ -38,12 +38,27 @@ $context = context_course::instance($course->id);
 // require_capability('gradereport/overview:view', $context);
 $url = '/grade/report/gradinggroups/index.php';
 $PAGE->set_url($url, ['id' => $id]);
-$PAGE->set_pagelayout('report');
+// $PAGE->set_pagelayout('report');
+// $page = optional_param('page', 0, PARAM_INT);   // active page
+// return tracking object
+$gpr = new grade_plugin_return(
+    array(
+        'type' => 'report',
+        'plugin' => 'gradinggroups',
+        'course' => $course,
+        'page' => $page
+    )
+);
+# parent::grade_report($COURSE->id, $gpr, $context);
+// last selected report session tracking
+if (!isset($USER->grade_last_report)) {
+    $USER->grade_last_report = array();
+}
+$USER->grade_last_report[$course->id] = 'grader';
 
 $access = true;
 global $PAGE, $OUTPUT, $USER;
-
-echo $OUTPUT->header();
-
+$report = new grade_report_gradinggroups($id, $gpr, $context, $page);
+print_grade_page_head($id, 'report','grader');
 view_grading($context,$id,$course,get_coursemodule_from_id('grouptool', $id));
 echo $OUTPUT->footer();

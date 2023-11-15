@@ -869,8 +869,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             unset($tmpclass);
             $data[] = $row;
         }
-        $tablepostfix = html_writer::tag('div', $buttontext, ['class' => 'center centered']);
-        $tablepostfix .= html_writer::tag('div', $button, ['class' => 'centered center']);
+        $tablepostfix = html_writer::tag('div', $buttontext, ['class' => 'd-flex justify-content-center']);
+        $tablepostfix .= html_writer::tag('div', $button, ['class' => 'd-flex justify-content-center']);
 
     } else if ($filter > 0) {    // Single group?
         $tablecolumns = [

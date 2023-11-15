@@ -46,7 +46,7 @@ $gpr = new grade_plugin_return(
         'type' => 'report',
         'plugin' => 'gradinggroups',
         'course' => $course,
-        'page' => $page
+        'page' => $PAGE
     )
 );
 # parent::grade_report($COURSE->id, $gpr, $context);
@@ -58,7 +58,7 @@ $USER->grade_last_report[$course->id] = 'grader';
 
 $access = true;
 global $PAGE, $OUTPUT, $USER;
-$report = new grade_report_gradinggroups($id, $gpr, $context, $page);
+$report = new grade_report_gradinggroups($id, $gpr, $context, $PAGE);
 print_grade_page_head($id, 'report','grader');
 view_grading($context,$id,$course,get_coursemodule_from_id('grouptool', $id));
 echo $OUTPUT->footer();

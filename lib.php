@@ -29,15 +29,37 @@ require_once($CFG->libdir.'/tablelib.php');
  */
 class grade_report_gradinggroups extends grade_report {
 
+    // TODO write Doc
+    /**
+     * Constructor
+     * @param $courseid
+     * @param $gpr
+     * @param $context
+     * @param $page
+     * @throws moodle_exception
+     */
     public function __construct($courseid, $gpr, $context, $page = null) {
         parent::__construct($courseid, $gpr, $context, $page);
     }
 
-    public function process_data($data) {
+    /**
+     * Handles form data sent by this report for this report. Abstract method to implement in all children.
+     * @param array $data
+     * @return mixed True or array of errors
+     */
+    public function process_data($data)
+    {
         // TODO: Implement process_data() method.
     }
 
-    public function process_action($target, $action) {
+    /**
+     * Processes a single action against a category, grade_item or grade.
+     * @param string $target Sortorder
+     * @param string $action Which action to take (edit, delete etc...)
+     * @return
+     */
+    public function process_action($target, $action)
+    {
         // TODO: Implement process_action() method.
     }
 }

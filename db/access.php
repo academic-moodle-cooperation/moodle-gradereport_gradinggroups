@@ -14,7 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 defined('MOODLE_INTERNAL') || die();
-
+/**
+ * Capability definitions for gradereport_gradinggroups
+ *
+ * @package   gradereport_gradinggroups
+ * @author    Anne Kreppenhofer
+ * @copyright 2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 $capabilities = array(
     'gradereport/gradinggroups:view' => array(
         'riskbitmask' => RISK_PERSONAL,

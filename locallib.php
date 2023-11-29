@@ -23,10 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 /**
- * view grading-tab
- *
+ * view grading
+ * @param $context
+ * @param $id
+ * @param $course
+ * @param $cm
+ * @return void
  * @throws coding_exception
  * @throws dml_exception
  * @throws moodle_exception
@@ -290,14 +293,18 @@ function view_grading($context, $id, $course, $cm) {
         $mform->display();
     }
 }
+
 /**
  * copies the grades from the source(s) to the target(s) for the selected activity
  *
+ * @param $context
+ * @param $course
+ * @param $cm
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param int[] $source optional array with ids of entries for whom no source has been selected
- *                      (just to display a clue to select a source)
+ *                       (just to display a clue to select a source)
  * @param bool $overwrite optional overwrite existing grades (std: false)
  * @param bool $previewonly optional just return preview data
  * @return array ($error, $message)
@@ -697,17 +704,19 @@ function confirm($message, $continue, $cancel = null) {
 /**
  * returns table used in group-grading form
  *
- * TODO use templates and load via AJAX (AMD core/fragment)
+ *  TODO use templates and load via AJAX (AMD core/fragment)
  *
+ * @param $context
+ * @param $course
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param bool $incompleteonly show only groups which have not-graded members
  * @param int $filter GROUPTOOL_FILTER_ALL => all groups
- *                    GROUPTOOL_FILTER_NONCONFLICTING => groups with exactly 1 graded member
- *                    >0 => id of single group
+ *                     GROUPTOOL_FILTER_NONCONFLICTING => groups with exactly 1 graded member
+ *                     >0 => id of single group
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param int[] $missingsource optional array with ids of entries for whom no source has been selected
- *                             (just to display a clue to select a source)
+ *                              (just to display a clue to select a source)
  * @return string HTML Fragment containing checkbox-controller and dependencies
  * @throws coding_exception
  * @throws moodle_exception

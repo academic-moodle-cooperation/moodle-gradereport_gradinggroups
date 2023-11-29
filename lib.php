@@ -27,15 +27,15 @@ require_once($CFG->libdir.'/tablelib.php');
  */
 class grade_report_gradinggroups extends grade_report {
 
-    public function __construct($courseid, $gpr, $context, $page = null){
+    public function __construct($courseid, $gpr, $context, $page = null) {
         parent::__construct($courseid, $gpr, $context, $page);
     }
 
-    public function process_data($data){
+    public function process_data($data) {
         // TODO: Implement process_data() method.
     }
 
-    public function process_action($target, $action){
+    public function process_action($target, $action) {
         // TODO: Implement process_action() method.
     }
 }

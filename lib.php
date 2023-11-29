@@ -45,10 +45,9 @@ class grade_report_gradinggroups extends grade_report {
     /**
      * Handles form data sent by this report for this report. Abstract method to implement in all children.
      * @param array $data
-     * @return mixed True or array of errors
      */
     public function process_data($data) {
-        // TODO: Implement process_data() method.
+
     }
 
     /**

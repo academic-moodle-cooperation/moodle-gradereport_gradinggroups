@@ -22,14 +22,14 @@
  * @copyright  2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once '../../../config.php';
-require_once $CFG->libdir.'/gradelib.php';
-require_once $CFG->dirroot.'/grade/lib.php';
-require_once $CFG->dirroot.'/grade/report/overview/lib.php';
+require_once('../../../config.php');
+require_once($CFG->libdir.'/gradelib.php');
+require_once($CFG->dirroot.'/grade/lib.php');
+require_once($CFG->dirroot.'/grade/report/overview/lib.php');
 require_once($CFG->dirroot.'/grade/report/gradinggroups/locallib.php');
 require_once($CFG->dirroot.'/grade/report/gradinggroups/lib.php');
 
-global $DB,$OUTPUT,$PAGE;
+global $DB, $OUTPUT, $PAGE;
 
 $id = required_param('id', PARAM_INT);   // Course.
 $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
@@ -49,7 +49,7 @@ $gpr = new grade_plugin_return(
         'page' => $PAGE
     )
 );
-# parent::grade_report($COURSE->id, $gpr, $context);
+// parent::grade_report($COURSE->id, $gpr, $context);
 // last selected report session tracking
 if (!isset($USER->grade_last_report)) {
     $USER->grade_last_report = array();
@@ -59,6 +59,6 @@ $USER->grade_last_report[$course->id] = 'gradinggroups';
 $access = true;
 global $PAGE, $OUTPUT, $USER;
 $report = new grade_report_gradinggroups($id, $gpr, $context, $PAGE);
-print_grade_page_head($id, 'report','gradinggroups');
-view_grading($context,$id,$course,get_coursemodule_from_id('grouptool', $id));
+print_grade_page_head($id, 'report', 'gradinggroups');
+view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id));
 echo $OUTPUT->footer();

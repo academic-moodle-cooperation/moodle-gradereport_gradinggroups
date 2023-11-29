@@ -47,8 +47,7 @@ class grade_report_gradinggroups extends grade_report {
      * @param array $data
      * @return mixed True or array of errors
      */
-    public function process_data($data)
-    {
+    public function process_data($data) {
         // TODO: Implement process_data() method.
     }
 
@@ -58,8 +57,7 @@ class grade_report_gradinggroups extends grade_report {
      * @param string $action Which action to take (edit, delete etc...)
      * @return
      */
-    public function process_action($target, $action)
-    {
+    public function process_action($target, $action) {
         // TODO: Implement process_action() method.
     }
 }

@@ -282,7 +282,7 @@ function view_grading($context, $id, $course, $cm) {
             'filter'         => $filter,
             'table'          => $table,
             ];
-        $mform = new \mod_grouptool\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform',
+        $mform = new \mod_grouptool\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
             'id'    => 'grading_form',
             'name'  => 'grading_form',
             ]);

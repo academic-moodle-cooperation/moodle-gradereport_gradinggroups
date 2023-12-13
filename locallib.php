@@ -297,20 +297,20 @@ function view_grading($context, $id, $course, $cm) {
 /**
  * copies the grades from the source(s) to the target(s) for the selected activity
  *
- * @param context_course $context
- * @param course $course
- * @param int $cm
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param int[] $source optional array with ids of entries for whom no source has been selected
  *                       (just to display a clue to select a source)
+ * @param context_course $context TODO write DOC
+ * @param course $course TODO write DOC
+ * @param int $cm TODO write DOC
  * @param bool $overwrite optional overwrite existing grades (std: false)
  * @param bool $previewonly optional just return preview data
  * @return array ($error, $message)
- * @throws coding_exception
- * @throws dml_exception
- * @throws required_capability_exception
+ * @throws \coding_exception
+ * @throws \dml_exception
+ * @throws \required_capability_exception
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
                              $previewonly = false) {
@@ -706,8 +706,6 @@ function confirm($message, $continue, $cancel = null) {
  *
  *  TODO use templates and load via AJAX (AMD core/fragment)
  *
- * @param course_context $context
- * @param course $course
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param bool $incompleteonly show only groups which have not-graded members
@@ -715,6 +713,8 @@ function confirm($message, $continue, $cancel = null) {
  *                     GROUPTOOL_FILTER_NONCONFLICTING => groups with exactly 1 graded member
  *                     >0 => id of single group
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
+ * @param course_context $context TODO write DOC
+ * @param course $course TODO write DOC
  * @param int[] $missingsource optional array with ids of entries for whom no source has been selected
  *                              (just to display a clue to select a source)
  * @return string HTML Fragment containing checkbox-controller and dependencies

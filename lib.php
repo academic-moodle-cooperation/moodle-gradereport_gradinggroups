@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once($CFG->dirroot . '/grade/report/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
 
@@ -27,18 +29,36 @@ require_once($CFG->libdir.'/tablelib.php');
  */
 class grade_report_gradinggroups extends grade_report {
 
-    public function __construct($courseid, $gpr, $context, $page = null)
-    {
+    // TODO write Doc
+
+    /**
+     * Constructor
+     * @param int $courseid
+     * @param grade_plugin_return $gpr
+     * @param course_context $context
+     * @param int|null $page
+     * @throws moodle_exception
+     */
+    public function __construct($courseid, $gpr, $context, $page = null) {
         parent::__construct($courseid, $gpr, $context, $page);
     }
 
-    public function process_data($data)
-    {
+    /**
+     * Handles form data sent by this report for this report. Abstract method to implement in all children.
+     * @param array $data
+     */
+    public function process_data($data) {
         // TODO: Implement process_data() method.
     }
 
-    public function process_action($target, $action)
-    {
+    /**
+     * Processes a single action against a category, grade_item or grade.
+     * @param string $target Sortorder
+     * @param string $action Which action to take (edit, delete etc...)
+     * @return null
+     */
+    public function process_action($target, $action) {
         // TODO: Implement process_action() method.
+        return null;
     }
 }

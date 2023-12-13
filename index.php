@@ -42,17 +42,17 @@ $PAGE->set_url($url, ['id' => $id]);
 // $page = optional_param('page', 0, PARAM_INT);   // active page
 // return tracking object
 $gpr = new grade_plugin_return(
-    array(
+    [
         'type' => 'report',
         'plugin' => 'gradinggroups',
         'course' => $course,
-        'page' => $PAGE
-    )
+        'page' => $PAGE,
+    ]
 );
 // parent::grade_report($COURSE->id, $gpr, $context);
 // last selected report session tracking
 if (!isset($USER->grade_last_report)) {
-    $USER->grade_last_report = array();
+    $USER->grade_last_report = [];
 }
 $USER->grade_last_report[$course->id] = 'gradinggroups';
 

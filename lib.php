@@ -30,6 +30,7 @@ require_once($CFG->libdir.'/tablelib.php');
 class grade_report_gradinggroups extends grade_report {
 
     // TODO write Doc
+
     /**
      * Constructor
      * @param int $courseid

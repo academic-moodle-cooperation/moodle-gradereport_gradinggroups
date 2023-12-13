@@ -23,17 +23,17 @@
  */
 
 defined('MOODLE_INTERNAL') || die();
-
-$capabilities = array(
-    'gradereport/gradinggroups:view' => array(
+$capabilities = [
+    'gradereport/gradinggroups:view' => [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
-        'contextlevel' => CONTEXT_COURSE,
-        'legacy' => array(
-            'student' => CAP_ALLOW,
+        'contextlevel' => CONTEXT_MODULE,
+        'legacy' => [
+            'student' => CAP_ALLOW, // Is this right? TODO delete
             'teacher' => CAP_ALLOW,
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        )
-    ),
-);
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];
+

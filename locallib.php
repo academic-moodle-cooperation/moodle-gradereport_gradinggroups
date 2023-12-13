@@ -284,7 +284,8 @@ function view_grading($context, $id, $course, $cm) {
             ];
         $mform = new \mod_grouptool\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform',
             'id'    => 'grading_form',
-            'name'  => 'grading_form']);
+            'name'  => 'grading_form',
+            ]);
 
         $params = new stdClass();
         $params->lang = current_language();
@@ -482,7 +483,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'teacher' => fullname($origteacher),
                     'date'    => userdate($sourcegrade->get_dategraded(),
                         get_string('strftimedatetimeshort')),
-                    'feedback' => $sourcegrade->feedback
+                    'feedback' => $sourcegrade->feedback,
                 ];
                 $temp = get_string('copied_grade_feedback', 'gradereport_gradinggroups', $data);
                 $grpinfo .= html_writer::tag('div', $formattedgrade.html_writer::empty_tag('br').
@@ -636,8 +637,8 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
     }
     if ($previewonly) {
         return [
-            $error, html_writer::tag('div', html_writer::table($previewtable),
-                ['class' => 'centeredblock'])
+            $error,
+            html_writer::tag('div', html_writer::table($previewtable), ['class' => 'centeredblock']),
         ];
     } else {
         return [$error, html_writer::tag('div', $info, ['class' => 'centeredblock'])];
@@ -771,7 +772,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $tableheaders = [
             '',
             get_string('name'),
-            get_string('reference_grade_feedback', 'gradereport_gradinggroups')
+            get_string('reference_grade_feedback', 'gradereport_gradinggroups'),
         ];
 
         $groups = groups_get_all_groups($course->id, 0, $grouping);
@@ -899,7 +900,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             get_string('idnumber'),
             get_string('grade', 'grades'),
             get_string('feedback'),
-            get_string('source', 'gradereport_gradinggroups')
+            get_string('source', 'gradereport_gradinggroups'),
         ];
 
         $groupmembers = groups_get_members($filter);

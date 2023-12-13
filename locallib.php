@@ -25,10 +25,10 @@
 
 /**
  * view grading
- * @param $context
- * @param $id
- * @param $course
- * @param $cm
+ * @param course_context $context
+ * @param int $id
+ * @param course $course
+ * @param int $cm
  * @return void
  * @throws coding_exception
  * @throws dml_exception
@@ -297,9 +297,9 @@ function view_grading($context, $id, $course, $cm) {
 /**
  * copies the grades from the source(s) to the target(s) for the selected activity
  *
- * @param $context
- * @param $course
- * @param $cm
+ * @param context_course $context
+ * @param course $course
+ * @param int $cm
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
@@ -706,8 +706,8 @@ function confirm($message, $continue, $cancel = null) {
  *
  *  TODO use templates and load via AJAX (AMD core/fragment)
  *
- * @param $context
- * @param $course
+ * @param course_context $context
+ * @param course $course
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param bool $incompleteonly show only groups which have not-graded members

@@ -32,10 +32,10 @@ class grade_report_gradinggroups extends grade_report {
     // TODO write Doc
     /**
      * Constructor
-     * @param $courseid
-     * @param $gpr
-     * @param $context
-     * @param $page
+     * @param int $courseid
+     * @param grade_plugin_return $gpr
+     * @param course_context $context
+     * @param int|null $page
      * @throws moodle_exception
      */
     public function __construct($courseid, $gpr, $context, $page = null) {
@@ -47,16 +47,17 @@ class grade_report_gradinggroups extends grade_report {
      * @param array $data
      */
     public function process_data($data) {
-
+        // TODO: Implement process_data() method.
     }
 
     /**
      * Processes a single action against a category, grade_item or grade.
      * @param string $target Sortorder
      * @param string $action Which action to take (edit, delete etc...)
-     * @return
+     * @return null
      */
     public function process_action($target, $action) {
         // TODO: Implement process_action() method.
+        return null;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
+// This file is part of gradinggroups for Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -143,7 +143,7 @@ function view_grading($context, $id, $course, $cm) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
                     $selected, $source, $overwrite,
                     true, $context, $course, $cm);
-                $continue = new moodle_url("view.php?id=".$id, [
+                $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
                     'sesskey'       => sesskey(),
@@ -154,7 +154,7 @@ function view_grading($context, $id, $course, $cm) {
                     'selected'      => serialize($selected),
                     'source'        => serialize($source),
                 ]);
-                $cancel = new moodle_url("view.php?id=".$id, [
+                $cancel = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'false',
                     'sesskey'       => sesskey(),
@@ -194,7 +194,7 @@ function view_grading($context, $id, $course, $cm) {
             if (!empty($selected) && (count($missingsource) == 0)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
                     $selected, $source, $context, $course, $cm, $overwrite);
-                $continue = new moodle_url("view.php?id=".$id, [
+                $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
                     'sesskey'       => sesskey(),
@@ -205,7 +205,7 @@ function view_grading($context, $id, $course, $cm) {
                     'selected'      => serialize($selected),
                     'source'        => serialize($source),
                 ]);
-                $cancel = new moodle_url("view.php?id=".$id, [
+                $cancel = new moodle_url("index.php?id=".$id, [
                     'tab' => 'grading',
                     'confirm'       => 'false',
                     'sesskey'       => sesskey(),
@@ -281,11 +281,11 @@ function view_grading($context, $id, $course, $cm) {
             'grouping'       => $grouping,
             'filter'         => $filter,
             'table'          => $table,
-            ];
+        ];
         $mform = new \mod_grouptool\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
             'id'    => 'grading_form',
             'name'  => 'grading_form',
-            ]);
+        ]);
 
         $params = new stdClass();
         $params->lang = current_language();
@@ -315,7 +315,7 @@ function view_grading($context, $id, $course, $cm) {
  * @throws \required_capability_exception
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
-                             $previewonly = false) {
+                     $previewonly = false) {
     global $DB, $USER;
     $error = false;
     // If he want's to grade all he needs the corresponding capability!

@@ -282,7 +282,7 @@ function view_grading($context, $id, $course, $cm) {
             'filter'         => $filter,
             'table'          => $table,
         ];
-        $mform = new \mod_grouptool\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
+        $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
             'id'    => 'grading_form',
             'name'  => 'grading_form',
         ]);
@@ -290,7 +290,7 @@ function view_grading($context, $id, $course, $cm) {
         $params = new stdClass();
         $params->lang = current_language();
         $params->contextid  = $context->id;
-        $PAGE->requires->js_call_amd('mod_grouptool/grading', 'initializer', [$params]);
+        $PAGE->requires->js_call_amd('gradereport_gradinggroups/grading', 'initializer', [$params]);
 
         $mform->display();
     }

@@ -31,6 +31,7 @@ if (isset($CFG)) {
     require_once($CFG->libdir . '/formslib.php');
     require_once($CFG->dirroot . '/mod/grouptool/definitions.php');
     require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
+    // TODO maybe add: require_once($CFG->libdir.'/gradelib.php');
 }
 
 /**
@@ -70,6 +71,7 @@ class grading_form extends \moodleform {
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
         $activityselect = $mform->createElement('selectgroups', 'activity', $label, null);
         if ($modinfo = get_fast_modinfo($this->_customdata['course'])) {
+            // TODO add: $gtree = new grade_tree($this->courseid);
             $sections = $modinfo->get_sections();
             foreach ($sections as $curnumber => $sectionmodules) {
                 $activities = [];
@@ -102,6 +104,7 @@ class grading_form extends \moodleform {
                 }
                 $activityselect->addOptGroup($sectiontext, $activities);
             }
+            // TODO add custom grade items
         }
         $mform->addElement($activityselect);
 

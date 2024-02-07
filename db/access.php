@@ -18,13 +18,24 @@
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 $capabilities = [
     'gradereport/gradinggroups:view' => [
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'legacy' => [
+            'student' => CAP_ALLOW, // Is this right? TODO delete
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+    'gradereport/gradinggroups:grade' => [
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_MODULE,

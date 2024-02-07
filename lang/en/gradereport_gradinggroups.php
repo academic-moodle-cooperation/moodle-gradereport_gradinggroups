@@ -52,6 +52,7 @@ $string['no_grades_present'] = 'No grades to show';
 $string['no_data_to_display'] = 'No group(s) data to display!';
 $string['no_conflictfree_to_display'] = 'No conflict-free groups to display. So we try to display all instead!';
 $string['no_groupmembers_to_display'] = 'No group members to display. So we try to display all groups instead!';
+$string['privacy:metadata'] = 'The Gradinggroups reports plugin does not store any personal data.';
 $string['filters_legend'] = 'Filter data';
 $string['grading_activity_title'] = 'Activity';
 $string['mygroups_only_label'] = 'Show only sources entries I graded';

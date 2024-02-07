@@ -31,7 +31,9 @@ if (isset($CFG)) {
     require_once($CFG->libdir . '/formslib.php');
     require_once($CFG->dirroot . '/mod/grouptool/definitions.php');
     require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
-    // TODO maybe add: require_once($CFG->libdir.'/gradelib.php');
+    require_once($CFG->dirroot . '/grade/lib.php');
+
+    // TODO maybe add:   require_once($CFG->libdir.'/gradelib.php');
 }
 
 /**
@@ -42,7 +44,7 @@ if (isset($CFG)) {
  * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grading_form extends \moodleform {
+class grading_form extends  grade_report {
     /** @var \context_module context object */
     protected $context = null;
 
@@ -71,7 +73,8 @@ class grading_form extends \moodleform {
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
         $activityselect = $mform->createElement('selectgroups', 'activity', $label, null);
         if ($modinfo = get_fast_modinfo($this->_customdata['course'])) {
-            // TODO add: $gtree = new grade_tree($this->courseid);
+            // TODO add:
+            $gtree = new grade_tree($this->courseid);
             $sections = $modinfo->get_sections();
             foreach ($sections as $curnumber => $sectionmodules) {
                 $activities = [];
@@ -111,7 +114,7 @@ class grading_form extends \moodleform {
         $mform->addElement('advcheckbox', 'mygroups_only', null, get_string('mygroups_only_label', 'gradereport_gradinggroups'),
                 ['group' => '1'], [0, 1]);
         $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
-        if (!has_capability('grade/report/gradinggroups:grade', $this->context)) {
+        if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
             $mform->setConstant('mygroups_only', 1);
             $mform->freeze('mygroups_only');
         }

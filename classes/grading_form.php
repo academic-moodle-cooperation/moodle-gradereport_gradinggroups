@@ -137,7 +137,7 @@ class grading_form extends  grade_report {
 
         $options = [
             "-1" => get_string('nonconflicting', 'gradereport_gradinggroups'),
-            "0"  => get_string('all')
+            "0"  => get_string('all'),
         ];
         $groups = groups_get_all_groups($this->_customdata['course']->id, null, $this->_customdata['grouping'], 'g.id, g.name');
         foreach ($groups as $key => $group) {

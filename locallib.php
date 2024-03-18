@@ -35,7 +35,7 @@
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function view_grading($context, $id, $course, $cm) {
+function view_grading($context, $id, $course, $cm,$gradeitems = null) {
     global $PAGE, $OUTPUT, $USER;
 
     if (!has_capability('mod/grouptool:grade', $context)
@@ -281,6 +281,7 @@ function view_grading($context, $id, $course, $cm) {
             'grouping'       => $grouping,
             'filter'         => $filter,
             'table'          => $table,
+            'gradeitems'     => $gradeitems,
         ];
         $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
             'id'    => 'grading_form',

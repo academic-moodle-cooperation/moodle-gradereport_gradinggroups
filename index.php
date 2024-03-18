@@ -40,6 +40,7 @@ $PAGE->set_url($url, ['id' => $id]);
 // $PAGE->set_pagelayout('report');
 // $page = optional_param('page', 0, PARAM_INT);   // active page
 // return tracking object
+
 $gpr = new grade_plugin_return(
     [
         'type' => 'report',
@@ -57,7 +58,8 @@ $USER->grade_last_report[$course->id] = 'gradinggroups';
 
 $access = true;
 global $PAGE, $OUTPUT, $USER;
-$report = new grade_report_gradinggroups($id, $gpr, $context, $PAGE);
+$report = new grade_report_gradinggroups($id, $gpr, $context);
+$gradeitems = $report->get_gradeitems();
 print_grade_page_head($id, 'report', 'gradinggroups');
-view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id));
+view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id),$gradeitems);
 echo $OUTPUT->footer();

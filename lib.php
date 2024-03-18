@@ -18,16 +18,19 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/grade/report/lib.php');
 require_once($CFG->libdir.'/tablelib.php');
+require_once($CFG->dirroot.'/grade/report/gradinggroups/locallib.php');
+require_once($CFG->dirroot.'/grade/report/grader/lib.php');
+
 
 /**
  * Gradegroup class
  *
  * @package    gradereport_gradinggroups
  * @author     Anne Kreppenhofer
- * @copyright  2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grade_report_gradinggroups extends grade_report {
+class grade_report_gradinggroups extends grade_report_grader {
 
     // TODO write Doc
 
@@ -42,23 +45,56 @@ class grade_report_gradinggroups extends grade_report {
     public function __construct($courseid, $gpr, $context, $page = null) {
         parent::__construct($courseid, $gpr, $context, $page);
     }
-
     /**
-     * Handles form data sent by this report for this report. Abstract method to implement in all children.
-     * @param array $data
+     * We get gradeitems for select here.
      */
-    public function process_data($data) {
-        // TODO: Implement process_data() method.
+    public function get_gradeitems() {
+        global $CFG, $DB;
+
+        $gradeitems = [];
+        $gradetypes = (!empty($CFG->gradedist_showgradeitem)) ? explode(',', $CFG->gradedist_showgradeitem) : [];
+        $showgradeitemtypes = (isset($CFG->gradedist_showgradeitemtype)) ? $CFG->gradedist_showgradeitemtype : 0;
+
+        foreach ($this->gtree->get_items() as $g) {
+            if ($g->gradetype != GRADE_TYPE_VALUE) {
+                continue;
+            }
+
+            $gradeitem = new stdClass();
+            if ($g->display == 0) { // If display type is "default" check what default is.
+                if ($coursedefault = $DB->get_field('grade_settings', 'value', ['courseid' => $g->courseid,
+                    'name' => 'displaytype', ])) { // If course default exists take it.
+                    $g->display = $coursedefault;
+                } else { // Else take system default.
+                    $g->display = $CFG->grade_displaytype;
+                }
+            }
+            $gradeitem->disable = !in_array($g->display, $gradetypes);
+
+            if (strcmp($g->itemtype, 'course') == 0) { // Item for the whole course.
+                $gradeitem->name = get_string('coursesum', 'gradereport_gradedist');
+                $gradeitem->sortorder = 0;
+                $gradeitem->type = $g->itemtype;
+                $gradeitem->module = '';
+                $gradeitem->gid = $g->id;
+            } else if (strcmp($g->itemtype, 'category') == 0) {  // Category item.
+                $gc = $DB->get_record('grade_categories', ['id' => $g->iteminstance ]);
+                $gradeitem->name = $gc->fullname;
+                $gradeitem->sortorder = $g->sortorder;
+                $gradeitem->type = get_string('gradecategory', 'grades');
+                $gradeitem->module = '';
+                $gradeitem->gid = $g->id;
+            } else {
+                $gradeitem->name = $g->itemname;
+                $gradeitem->sortorder = $g->sortorder;
+                $gradeitem->type = $g->itemtype;
+                $gradeitem->module = $showgradeitemtypes ? $g->itemmodule : '';
+                $gradeitem->gid = $g->id;
+            }
+            $gradeitems[] = $gradeitem;
+        }
+        return $gradeitems;
     }
 
-    /**
-     * Processes a single action against a category, grade_item or grade.
-     * @param string $target Sortorder
-     * @param string $action Which action to take (edit, delete etc...)
-     * @return null
-     */
-    public function process_action($target, $action) {
-        // TODO: Implement process_action() method.
-        return null;
-    }
+
 }

@@ -347,6 +347,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         'itemmodule'   => $cmtouse->modname,
         'iteminstance' => $cmtouse->instance,
     ]);
+
+    $gradeitems1 = grade_item::fetch_all([
+        'id' => $activity]);
     // TODO #3310 should we support multiple grade items per activity module soon?
 
     do {
@@ -354,6 +357,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $gradeitem = current($gradeitems);
     } while (!empty($gradeitem->itemnumber) && next($gradeitems));
 
+    $gradeitem = $gradeitems1[$activity];
     if (is_array($source)) { // Then we are in multigroup mode (filter = 0 || -1)!
         $sourceusers = $DB->get_records_list('user', 'id', $source);
         $groups = groups_get_all_groups($course->id);
@@ -778,6 +782,10 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
 
         $groups = groups_get_all_groups($course->id, 0, $grouping);
         $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
+        // get the selected grade item
+
+        $grade_item =grade_item::fetch_all(['id' => $activity]);
+        $grade_item = $grade_item[$activity];
 
         foreach ($groups as $group) {
             $error = "";
@@ -791,13 +799,22 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $gradeinfo[] = html_writer::tag('div', get_string('missing_source_selection',
                     'gradereport_gradinggroups'));
             }
-
+            // We want to find every user that has a grade in this group
             $userwithgrades = [];
+            $userwithgrades1 = [];
+            if(!empty($groupmembers)){
+                $grade_grades = grade_grade::fetch_users_grades($grade_item,array_keys($groupmembers), true);
+            }
             foreach ($groupmembers as $key => $groupmember) {
+                // $grade_grades = null;
+                // $grade_grades = grade_grade::fetch_users_grades($grade_item,[(int) $groupmember->id], false);
+                if(!empty($grade_grades[$groupmember->id]->finalgrade)){
+                    $userwithgrades[] = $key;
+                }
                 if (!empty($gradinginfo->items[0]->grades[$groupmember->id]->dategraded)
                     && (!$mygroupsonly
                         || $gradinginfo->items[0]->grades[$groupmember->id]->usermodified == $USER->id)) {
-                    $userwithgrades[] = $key;
+                    $userwithgrades1[] = $key;
                 }
             }
             if ((count($userwithgrades) != 1)
@@ -813,10 +830,12 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 continue;
             }
             foreach ($userwithgrades as $key) {
-                $finalgrade = $gradinginfo->items[0]->grades[$key];
-                if (!empty($finalgrade->dategraded)) {
-                    $grademax = $gradinginfo->items[0]->grademax;
-                    $finalgrade->formatted_grade = round($finalgrade->grade, 2) .' / ' .
+                $finalgrade = $grade_grades[$groupmembers[$key]->id];
+                // $finalgrade = $gradinginfo->items[0]->grades[$key];
+                if (!empty($finalgrade->get_dategraded())) {
+                    $grademax = $grade_item->grademax;
+                    // $grademax = $gradinginfo->items[0]->grademax;
+                    $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
                         round($grademax, 2);
                     $radioattr = [
                         'name'  => 'source['.$group->id.']',
@@ -838,8 +857,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                         $gradeinfocont = '';
                     }
                     $gradeinfocont .= ' '.fullname($groupmembers[$key])." (".$finalgrade->formatted_grade;
-                    if (strip_tags($finalgrade->str_feedback) != "") {
-                        $gradeinfocont .= " ".shorten_text(strip_tags($finalgrade->str_feedback), 15);
+                    if ($finalgrade->feedback != null) {
+                        $gradeinfocont .= " ".shorten_text(strip_tags($finalgrade->feedback), 15);
                     }
                     $gradeinfocont .= ")";
                     $label = html_writer::tag('label', $gradeinfocont, [
@@ -909,12 +928,18 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
         $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
             $cmtouse->instance, array_keys($groupmembers));
+        // get the selected grade item
+        $grade_item =grade_item::fetch_all(['id' => $activity]);
+        $grade_item = $grade_item[$activity];
+        if(!empty($groupmembers)){
+            $grade_grades = grade_grade::fetch_users_grades($grade_item,array_keys($groupmembers), true);
+        }
         if (isset($gradinginfo->items[0])) {
             foreach ($groupmembers as $groupmember) {
                 $row = [];
-                $finalgrade = $gradinginfo->items[0]->grades[$groupmember->id];
-                $grademax = $gradinginfo->items[0]->grademax;
-                $finalgrade->formatted_grade = round($finalgrade->grade, 2) .' / ' .
+                $finalgrade = $grade_grades[$groupmember->id];
+                $grademax = $grade_item->grademax;
+                $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
                     round($grademax, 2);
                 $checkboxcontroller = optional_param('select', '', PARAM_ALPHA);
                 if ($checkboxcontroller == 'all') {
@@ -932,7 +957,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row[] = html_writer::tag('div', fullname($groupmember), ['class' => 'fullname'.$groupmember->id]);
                 $row[] = html_writer::tag('div', $groupmember->idnumber, ['class' => 'idnumber'.$groupmember->id]);
                 $row[] = html_writer::tag('div', $finalgrade->formatted_grade, ['class' => 'grade'.$groupmember->id]);
-                $row[] = html_writer::tag('div', shorten_text(strip_tags($finalgrade->str_feedback), 15),
+                $row[] = html_writer::tag('div', shorten_text($finalgrade->feedback, 15),
                     ['class' => 'feedback'.$groupmember->id]);
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));

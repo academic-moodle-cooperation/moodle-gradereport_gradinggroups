@@ -69,8 +69,9 @@ class grading_form extends  \moodleform {
         $mform->setType('tab', PARAM_TEXT);
 
         $mform->addElement('header', 'filterslegend', get_string('filters_legend', 'gradereport_gradinggroups'));
-
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
+        /*
+
         $activityselect = $mform->createElement('selectgroups', 'activity', $label, null);
         if ($modinfo = get_fast_modinfo($this->_customdata['course'])) {
             $sections = $modinfo->get_sections();
@@ -107,8 +108,10 @@ class grading_form extends  \moodleform {
             }
             // TODO add custom grade items
         }
+
         $mform->addElement($activityselect);
 
+        */
         // $gradeselect = $mform->createElement('selectgroups', 'Gradeitems', $label, null);
 
         if ($gradeitems = $this->_customdata['gradeitems']) {
@@ -119,7 +122,7 @@ class grading_form extends  \moodleform {
         }
             // TODO add custom grade items
 
-        $mform->addElement('select', 'Gradeitems', 'Gradeitems', $grades);
+        $mform->addElement('select', 'activity', $label, $grades);
 
         $mform->addElement('advcheckbox', 'mygroups_only', null, get_string('mygroups_only_label', 'gradereport_gradinggroups'),
                 ['group' => '1'], [0, 1]);

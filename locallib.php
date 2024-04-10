@@ -329,11 +329,12 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
          */
         require_capability('mod/grouptool:grade_own_submission', $context);
     }
-
+    /*
     $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
     if (!$cmtouse) {
         return [true, get_string('couremodule_misconfigured')];
     }
+    */
     if ($previewonly) {
         $previewtable = new html_table();
         $previewtable->attributes['class'] = 'table table-hover grading_previewtable';
@@ -341,21 +342,23 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $previewtable = new stdClass();
     }
     $info = "";
-
+    /*
     $gradeitems = grade_item::fetch_all([
         'itemtype'     => 'mod',
         'itemmodule'   => $cmtouse->modname,
         'iteminstance' => $cmtouse->instance,
     ]);
-
+    */
     $gradeitems1 = grade_item::fetch_all([
         'id' => $activity]);
     // TODO #3310 should we support multiple grade items per activity module soon?
 
+    /*
     do {
         // Right now, we just work with the first grade item!
         $gradeitem = current($gradeitems);
     } while (!empty($gradeitem->itemnumber) && next($gradeitems));
+    */
 
     $gradeitem = $gradeitems1[$activity];
     if (is_array($source)) { // Then we are in multigroup mode (filter = 0 || -1)!
@@ -382,8 +385,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 round($gradeitem->grademax, 2);
 
             $groupmembers = groups_get_members($group);
-            $targetgrades = grade_grade::fetch_users_grades($gradeitem,
-                array_keys($groupmembers), true);
+            $targetgrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
             $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
 
             foreach ($targetgrades as $currentgrade) {
@@ -447,9 +449,11 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     }
                     $grouprows[] = $row;
                 } else {
-                    if (function_exists ('grouptool_copy_'.$cmtouse->modname.'_grades')) {
-                        $copyfunction = 'grouptool_copy_'.$cmtouse->modname.'_grades';
-                        $copyfunction($cmtouse->instance, $sourcegrade->userid, $currentgrade->userid);
+                    if(isset($gradeitem->itemmodule)){
+                        if (function_exists ('gradinggroups_copy_'.$gradeitem->itemmodule.'_grades')) {
+                            $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemmodule.'_grades';
+                            $copyfunction($gradeitem->id, $sourcegrade->userid, $currentgrade->userid);
+                        }
                     }
                     if ($currentgrade->id) {
                         $noerror = $currentgrade->update();
@@ -498,8 +502,8 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 // Trigger the event!
                 $logdata = new stdClass();
                 $logdata->groupid = $group;
-                $logdata->cmtouse = $cmtouse->id;
-                \mod_grouptool\event\group_graded::create_direct($cm, $logdata)->trigger();
+                $logdata->cmtouse = $activity;
+                \gradereport_gradinggroups\event\group_graded::create_direct($cm, $logdata)->trigger();
             }
         }
     } else {
@@ -596,9 +600,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $currentgrade->set_overridden(true, false);
                 $currentgrade->grade_item->force_regrading();
                 $fullname = fullname($targetusers[$currentgrade->userid]);
-                if (function_exists ('grouptool_copy_'.$cmtouse->modname.'_grades')) {
-                    $copyfunction = 'grouptool_copy_'.$cmtouse->modname.'_grades';
-                    $copyfunction($cmtouse->instance, $sourcegrade->userid, $currentgrade->userid);
+                if (function_exists ('gradinggroups_copy_'.$gradeitem->itemtype.'_grades')) {
+                    $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemtype.'_grades';
+                    $copyfunction($gradeitem->id, $sourcegrade->userid, $currentgrade->userid);
                 }
                 if ($noerror) {
                     $nameinfo .= html_writer::tag('span',
@@ -636,7 +640,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $logdata = new stdClass();
             $logdata->source = $source;
             $logdata->selected = $selected;
-            $logdata->cmtouse = $cmtouse->id;
+            $logdata->cmtouse = $activity->id;
             \mod_grouptool\event\group_graded::create_without_groupid($cm, $logdata)->trigger();
         }
     }

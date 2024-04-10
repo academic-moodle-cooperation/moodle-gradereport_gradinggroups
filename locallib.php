@@ -788,7 +788,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
         // get the selected grade item
 
-        $gradeitem =grade_item::fetch_all(['id' => $activity]);
+        $gradeitem = grade_item::fetch_all(['id' => $activity]);
         $gradeitem = $gradeitem[$activity];
 
         foreach ($groups as $group) {
@@ -806,13 +806,13 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             // We want to find every user that has a grade in this group
             $userwithgrades = [];
             $userwithgrades1 = [];
-            if(!empty($groupmembers)){
+            if (!empty($groupmembers)) {
                 $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
             }
             foreach ($groupmembers as $key => $groupmember) {
                 // $gradegrades = null;
                 // $gradegrades = grade_grade::fetch_users_grades($gradeitem,[(int) $groupmember->id], false);
-                if(!empty($gradegrades[$groupmember->id]->finalgrade)){
+                if (!empty($gradegrades[$groupmember->id]->finalgrade)) {
                     $userwithgrades[] = $key;
                 }
                 if (!empty($gradinginfo->items[0]->grades[$groupmember->id]->dategraded)

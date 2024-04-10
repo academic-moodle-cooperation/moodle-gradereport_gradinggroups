@@ -32,8 +32,6 @@ if (isset($CFG)) {
     require_once($CFG->dirroot . '/mod/grouptool/definitions.php');
     require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
     require_once($CFG->dirroot . '/grade/lib.php');
-
-    // TODO maybe add:   require_once($CFG->libdir.'/gradelib.php');
 }
 
 /**
@@ -62,7 +60,7 @@ class grading_form extends  \moodleform {
         $mform->addElement('hidden', 'id');
         $mform->setDefault('id', $this->_customdata['id']);
         $mform->setType('id', PARAM_INT);
-        $this->context = \context_module::instance($this->_customdata['id']);
+        $this->context = $this->_customdata['context'];
 
         $mform->addElement('hidden', 'tab');
         $mform->setDefault('tab', 'grading');

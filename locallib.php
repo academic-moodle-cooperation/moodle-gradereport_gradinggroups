@@ -282,6 +282,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             'filter'         => $filter,
             'table'          => $table,
             'gradeitems'     => $gradeitems,
+            'context'        => $context,
         ];
         $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
             'id'    => 'grading_form',

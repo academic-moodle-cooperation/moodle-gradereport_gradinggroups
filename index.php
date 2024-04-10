@@ -61,5 +61,5 @@ global $PAGE, $OUTPUT, $USER;
 $report = new grade_report_gradinggroups($id, $gpr, $context);
 $gradeitems = $report->get_gradeitems();
 print_grade_page_head($id, 'report', 'gradinggroups');
-view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id),$gradeitems);
+view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id), $gradeitems);
 echo $OUTPUT->footer();

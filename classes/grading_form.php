@@ -115,10 +115,10 @@ class grading_form extends  \moodleform {
         // $gradeselect = $mform->createElement('selectgroups', 'Gradeitems', $label, null);
 
         if ($gradeitems = $this->_customdata['gradeitems']) {
-            $grades  =[];
+            $grades  = [];
             foreach ($gradeitems as $gradeitem) {
                 $grades[$gradeitem->gid] = $gradeitem->name;
-                }
+            }
         }
             // TODO add custom grade items
 

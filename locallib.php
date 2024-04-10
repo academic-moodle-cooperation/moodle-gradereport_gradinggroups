@@ -35,7 +35,7 @@
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function view_grading($context, $id, $course, $cm,$gradeitems = null) {
+function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     global $PAGE, $OUTPUT, $USER;
 
     if (!has_capability('mod/grouptool:grade', $context)
@@ -788,8 +788,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
         // get the selected grade item
 
-        $grade_item =grade_item::fetch_all(['id' => $activity]);
-        $grade_item = $grade_item[$activity];
+        $gradeitem =grade_item::fetch_all(['id' => $activity]);
+        $gradeitem = $gradeitem[$activity];
 
         foreach ($groups as $group) {
             $error = "";
@@ -807,12 +807,12 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $userwithgrades = [];
             $userwithgrades1 = [];
             if(!empty($groupmembers)){
-                $grade_grades = grade_grade::fetch_users_grades($grade_item,array_keys($groupmembers), true);
+                $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
             }
             foreach ($groupmembers as $key => $groupmember) {
-                // $grade_grades = null;
-                // $grade_grades = grade_grade::fetch_users_grades($grade_item,[(int) $groupmember->id], false);
-                if(!empty($grade_grades[$groupmember->id]->finalgrade)){
+                // $gradegrades = null;
+                // $gradegrades = grade_grade::fetch_users_grades($gradeitem,[(int) $groupmember->id], false);
+                if(!empty($gradegrades[$groupmember->id]->finalgrade)){
                     $userwithgrades[] = $key;
                 }
                 if (!empty($gradinginfo->items[0]->grades[$groupmember->id]->dategraded)
@@ -834,10 +834,10 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 continue;
             }
             foreach ($userwithgrades as $key) {
-                $finalgrade = $grade_grades[$groupmembers[$key]->id];
+                $finalgrade = $gradegrades[$groupmembers[$key]->id];
                 // $finalgrade = $gradinginfo->items[0]->grades[$key];
                 if (!empty($finalgrade->get_dategraded())) {
-                    $grademax = $grade_item->grademax;
+                    $grademax = $gradeitem->grademax;
                     // $grademax = $gradinginfo->items[0]->grademax;
                     $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
                         round($grademax, 2);
@@ -933,16 +933,16 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
             $cmtouse->instance, array_keys($groupmembers));
         // get the selected grade item
-        $grade_item =grade_item::fetch_all(['id' => $activity]);
-        $grade_item = $grade_item[$activity];
+        $gradeitem = grade_item::fetch_all(['id' => $activity]);
+        $gradeitem = $gradeitem[$activity];
         if(!empty($groupmembers)){
-            $grade_grades = grade_grade::fetch_users_grades($grade_item,array_keys($groupmembers), true);
+            $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
         }
         if (isset($gradinginfo->items[0])) {
             foreach ($groupmembers as $groupmember) {
                 $row = [];
-                $finalgrade = $grade_grades[$groupmember->id];
-                $grademax = $grade_item->grademax;
+                $finalgrade = $gradegrades[$groupmember->id];
+                $grademax = $gradeitem->grademax;
                 $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
                     round($grademax, 2);
                 $checkboxcontroller = optional_param('select', '', PARAM_ALPHA);

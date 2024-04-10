@@ -449,7 +449,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     }
                     $grouprows[] = $row;
                 } else {
-                    if(isset($gradeitem->itemmodule)){
+                    if (isset($gradeitem->itemmodule)) {
                         if (function_exists ('gradinggroups_copy_'.$gradeitem->itemmodule.'_grades')) {
                             $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemmodule.'_grades';
                             $copyfunction($gradeitem->id, $sourcegrade->userid, $currentgrade->userid);
@@ -935,7 +935,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         // get the selected grade item
         $gradeitem = grade_item::fetch_all(['id' => $activity]);
         $gradeitem = $gradeitem[$activity];
-        if(!empty($groupmembers)){
+        if (!empty($groupmembers)) {
             $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
         }
         if (isset($gradinginfo->items[0])) {

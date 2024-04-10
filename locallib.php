@@ -452,7 +452,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     if (isset($gradeitem->itemmodule)) {
                         if (function_exists ('gradinggroups_copy_'.$gradeitem->itemmodule.'_grades')) {
                             $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemmodule.'_grades';
-                            $copyfunction($gradeitem->id, $sourcegrade->userid, $currentgrade->userid);
+                            $copyfunction($gradeitem->iteminstance, $sourcegrade->userid, $currentgrade->userid);
                         }
                     }
                     if ($currentgrade->id) {
@@ -602,7 +602,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $fullname = fullname($targetusers[$currentgrade->userid]);
                 if (function_exists ('gradinggroups_copy_'.$gradeitem->itemtype.'_grades')) {
                     $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemtype.'_grades';
-                    $copyfunction($gradeitem->id, $sourcegrade->userid, $currentgrade->userid);
+                    $copyfunction($gradeitem->iteminstance, $sourcegrade->userid, $currentgrade->userid);
                 }
                 if ($noerror) {
                     $nameinfo .= html_writer::tag('span',

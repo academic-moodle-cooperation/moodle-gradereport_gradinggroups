@@ -19,7 +19,7 @@
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace gradereport_gradinggroups;
@@ -32,8 +32,6 @@ if (isset($CFG)) {
     require_once($CFG->dirroot . '/mod/grouptool/definitions.php');
     require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
     require_once($CFG->dirroot . '/grade/lib.php');
-
-    // TODO maybe add:   require_once($CFG->libdir.'/gradelib.php');
 }
 
 /**
@@ -41,10 +39,10 @@ if (isset($CFG)) {
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grading_form extends  grade_report {
+class grading_form extends  \moodleform {
     /** @var \context_module context object */
     protected $context = null;
 
@@ -62,19 +60,18 @@ class grading_form extends  grade_report {
         $mform->addElement('hidden', 'id');
         $mform->setDefault('id', $this->_customdata['id']);
         $mform->setType('id', PARAM_INT);
-        $this->context = \context_module::instance($this->_customdata['id']);
+        $this->context = $this->_customdata['context'];
 
         $mform->addElement('hidden', 'tab');
         $mform->setDefault('tab', 'grading');
         $mform->setType('tab', PARAM_TEXT);
 
         $mform->addElement('header', 'filterslegend', get_string('filters_legend', 'gradereport_gradinggroups'));
-
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
+        /*
+
         $activityselect = $mform->createElement('selectgroups', 'activity', $label, null);
         if ($modinfo = get_fast_modinfo($this->_customdata['course'])) {
-            // TODO add:
-            $gtree = new grade_tree($this->courseid);
             $sections = $modinfo->get_sections();
             foreach ($sections as $curnumber => $sectionmodules) {
                 $activities = [];
@@ -109,7 +106,21 @@ class grading_form extends  grade_report {
             }
             // TODO add custom grade items
         }
+
         $mform->addElement($activityselect);
+
+        */
+        // $gradeselect = $mform->createElement('selectgroups', 'Gradeitems', $label, null);
+
+        if ($gradeitems = $this->_customdata['gradeitems']) {
+            $grades  = [];
+            foreach ($gradeitems as $gradeitem) {
+                $grades[$gradeitem->gid] = $gradeitem->name;
+            }
+        }
+            // TODO add custom grade items
+
+        $mform->addElement('select', 'activity', $label, $grades);
 
         $mform->addElement('advcheckbox', 'mygroups_only', null, get_string('mygroups_only_label', 'gradereport_gradinggroups'),
                 ['group' => '1'], [0, 1]);

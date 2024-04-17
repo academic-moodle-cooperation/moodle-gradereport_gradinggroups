@@ -32,14 +32,26 @@ global $DB, $OUTPUT, $PAGE;
 
 $id = required_param('id', PARAM_INT);   // Course.
 $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
+if (!$course = $DB->get_record('course', ['id' => $id])) {
+    throw new moodle_exception('nocourseid');
+}
+require_login($course);
+
+
 require_course_login($course);
 $context = context_course::instance($course->id);
-// require_capability('gradereport/overview:view', $context);
+if (!has_capability('gradereport/gradinggroups:view', $context)) {
+    throw new moodle_exception('nopermissiontoviewletergrade');
+}
+require_capability('gradereport/gradinggroups:view', $context);
 $url = '/grade/report/gradinggroups/index.php';
 $PAGE->set_url($url, ['id' => $id]);
 // $PAGE->set_pagelayout('report');
 // $page = optional_param('page', 0, PARAM_INT);   // active page
 // return tracking object
+
+require_capability('gradereport/gradinggroups:view', $context);
+
 $gpr = new grade_plugin_return(
     [
         'type' => 'report',
@@ -57,7 +69,8 @@ $USER->grade_last_report[$course->id] = 'gradinggroups';
 
 $access = true;
 global $PAGE, $OUTPUT, $USER;
-$report = new grade_report_gradinggroups($id, $gpr, $context, $PAGE);
+$report = new grade_report_gradinggroups($id, $gpr, $context);
+$gradeitems = $report->get_gradeitems();
 print_grade_page_head($id, 'report', 'gradinggroups');
-view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id));
+view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id), $gradeitems);
 echo $OUTPUT->footer();

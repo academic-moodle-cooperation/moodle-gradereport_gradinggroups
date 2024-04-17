@@ -15,13 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * locallib of Gradegroup
+ * locallib of Gradinggroups
  *
  * @package    gradereport_gradinggroups
  * @author     Anne Kreppenhofer
  * @copyright  2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+// TODO Write doc for every Method
+// TODO Change print_error
 
 /**
  * view grading
@@ -38,8 +41,8 @@
 function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     global $PAGE, $OUTPUT, $USER;
 
-    if (!has_capability('mod/grouptool:grade', $context)
-        && !has_capability('mod/groputool:grade_own_groups', $context)) {
+    if (!has_capability('gradereport/gradinggroups:view', $context)
+        && !has_capability('gradereport/gradinggroups:view', $context)) {
         print_error('nopermissions');
         return;
     }
@@ -50,7 +53,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     // Show only groups with grades given by current user!
     $mygroupsonly = optional_param('mygroups_only', null, PARAM_BOOL);
 
-    if (!has_capability('mod/grouptool:grade', $context)) {
+    if (!has_capability('gradereport/gradinggroups:grade', $context)) {
         $mygroupsonly = 1;
     }
 
@@ -241,6 +244,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
                 }
             }
         } else {
+
             print_error('wrong parameter');
         }
     }
@@ -317,25 +321,19 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
  * @throws \required_capability_exception
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
-                     $previewonly = false) {
+                     $previewonly = true) {
     global $DB, $USER;
     $error = false;
     // If he want's to grade all he needs the corresponding capability!
     if (!$mygroupsonly) {
-        require_capability('mod/grouptool:grade', $context);
-    } else if (!has_capability('mod/grouptool:grade', $context)) {
+        require_capability('gradereport/gradinggroups:grade', $context);
+    } else if (!has_capability('gradereport/gradinggroups:grade', $context)) {
         /*
          * if he wants to grade his own (=submissions where he graded at least 1 group member)
          * he needs either capability to grade all or to grade his own at least
          */
-        require_capability('mod/grouptool:grade_own_submission', $context);
+        require_capability('gradereport/gradinggroups:grade_own_submission', $context);
     }
-    /*
-    $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
-    if (!$cmtouse) {
-        return [true, get_string('couremodule_misconfigured')];
-    }
-    */
     if ($previewonly) {
         $previewtable = new html_table();
         $previewtable->attributes['class'] = 'table table-hover grading_previewtable';
@@ -343,29 +341,12 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $previewtable = new stdClass();
     }
     $info = "";
-    /*
-    $gradeitems = grade_item::fetch_all([
-        'itemtype'     => 'mod',
-        'itemmodule'   => $cmtouse->modname,
-        'iteminstance' => $cmtouse->instance,
-    ]);
-    */
     $gradeitems1 = grade_item::fetch_all([
         'id' => $activity]);
-    // TODO #3310 should we support multiple grade items per activity module soon?
-
-    /*
-    do {
-        // Right now, we just work with the first grade item!
-        $gradeitem = current($gradeitems);
-    } while (!empty($gradeitem->itemnumber) && next($gradeitems));
-    */
-
     $gradeitem = $gradeitems1[$activity];
     if (is_array($source)) { // Then we are in multigroup mode (filter = 0 || -1)!
         $sourceusers = $DB->get_records_list('user', 'id', $source);
         $groups = groups_get_all_groups($course->id);
-
         $previewtable->head = [
             get_string('groups')." (".count($selected).")",
             get_string('fullname'),
@@ -796,8 +777,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $error = "";
             $groupmembers = groups_get_members($group->id);
             // Get grading info for all group members!
-            $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
-                $cmtouse->instance, array_keys($groupmembers));
+            // $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
+            //    $cmtouse->instance, array_keys($groupmembers));
             $gradeinfo = [];
             if (in_array($group->id, $missingsource)) {
                 $error = ' error';

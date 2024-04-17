@@ -482,6 +482,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                         $sourcegrade->feedbackformat));
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
                 // Trigger the event!
+                // TODO do without coursemodule
                 $logdata = new stdClass();
                 $logdata->groupid = $group;
                 $logdata->cmtouse = $activity;
@@ -619,6 +620,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         }
         if (!$previewonly) {
             // Trigger the event!
+            // TODO without Coursemodule
             $logdata = new stdClass();
             $logdata->source = $source;
             $logdata->selected = $selected;
@@ -767,7 +769,6 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         ];
 
         $groups = groups_get_all_groups($course->id, 0, $grouping);
-        $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
         // get the selected grade item
 
         $gradeitem = grade_item::fetch_all(['id' => $activity]);
@@ -777,8 +778,6 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $error = "";
             $groupmembers = groups_get_members($group->id);
             // Get grading info for all group members!
-            // $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
-            //    $cmtouse->instance, array_keys($groupmembers));
             $gradeinfo = [];
             if (in_array($group->id, $missingsource)) {
                 $error = ' error';
@@ -911,9 +910,6 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
 
         $groupmembers = groups_get_members($filter);
         // Get grading info for all groupmembers!
-        $cmtouse = get_coursemodule_from_id('', $activity, $course->id);
-        $gradinginfo = grade_get_grades($course->id, 'mod', $cmtouse->modname,
-            $cmtouse->instance, array_keys($groupmembers));
         // get the selected grade item
         $gradeitem = grade_item::fetch_all(['id' => $activity]);
         $gradeitem = $gradeitem[$activity];

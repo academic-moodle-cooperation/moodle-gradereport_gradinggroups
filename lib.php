@@ -32,8 +32,6 @@ require_once($CFG->dirroot.'/grade/report/grader/lib.php');
  */
 class grade_report_gradinggroups extends grade_report_grader {
 
-    // TODO write Doc
-
     /**
      * Constructor
      * @param int $courseid
@@ -99,6 +97,7 @@ class grade_report_gradinggroups extends grade_report_grader {
 /**
  * Copy Assign Grades from one user to another user (in assign_grade table)
  *
+ * @package    gradereport_gradinggroups
  * @param int $id Assignment ID
  * @param int $fromid User ID from whom will be copied
  * @param int $toid User ID to whom will be copied
@@ -147,7 +146,7 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
                 $newfeedbackcomment->commenttext = format_text(get_string('copied_grade_feedback',
-                    'grouptool',
+                    'gradinggroups',
                     $details),
                     $newfeedbackcomment->commentformat);
                 if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [

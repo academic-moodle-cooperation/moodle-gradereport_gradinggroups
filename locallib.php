@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// TODO Write doc for every Method
-// TODO Change print_error
 
 /**
  * view grading
@@ -32,6 +30,7 @@
  * @param int $id
  * @param course $course
  * @param int $cm
+ * @param grade_item $gradeitems
  * @return void
  * @throws coding_exception
  * @throws dml_exception
@@ -43,8 +42,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
 
     if (!has_capability('gradereport/gradinggroups:view', $context)
         && !has_capability('gradereport/gradinggroups:view', $context)) {
-        print_error('nopermissions');
-        return;
+        throw new moodle_exception('nopermissions');
     }
 
     $refreshtable = optional_param('refresh_table', 0, PARAM_BOOL);
@@ -244,8 +242,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
                 }
             }
         } else {
-
-            print_error('wrong parameter');
+            throw new moodle_exception('wrong parameter');
         }
     }
 
@@ -292,12 +289,10 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             'id'    => 'grading_form',
             'name'  => 'grading_form',
         ]);
-
         $params = new stdClass();
         $params->lang = current_language();
         $params->contextid  = $context->id;
         $PAGE->requires->js_call_amd('gradereport_gradinggroups/grading', 'initializer', [$params]);
-
         $mform->display();
     }
 }
@@ -310,9 +305,9 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param int[] $source optional array with ids of entries for whom no source has been selected
  *                       (just to display a clue to select a source)
- * @param context_course $context TODO write DOC
- * @param course $course TODO write DOC
- * @param int $cm TODO write DOC
+ * @param context_course $context
+ * @param course $course
+ * @param int $cm Course Module id
  * @param bool $overwrite optional overwrite existing grades (std: false)
  * @param bool $previewonly optional just return preview data
  * @return array ($error, $message)
@@ -358,20 +353,16 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $grouprows = [];
 
             $sourcegroup = is_array($source[$group]) ? $source[$group] : [$source[$group]];
-            $sourcegrade = grade_grade::fetch_users_grades($gradeitem, $sourcegroup,
-                false);
+            $sourcegrade = grade_grade::fetch_users_grades($gradeitem, $sourcegroup, false);
             $sourcegrade = reset($sourcegrade);
             $sourcegrade->load_optional_fields();
             $origteacher = $DB->get_record('user', ['id' => $sourcegrade->usermodified]);
             $formattedgrade = round($sourcegrade->finalgrade, 2) .' / ' .
                 round($gradeitem->grademax, 2);
-
             $groupmembers = groups_get_members($group);
             $targetgrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
             $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
-
             foreach ($targetgrades as $currentgrade) {
-
                 if ($currentgrade->id == $sourcegrade->id) {
                     continue;
                 }
@@ -404,8 +395,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $details = [
                     'student'  => fullname($sourceusers[$source[$group]]),
                     'teacher'  => fullname($origteacher),
-                    'date'     => userdate($sourcegrade->get_dategraded(),
-                        get_string('strftimedatetimeshort')),
+                    'date'     => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
                 $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
@@ -472,8 +462,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $data = [
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
-                    'date'    => userdate($sourcegrade->get_dategraded(),
-                        get_string('strftimedatetimeshort')),
+                    'date'    => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
                 $temp = get_string('copied_grade_feedback', 'gradereport_gradinggroups', $data);
@@ -550,9 +539,8 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     get_string('strftimedatetimeshort')),
                 'feedback' => $sourcegrade->feedback,
             ];
-            $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
-                'gradereport_gradinggroups',
-                $details),
+            $currentgrade->feedback = format_text(
+                get_string('copied_grade_feedback', 'gradereport_gradinggroups', $details),
                 $currentgrade->feedbackformat);
             $currentgrade->usermodified   = $USER->id;
             if ($previewonly) {
@@ -607,8 +595,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $details = [
                 'student' => fullname($sourceuser),
                 'teacher' => fullname($origteacher),
-                'date' => userdate($sourcegrade->get_dategraded(),
-                    get_string('strftimedatetimeshort')),
+                'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                 'feedback' => $sourcegrade->feedback,
             ];
             $info .= html_writer::tag('div', get_string('grade', 'grades').": ".
@@ -640,7 +627,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
 
 /**
  * Print a message along with button choices for Continue/Cancel
- *
  * If a string or moodle_url is given instead of a single_button, method defaults to post.
  * If cancel=null only continue button is displayed!
  *
@@ -677,7 +663,7 @@ function confirm($message, $continue, $cancel = null) {
         } else if ($cancel == null) {
             $cancel = null;
         } else {
-            throw new coding_exception('The cancel param to grouptool::confirm() must be either a'.
+            throw new coding_exception('The cancel param to gradinggroups::confirm() must be either a'.
                 ' URL (string/moodle_url), single_button instance or null.');
         }
     }
@@ -710,8 +696,8 @@ function confirm($message, $continue, $cancel = null) {
  *                     GROUPTOOL_FILTER_NONCONFLICTING => groups with exactly 1 graded member
  *                     >0 => id of single group
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
- * @param course_context $context TODO write DOC
- * @param course $course TODO write DOC
+ * @param course_context $context
+ * @param course $course
  * @param int[] $missingsource optional array with ids of entries for whom no source has been selected
  *                              (just to display a clue to select a source)
  * @return string HTML Fragment containing checkbox-controller and dependencies
@@ -724,17 +710,16 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
 
     // If he want's to grade all he needs the corresponding capability!
     if (!$mygroupsonly) {
-        require_capability('mod/grouptool:grade', $context);
-    } else if (!has_capability('mod/grouptool:grade', $context)) {
+        require_capability('gradereport/gradinggroups:grade', $context);
+    } else if (!has_capability('gradereport/gradinggroups:grade', $context)) {
         /*
          * if he want's to grad his own he needs either capability to grade all
          * or to grade his own at least
          */
-        require_capability('mod/grouptool:grade_own_submission', $context);
+        require_capability('gradereport/gradinggroups:grade_own_submission', $context);
     }
 
     $grouping = optional_param('grouping', null, PARAM_INT);
-
     $table = new html_table();
 
     if ($activity == 0) {

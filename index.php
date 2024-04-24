@@ -36,9 +36,6 @@ if (!$course = $DB->get_record('course', ['id' => $id])) {
     throw new moodle_exception('nocourseid');
 }
 require_login($course);
-
-
-require_course_login($course);
 $context = context_course::instance($course->id);
 if (!has_capability('gradereport/gradinggroups:view', $context)) {
     throw new moodle_exception('nopermissiontoviewletergrade');
@@ -46,9 +43,6 @@ if (!has_capability('gradereport/gradinggroups:view', $context)) {
 require_capability('gradereport/gradinggroups:view', $context);
 $url = '/grade/report/gradinggroups/index.php';
 $PAGE->set_url($url, ['id' => $id]);
-// $PAGE->set_pagelayout('report');
-// $page = optional_param('page', 0, PARAM_INT);   // active page
-// return tracking object
 
 require_capability('gradereport/gradinggroups:view', $context);
 
@@ -60,8 +54,7 @@ $gpr = new grade_plugin_return(
         'page' => $PAGE,
     ]
 );
-// parent::grade_report($COURSE->id, $gpr, $context);
-// last selected report session tracking
+
 if (!isset($USER->grade_last_report)) {
     $USER->grade_last_report = [];
 }

@@ -97,6 +97,7 @@ class grade_report_gradinggroups extends grade_report_grader {
 /**
  * Copy Assign Grades from one user to another user (in assign_grade table)
  *
+ * @package    gradereport_gradinggroups
  * @param int $id Assignment ID
  * @param int $fromid User ID from whom will be copied
  * @param int $toid User ID to whom will be copied

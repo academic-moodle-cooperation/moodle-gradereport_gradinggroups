@@ -30,6 +30,7 @@
  * @param int $id
  * @param course $course
  * @param int $cm
+ * @param grade_item $gradeitems
  * @return void
  * @throws coding_exception
  * @throws dml_exception

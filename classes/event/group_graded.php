@@ -17,7 +17,7 @@
 /**
  * The mod_grouptool_group_graded event.
  *
- * @package   mod_grouptool
+ * @package   gradereport_gradinggroups
  * @author    Philipp Hager
  * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,9 +29,9 @@ use function gradereport_gradinggroups\event\get_string;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The \mod_grouptool\group_graded class holds the logic for the event
+ * The \gradereport_gradinggroups\group_graded class holds the logic for the event
  *
- * @package   mod_grouptool
+ * @package   gradereport_gradinggroups
  * @author    Philipp Hager
  * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

@@ -65,6 +65,6 @@ $string['refresh_table_button'] = 'Refresh preview';
 $string['groupselection'] = 'Group selection';
 $string['gradereport_gradinggroups'] = 'Groupgrade';
 $string['grading_filter_select_title_help'] = 'Choose which group or groups to use:<ul><li>Without conflicts - all groups, in which only 1 group member got graded for the chosen activity</li><li>All - all groups</li><li>"Group-name" - only the specifically selected group</li></ul>';
-$string['groupselection_help'] = 'Missing langstring';
-$string['coursesum'] = 'Missing langstring';
+$string['groupselection_help'] = 'Choose the groups/persons for which you wish to copy the chosen reference-grade and -feedback by activating the corresponding checkboxes. If only 1 group is displayed you select the source for copying chosen grade by using the corresponding button right of the entry.';
+$string['coursesum'] = 'Coursesum';
 

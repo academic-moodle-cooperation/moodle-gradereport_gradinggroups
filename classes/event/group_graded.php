@@ -24,7 +24,6 @@
  */
 namespace gradereport_gradinggroups\event;
 use function gradereport_gradinggroups\event\get_string;
-// use const mod_grouptool\CONTEXT_MODULE;
 
 defined('MOODLE_INTERNAL') || die();
 

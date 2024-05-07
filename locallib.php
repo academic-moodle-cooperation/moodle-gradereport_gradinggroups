@@ -56,7 +56,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     }
 
     if ($mygroupsonly != null) {
-        set_user_preference('mod_grouptool_mygroups_only', $mygroupsonly, $USER->id);
+        set_user_preference('gradereport_gradinggroups_mygroups_only', $mygroupsonly, $USER->id);
     }
 
     // Show only groups with missing grades (groups with at least 1 not-graded member)!
@@ -124,7 +124,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     }
 
     if (!empty($mygroupsonly)) {
-        $mygroupsonly = get_user_preferences('mod_grouptool_mygroups_only', 1, $USER->id);
+        $mygroupsonly = get_user_preferences('gradereport_gradinggroups_mygroups_only', 1, $USER->id);
     }
 
     $missingsource = [];

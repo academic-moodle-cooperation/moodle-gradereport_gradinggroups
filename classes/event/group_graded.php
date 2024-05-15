@@ -44,7 +44,7 @@ class group_graded extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'grouptool';
+        $this->data['objecttable'] = 'gradereport_gradinggroups';
     }
 
     /**

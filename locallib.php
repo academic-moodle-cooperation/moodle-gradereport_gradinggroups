@@ -142,8 +142,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             }
             if (!empty($selected)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
-                    $selected, $source, $overwrite,
-                    true, $context, $course, $cm);
+                    $selected, $source, $context, $course, $cm,$overwrite,true);
                 $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
@@ -194,7 +193,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
 
             if (!empty($selected) && (count($missingsource) == 0)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
-                    $selected, $source, $context, $course, $cm, $overwrite);
+                    $selected, $source, $context, $course, $cm, $overwrite,true);
                 $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
@@ -249,7 +248,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     if ($step == 2) {    // Do action and continue with showing the form!
         // if there was an error?
         list($error, $info) = copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm,
-            $overwrite);
+            $overwrite,false);
         if ($error) {
             $boxcontent = $OUTPUT->notification(get_string('copy_grades_errors', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR).$info;
@@ -801,10 +800,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             }
             foreach ($userwithgrades as $key) {
                 $finalgrade = $gradegrades[$groupmembers[$key]->id];
-                // $finalgrade = $gradinginfo->items[0]->grades[$key];
                 if (!empty($finalgrade->get_dategraded())) {
                     $grademax = $gradeitem->grademax;
-                    // $grademax = $gradinginfo->items[0]->grademax;
                     $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
                         round($grademax, 2);
                     $radioattr = [
@@ -901,7 +898,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         if (!empty($groupmembers)) {
             $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
         }
-        if (isset($gradinginfo->items[0])) {
+        if (isset($gradegrades)) {
             foreach ($groupmembers as $groupmember) {
                 $row = [];
                 $finalgrade = $gradegrades[$groupmember->id];

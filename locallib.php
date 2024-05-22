@@ -344,7 +344,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $previewtable->head = [
             get_string('groups')." (".count($selected).")",
             get_string('fullname'),
-            get_string('grade', 'grades'),
+            get_string('gradenoun'),
             get_string('feedback'),
         ];
         foreach ($selected as $group) {
@@ -471,10 +471,14 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
                 // Trigger the event!
                 // TODO do without coursemodule
+                // TODO Log
+                /*
                 $logdata = new stdClass();
                 $logdata->groupid = $group;
                 $logdata->cmtouse = $activity;
+                $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
                 \gradereport_gradinggroups\event\group_graded::create_direct($cm, $logdata)->trigger();
+                */
             }
         }
     } else {
@@ -607,11 +611,15 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         if (!$previewonly) {
             // Trigger the event!
             // TODO without Coursemodule
+            // TODO Log
+            /*
             $logdata = new stdClass();
             $logdata->source = $source;
             $logdata->selected = $selected;
             $logdata->cmtouse = $activity->id;
+            $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
             \mod_grouptool\event\group_graded::create_without_groupid($cm, $logdata)->trigger();
+            */
         }
     }
     if ($previewonly) {

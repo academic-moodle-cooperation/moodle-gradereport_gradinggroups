@@ -608,19 +608,21 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     $sourcegrade->feedbackformat),
                 ['class' => 'gradeinfo']);
         }
+        /*
         if (!$previewonly) {
             // Trigger the event!
             // TODO without Coursemodule
             // TODO Log
-            /*
+
             $logdata = new stdClass();
             $logdata->source = $source;
             $logdata->selected = $selected;
             $logdata->cmtouse = $activity->id;
             $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
             \mod_grouptool\event\group_graded::create_without_groupid($cm, $logdata)->trigger();
-            */
+
         }
+        */
     }
     if ($previewonly) {
         return [

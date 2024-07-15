@@ -142,7 +142,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             }
             if (!empty($selected)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
-                    $selected, $source, $context, $course, $cm, $overwrite,true);
+                    $selected, $source, $context, $course, $cm, $overwrite, true);
                 $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
@@ -248,7 +248,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     if ($step == 2) {    // Do action and continue with showing the form!
         // if there was an error?
         list($error, $info) = copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm,
-            $overwrite,false);
+            $overwrite, false);
         if ($error) {
             $boxcontent = $OUTPUT->notification(get_string('copy_grades_errors', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR).$info;

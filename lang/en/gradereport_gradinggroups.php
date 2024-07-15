@@ -19,7 +19,7 @@
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2023 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -67,4 +67,7 @@ $string['gradereport_gradinggroups'] = 'Groupgrade';
 $string['grading_filter_select_title_help'] = 'Choose which group or groups to use:<ul><li>Without conflicts - all groups, in which only 1 group member got graded for the chosen activity</li><li>All - all groups</li><li>"Group-name" - only the specifically selected group</li></ul>';
 $string['groupselection_help'] = 'Choose the groups/persons for which you wish to copy the chosen reference-grade and -feedback by activating the corresponding checkboxes. If only 1 group is displayed you select the source for copying chosen grade by using the corresponding button right of the entry.';
 $string['coursesum'] = 'Coursesum';
+$string['graidnggroups:grade'] = 'Missing Langstring';
+$string['graidnggroups:grade_own_submission'] = 'Missing Langstring';
+$string['graidnggroups:view'] = 'Missing Langstring';
 

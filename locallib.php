@@ -26,7 +26,7 @@
 
 /**
  * view grading
- * @param course_context $context
+ * @param context_course $context
  * @param int $id
  * @param course $course
  * @param int $cm
@@ -142,7 +142,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             }
             if (!empty($selected)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
-                    $selected, $source, $context, $course, $cm,$overwrite,true);
+                    $selected, $source, $context, $course, $cm, $overwrite,true);
                 $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
@@ -193,7 +193,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
 
             if (!empty($selected) && (count($missingsource) == 0)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
-                    $selected, $source, $context, $course, $cm, $overwrite,true);
+                    $selected, $source, $context, $course, $cm, $overwrite, true);
                 $continue = new moodle_url("index.php?id=".$id, [
                     'tab'           => 'grading',
                     'confirm'       => 'true',
@@ -657,7 +657,7 @@ function confirm($message, $continue, $cancel = null) {
         } else if ($continue instanceof moodle_url) {
             $continue = new single_button($continue, get_string('continue'), 'post', 'primary');
         } else {
-            throw new coding_exception('The continue param to grouptool::confirm() must be either a'.
+            throw new coding_exception('The continue param to gradinggroups::confirm() must be either a'.
                 ' URL (string/moodle_url) or a single_button instance.');
         }
     }

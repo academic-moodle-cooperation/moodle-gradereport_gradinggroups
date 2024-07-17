@@ -1,7 +1,7 @@
 Grade Grouptool Module
 ================
 
-This file is part of the Groupgrade  plugin for Moodle - <http://moodle.org/>
+This file is part of the Groupgrade plugin for Moodle - <http://moodle.org/>
 
 *Author:* Anne Kreppenhofer 
 
@@ -22,7 +22,7 @@ Example
 Requirements
 ------------
 
-The plugin is available for Moodle 4.2+.
+The plugin is available for Moodle 4.5+.
 
 
 Installation

@@ -15,16 +15,15 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The mod_grouptool_group_graded event.
+ * The gradereport_gradinggroups_group_graded event.
  *
  * @package   gradereport_gradinggroups
- * @author    Philipp Hager
- * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @author    Anne Kreppenhofer
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace gradereport_gradinggroups\event;
 use function gradereport_gradinggroups\event\get_string;
-// use const mod_grouptool\CONTEXT_MODULE;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -32,8 +31,8 @@ defined('MOODLE_INTERNAL') || die();
  * The \gradereport_gradinggroups\group_graded class holds the logic for the event
  *
  * @package   gradereport_gradinggroups
- * @author    Philipp Hager
- * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @author    Anne Kreppenhofer
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class group_graded extends \core\event\base {
@@ -45,7 +44,7 @@ class group_graded extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'grouptool';
+        $this->data['objecttable'] = 'gradereport_gradinggroups';
     }
 
     /**

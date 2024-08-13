@@ -18,13 +18,6 @@ Example
 -------
 
 
-
-Requirements
-------------
-
-The plugin is available for Moodle 4.5+.
-
-
 Installation
 ------------
 

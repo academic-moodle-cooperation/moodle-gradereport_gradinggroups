@@ -28,8 +28,8 @@ defined('MOODLE_INTERNAL') || die();
 $plugin->version  = 2024071700;
 $plugin->release = "v4.4.0";       // User-friendly version number.
 $plugin->maturity = MATURITY_ALPHA;
-$plugin->requires = 2022112800;      // Requires this Moodle version!
+$plugin->requires = 2024042200;      // Requires this Moodle version!
 $plugin->component = 'gradereport_gradinggroups';    // To check on upgrade, that module sits in correct place.
-// $plugin->dependencies = ['mod_grouptool' => 2022113000]; // requires this moodle version
+// $plugin->dependencies = ['mod_grouptool' => 2024073000]; // requires this moodle version
 
 

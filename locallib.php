@@ -23,6 +23,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * GRADINGGROUPS_FILTER_NONCONFLICTING - Show just those groups, which have just 1 graded member
+ * for this activity
+ */
+define('GRADINGGROUPS_FILTER_NONCONFLICTING', -1);
+
+/**
+ * GRADINGGROUPS_FILTER_ALL - no filter at all...
+ */
+define('GRADINGGROUPS_FILTER_ALL', 0);
 
 /**
  * view grading
@@ -65,7 +75,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     $overwrite = optional_param('overwrite', 0, PARAM_BOOL);
 
     // Here -1 = nonconflicting, 0 = all     or groupid for certain group!
-    $filter = optional_param('filter', GROUPTOOL_FILTER_NONCONFLICTING, PARAM_INT);
+    $filter = optional_param('filter', GRADINGGROUPS_FILTER_NONCONFLICTING, PARAM_INT);
     // Steps: 0 = show, 1 = confirm, 2 = action!
     $step = optional_param('step', 0, PARAM_INT);
     if ($refreshtable) { // If it was just a refresh, reset step!
@@ -181,8 +191,8 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
                 $step = 0;
             }
 
-        } else if ($filter == GROUPTOOL_FILTER_ALL
-            || $filter == GROUPTOOL_FILTER_NONCONFLICTING) {
+        } else if ($filter == GRADINGGROUPS_FILTER_ALL
+            || $filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
             // All or nonconflicting mode?
             foreach ($selected as $key => $grp) {
                 // If no grade is choosen add this group to missing-source-list!
@@ -701,8 +711,8 @@ function confirm($message, $continue, $cancel = null) {
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
  * @param bool $incompleteonly show only groups which have not-graded members
- * @param int $filter GROUPTOOL_FILTER_ALL => all groups
- *                     GROUPTOOL_FILTER_NONCONFLICTING => groups with exactly 1 graded member
+ * @param int $filter GRADINGGROUPS_FILTER_ALL => all groups
+ *                     GRADINGGROUPS_FILTER_NONCONFLICTING => groups with exactly 1 graded member
  *                     >0 => id of single group
  * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param course_context $context
@@ -742,7 +752,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     $tablecolumns = [];
     $tableheaders = [];
     // Determine what mode we have to interpret the selected items the right way!
-    if ($filter == GROUPTOOL_FILTER_ALL || $filter == GROUPTOOL_FILTER_NONCONFLICTING) {
+    if ($filter == GRADINGGROUPS_FILTER_ALL || $filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
         // Multiple groups?
         $tablecolumns = [
             'select',
@@ -797,7 +807,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 }
             }
             if ((count($userwithgrades) != 1)
-                && ($filter == GROUPTOOL_FILTER_NONCONFLICTING)) {
+                && ($filter == GRADINGGROUPS_FILTER_NONCONFLICTING)) {
                 /*
                  * skip groups with more than 1 grade and groups without grade
                  * if only nonconflicting should be reviewed
@@ -956,19 +966,19 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     }
 
     if (empty($data)) {
-        if ($filter == GROUPTOOL_FILTER_ALL) {
+        if ($filter == GRADINGGROUPS_FILTER_ALL) {
             return $OUTPUT->box($OUTPUT->notification(get_string('no_data_to_display', 'gradereport_gradinggroups'),
                 \core\output\notification::NOTIFY_ERROR), 'generalbox centered');
-        } else if ($filter == GROUPTOOL_FILTER_NONCONFLICTING) {
+        } else if ($filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
             return $OUTPUT->box($OUTPUT->notification(get_string('no_conflictfree_to_display', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR), 'centered').
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
-                    GROUPTOOL_FILTER_ALL, $selected, $context, $course, $missingsource);
+                    GRADINGGROUPS_FILTER_ALL, $selected, $context, $course, $missingsource);
         } else {
             return $OUTPUT->box($OUTPUT->notification(get_string('no_groupmembers_to_display', 'gradereport_gradinggroups'),
                     \core\output\notification::NOTIFY_ERROR), 'centered').
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
-                    GROUPTOOL_FILTER_ALL, $selected, $context, $course, $missingsource);
+                    GRADINGGROUPS_FILTER_ALL, $selected, $context, $course, $missingsource);
         }
     }
 

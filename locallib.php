@@ -482,13 +482,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
                 // Trigger the event!
                 // TODO Log the event extra
-                /*
-                $logdata = new stdClass();
-                $logdata->groupid = $group;
-                $logdata->cmtouse = $activity;
-                $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
-                \gradereport_gradinggroups\event\group_graded::create_direct($cm, $logdata)->trigger();
-                */
             }
         }
     } else {
@@ -622,14 +615,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         if (!$previewonly) {
             // Trigger the event!
             // TODO Log the event extra
-
-            $logdata = new stdClass();
-            $logdata->source = $source;
-            $logdata->selected = $selected;
-            $logdata->cmtouse = $activity->id;
-            $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
-            \mod_grouptool\event\group_graded::create_without_groupid($cm, $logdata)->trigger();
-
         }
         */
     }

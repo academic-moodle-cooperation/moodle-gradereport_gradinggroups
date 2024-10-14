@@ -23,7 +23,7 @@ require_once($CFG->dirroot.'/grade/report/grader/lib.php');
 
 
 /**
- * Gradegroup class
+ * This file contains the moodle hooks for the gradegroup module.
  *
  * @package    gradereport_gradinggroups
  * @author     Anne Kreppenhofer
@@ -34,9 +34,9 @@ class grade_report_gradinggroups extends grade_report_grader {
 
     /**
      * Constructor
-     * @param int $courseid
-     * @param grade_plugin_return $gpr
-     * @param course_context $context
+     * @param int $courseid Course id
+     * @param grade_plugin_return $gpr grade pluging return
+     * @param course_context $context Context id
      * @param int|null $page
      * @throws moodle_exception
      */

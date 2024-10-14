@@ -35,11 +35,12 @@ define('GRADINGGROUPS_FILTER_NONCONFLICTING', -1);
 define('GRADINGGROUPS_FILTER_ALL', 0);
 
 /**
- * view grading
- * @param context_course $context
- * @param int $id
- * @param course $course
- * @param int $cm
+ * View Grading
+ *
+ * @param context_course $context Course context
+ * @param int $id Course id
+ * @param course $course Course
+ * @param int $cm Course Module
  * @param grade_item $gradeitems
  * @return void
  * @throws coding_exception
@@ -480,15 +481,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                         $sourcegrade->feedbackformat));
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
                 // Trigger the event!
-                // TODO do without coursemodule
-                // TODO Log
-                /*
-                $logdata = new stdClass();
-                $logdata->groupid = $group;
-                $logdata->cmtouse = $activity;
-                $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
-                \gradereport_gradinggroups\event\group_graded::create_direct($cm, $logdata)->trigger();
-                */
+                // TODO Log the event extra
             }
         }
     } else {
@@ -621,16 +614,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         /*
         if (!$previewonly) {
             // Trigger the event!
-            // TODO without Coursemodule
-            // TODO Log
-
-            $logdata = new stdClass();
-            $logdata->source = $source;
-            $logdata->selected = $selected;
-            $logdata->cmtouse = $activity->id;
-            $cm =$DB->get_record('course_modules', ['instance' => $gradeitem->iteminstance]);
-            \mod_grouptool\event\group_graded::create_without_groupid($cm, $logdata)->trigger();
-
+            // TODO Log the event extra
         }
         */
     }
@@ -705,8 +689,6 @@ function confirm($message, $continue, $cancel = null) {
 }
 /**
  * returns table used in group-grading form
- *
- *  TODO use templates and load via AJAX (AMD core/fragment)
  *
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user

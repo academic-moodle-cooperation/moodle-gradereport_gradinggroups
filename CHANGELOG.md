@@ -4,7 +4,8 @@ CHANGELOG
 
 4.5.0 (2024-11-04)
 ------------------
-* [BUG] #8081
+* [BUG] #8079 disabled button if no grades are there to be copied
+* [BUG] #8081 Fixed typo in copy reference langstring
 * Update for Moodle 4.5
 
 4.4.1 (2024-08-19)

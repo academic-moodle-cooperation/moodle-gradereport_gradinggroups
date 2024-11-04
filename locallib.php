@@ -48,7 +48,8 @@ define('GRADINGGROUPS_FILTER_ALL', 0);
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function view_grading($context, $id, $course, $cm, $gradeitems = null) {
+function view_grading($context, $id, $course, $cm, $gradeitems = null)
+{
     global $PAGE, $OUTPUT, $USER;
 
     if (!has_capability('gradereport/gradinggroups:view', $context)
@@ -154,34 +155,34 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             if (!empty($selected)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
                     $selected, $source, $context, $course, $cm, $overwrite, true);
-                $continue = new moodle_url("index.php?id=".$id, [
-                    'tab'           => 'grading',
-                    'confirm'       => 'true',
-                    'sesskey'       => sesskey(),
-                    'step'          => '2',
-                    'activity'      => $activity,
+                $continue = new moodle_url("index.php?id=" . $id, [
+                    'tab' => 'grading',
+                    'confirm' => 'true',
+                    'sesskey' => sesskey(),
+                    'step' => '2',
+                    'activity' => $activity,
                     'mygroups_only' => $mygroupsonly,
-                    'overwrite'     => $overwrite,
-                    'selected'      => serialize($selected),
-                    'source'        => serialize($source),
+                    'overwrite' => $overwrite,
+                    'selected' => serialize($selected),
+                    'source' => serialize($source),
                 ]);
-                $cancel = new moodle_url("index.php?id=".$id, [
-                    'tab'           => 'grading',
-                    'confirm'       => 'false',
-                    'sesskey'       => sesskey(),
-                    'step'          => '2',
-                    'activity'      => $activity,
+                $cancel = new moodle_url("index.php?id=" . $id, [
+                    'tab' => 'grading',
+                    'confirm' => 'false',
+                    'sesskey' => sesskey(),
+                    'step' => '2',
+                    'activity' => $activity,
                     'mygroups_only' => $mygroupsonly,
-                    'overwrite'     => $overwrite,
-                    'selected'      => serialize($selected),
-                    'source'        => serialize($source),
+                    'overwrite' => $overwrite,
+                    'selected' => serialize($selected),
+                    'source' => serialize($source),
                 ]);
-                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered').$preview;
+                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
-                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
+                    echo $preview . confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
                             $continue, $cancel);
                 } else {
-                    echo $preview.confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
+                    echo $preview . confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
                             $cancel);
                 }
             } else {
@@ -205,34 +206,34 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             if (!empty($selected) && (count($missingsource) == 0)) {
                 list(, $preview) = copy_grades($activity, $mygroupsonly,
                     $selected, $source, $context, $course, $cm, $overwrite, true);
-                $continue = new moodle_url("index.php?id=".$id, [
-                    'tab'           => 'grading',
-                    'confirm'       => 'true',
-                    'sesskey'       => sesskey(),
-                    'activity'      => $activity,
-                    'mygroups_only' => $mygroupsonly,
-                    'overwrite'     => $overwrite,
-                    'step'          => '2',
-                    'selected'      => serialize($selected),
-                    'source'        => serialize($source),
-                ]);
-                $cancel = new moodle_url("index.php?id=".$id, [
+                $continue = new moodle_url("index.php?id=" . $id, [
                     'tab' => 'grading',
-                    'confirm'       => 'false',
-                    'sesskey'       => sesskey(),
-                    'activity'      => $activity,
+                    'confirm' => 'true',
+                    'sesskey' => sesskey(),
+                    'activity' => $activity,
                     'mygroups_only' => $mygroupsonly,
-                    'overwrite'     => $overwrite,
-                    'step'          => '2',
-                    'selected'      => serialize($selected),
-                    'source'        => serialize($source),
+                    'overwrite' => $overwrite,
+                    'step' => '2',
+                    'selected' => serialize($selected),
+                    'source' => serialize($source),
                 ]);
-                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered').$preview;
+                $cancel = new moodle_url("index.php?id=" . $id, [
+                    'tab' => 'grading',
+                    'confirm' => 'false',
+                    'sesskey' => sesskey(),
+                    'activity' => $activity,
+                    'mygroups_only' => $mygroupsonly,
+                    'overwrite' => $overwrite,
+                    'step' => '2',
+                    'selected' => serialize($selected),
+                    'source' => serialize($source),
+                ]);
+                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
-                    echo $preview.confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
+                    echo $preview . confirm(get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
                             $continue, $cancel);
                 } else {
-                    echo $preview.confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
+                    echo $preview . confirm(get_string('copy_grades_confirm', 'gradereport_gradinggroups'), $continue,
                             $cancel);
                 }
             } else {
@@ -262,12 +263,12 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             $overwrite, false);
         if ($error) {
             $boxcontent = $OUTPUT->notification(get_string('copy_grades_errors', 'gradereport_gradinggroups'),
-                    \core\output\notification::NOTIFY_ERROR).$info;
+                    \core\output\notification::NOTIFY_ERROR) . $info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
         } else {
             $boxcontent = $OUTPUT->notification(get_string('copy_grades_success', 'gradereport_gradinggroups'),
-                    \core\output\notification::NOTIFY_SUCCESS).$info;
+                    \core\output\notification::NOTIFY_SUCCESS) . $info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
         }
@@ -284,24 +285,24 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
                 $filter, $selected, $context, $course, $missingsource);
         }
 
-        $formdata = ['id'             => $id,
-            'course'         => $course,
-            'mygroupsonly'   => $mygroupsonly,
+        $formdata = ['id' => $id,
+            'course' => $course,
+            'mygroupsonly' => $mygroupsonly,
             'incompleteonly' => $incompleteonly,
-            'overwrite'      => $overwrite,
-            'grouping'       => $grouping,
-            'filter'         => $filter,
-            'table'          => $table,
-            'gradeitems'     => $gradeitems,
-            'context'        => $context,
+            'overwrite' => $overwrite,
+            'grouping' => $grouping,
+            'filter' => $filter,
+            'table' => $table,
+            'gradeitems' => $gradeitems,
+            'context' => $context,
         ];
         $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
-            'id'    => 'grading_form',
-            'name'  => 'grading_form',
+            'id' => 'grading_form',
+            'name' => 'grading_form',
         ]);
         $params = new stdClass();
         $params->lang = current_language();
-        $params->contextid  = $context->id;
+        $params->contextid = $context->id;
         $PAGE->requires->js_call_amd('gradereport_gradinggroups/grading', 'initializer', [$params]);
         $mform->display();
     }
@@ -326,7 +327,8 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
  * @throws \required_capability_exception
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
-                     $previewonly = true) {
+                     $previewonly = true)
+{
     global $DB, $USER;
     $error = false;
     // If he want's to grade all he needs the corresponding capability!
@@ -353,7 +355,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $sourceusers = $DB->get_records_list('user', 'id', $source);
         $groups = groups_get_all_groups($course->id);
         $previewtable->head = [
-            get_string('groups')." (".count($selected).")",
+            get_string('groups') . " (" . count($selected) . ")",
             get_string('fullname'),
             get_string('gradenoun'),
             get_string('feedback'),
@@ -367,7 +369,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $sourcegrade = reset($sourcegrade);
             $sourcegrade->load_optional_fields();
             $origteacher = $DB->get_record('user', ['id' => $sourcegrade->usermodified]);
-            $formattedgrade = round($sourcegrade->finalgrade, 2) .' / ' .
+            $formattedgrade = round($sourcegrade->finalgrade, 2) . ' / ' .
                 round($gradeitem->grademax, 2);
             $groupmembers = groups_get_members($group);
             $targetgrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
@@ -380,9 +382,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     if ($previewonly) {
                         $rowcells = [];
                         if (empty($grouprows)) {
-                            $rowcells[] = new html_table_cell($groups[$group]->name."\n".
-                                html_writer::empty_tag('br').
-                                "(".(count($groupmembers) - 1).")");
+                            $rowcells[] = new html_table_cell($groups[$group]->name . "\n" .
+                                html_writer::empty_tag('br') .
+                                "(" . (count($groupmembers) - 1) . ")");
                         }
                         $fullname = fullname($groupmembers[$currentgrade->userid]);
                         $rowcells[] = new html_table_cell($fullname);
@@ -403,9 +405,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     $currentgrade->$property = $sourcegrade->$property;
                 }
                 $details = [
-                    'student'  => fullname($sourceusers[$source[$group]]),
-                    'teacher'  => fullname($origteacher),
-                    'date'     => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
+                    'student' => fullname($sourceusers[$source[$group]]),
+                    'teacher' => fullname($origteacher),
+                    'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
                 $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
@@ -416,9 +418,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 if ($previewonly) {
                     $rowcells = [];
                     if (empty($grouprows)) {
-                        $rowcells[] = new html_table_cell($groups[$group]->name."\n".
-                            html_writer::empty_tag('br').
-                            "(".count($groupmembers).")");
+                        $rowcells[] = new html_table_cell($groups[$group]->name . "\n" .
+                            html_writer::empty_tag('br') .
+                            "(" . count($groupmembers) . ")");
                     }
                     $fullname = fullname($groupmembers[$currentgrade->userid]);
                     $rowcells[] = new html_table_cell($fullname);
@@ -432,8 +434,8 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     $grouprows[] = $row;
                 } else {
                     if (isset($gradeitem->itemmodule)) {
-                        if (function_exists ('gradinggroups_copy_'.$gradeitem->itemmodule.'_grades')) {
-                            $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemmodule.'_grades';
+                        if (function_exists('gradinggroups_copy_' . $gradeitem->itemmodule . '_grades')) {
+                            $copyfunction = 'gradinggroups_copy_' . $gradeitem->itemmodule . '_grades';
                             $copyfunction($gradeitem->iteminstance, $sourcegrade->userid, $currentgrade->userid);
                         }
                     }
@@ -447,14 +449,14 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     $fullname = fullname($groupmembers[$currentgrade->userid]);
                     if ($noerror) {
                         $groupinfo .= html_writer::tag('span',
-                            '✓&nbsp;'.$fullname.
-                            " (".$formattedgrade.")",
+                            '✓&nbsp;' . $fullname .
+                            " (" . $formattedgrade . ")",
                             ['class' => 'notifysuccess']);
                     } else {
                         $error = true;
                         $groupinfo .= html_writer::tag('span',
-                            '✗&nbsp;'.$fullname.
-                            " (".$formattedgrade.")",
+                            '✗&nbsp;' . $fullname .
+                            " (" . $formattedgrade . ")",
                             ['class' => 'notifyproblem']);
                     }
                 }
@@ -467,16 +469,16 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $previewtable->data = array_merge($previewtable->data, $grouprows);
             } else {
                 $grpinfo = "";
-                $grpinfo .= html_writer::tag('div', $groups[$group]->name." (".
-                    count($groupmembers)."): ".$groupinfo);
+                $grpinfo .= html_writer::tag('div', $groups[$group]->name . " (" .
+                    count($groupmembers) . "): " . $groupinfo);
                 $data = [
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
-                    'date'    => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
+                    'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
                 $temp = get_string('copied_grade_feedback', 'gradereport_gradinggroups', $data);
-                $grpinfo .= html_writer::tag('div', $formattedgrade.html_writer::empty_tag('br').
+                $grpinfo .= html_writer::tag('div', $formattedgrade . html_writer::empty_tag('br') .
                     format_text($temp,
                         $sourcegrade->feedbackformat));
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
@@ -490,7 +492,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $sourcegrade = grade_grade::fetch_users_grades($gradeitem, [$source], false);
         $sourcegrade = reset($sourcegrade);
         $origteacher = $DB->get_record('user', ['id' => $sourcegrade->usermodified]);
-        $formattedgrade = round($sourcegrade->finalgrade, 2).' / ' .
+        $formattedgrade = round($sourcegrade->finalgrade, 2) . ' / ' .
             round($gradeitem->grademax, 2);
         $targetgrades = grade_grade::fetch_users_grades($gradeitem, $selected, true);
         $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
@@ -500,7 +502,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $count = in_array($source, $selected) ? count($selected) - 1 : count($selected);
             $previewtable->head = [
                 '',
-                get_string('fullname')." (".$count.")",
+                get_string('fullname') . " (" . $count . ")",
                 get_string('grade', 'grades'),
                 get_string('feedback'),
             ];
@@ -548,7 +550,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $currentgrade->feedback = format_text(
                 get_string('copied_grade_feedback', 'gradereport_gradinggroups', $details),
                 $currentgrade->feedbackformat);
-            $currentgrade->usermodified   = $USER->id;
+            $currentgrade->usermodified = $USER->id;
             if ($previewonly) {
                 $rowcells = [];
                 if (empty($grouprows)) {
@@ -577,18 +579,18 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $currentgrade->set_overridden(true, false);
                 $currentgrade->grade_item->force_regrading();
                 $fullname = fullname($targetusers[$currentgrade->userid]);
-                if (function_exists ('gradinggroups_copy_'.$gradeitem->itemtype.'_grades')) {
-                    $copyfunction = 'gradinggroups_copy_'.$gradeitem->itemtype.'_grades';
+                if (function_exists('gradinggroups_copy_' . $gradeitem->itemtype . '_grades')) {
+                    $copyfunction = 'gradinggroups_copy_' . $gradeitem->itemtype . '_grades';
                     $copyfunction($gradeitem->iteminstance, $sourcegrade->userid, $currentgrade->userid);
                 }
                 if ($noerror) {
                     $nameinfo .= html_writer::tag('span',
-                        '✓&nbsp;'.$fullname,
+                        '✓&nbsp;' . $fullname,
                         ['class' => 'notifysuccess']);
                 } else {
                     $error = true;
                     $nameinfo .= html_writer::tag('span',
-                        '✗&nbsp;'.$fullname,
+                        '✗&nbsp;' . $fullname,
                         ['class' => 'notifyproblem']);
                 }
             }
@@ -597,15 +599,15 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $grouprows[0]->cells[0]->rowspan = count($grouprows);
             $previewtable->data = $grouprows;
         } else {
-            $info .= $nameinfo.html_writer::end_tag('div');
+            $info .= $nameinfo . html_writer::end_tag('div');
             $details = [
                 'student' => fullname($sourceuser),
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                 'feedback' => $sourcegrade->feedback,
             ];
-            $info .= html_writer::tag('div', get_string('grade', 'grades').": ".
-                $formattedgrade.html_writer::empty_tag('br').
+            $info .= html_writer::tag('div', get_string('grade', 'grades') . ": " .
+                $formattedgrade . html_writer::empty_tag('br') .
                 format_text(get_string('copied_grade_feedback', 'gradereport_gradinggroups',
                     $details),
                     $sourcegrade->feedbackformat),
@@ -637,14 +639,15 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
  * @param single_button|moodle_url|string $continue The single_button component representing the
  *                                                  Continue answer. Can also be a moodle_url
  *                                                  or string URL
- * @param single_button|moodle_url|string $cancel   The single_button component representing the
+ * @param single_button|moodle_url|string $cancel The single_button component representing the
  *                                                  Cancel answer. Can also be a moodle_url or
  *                                                  string URL
  * @return string HTML fragment
  * @throws coding_exception
  * @throws moodle_exception
  */
-function confirm($message, $continue, $cancel = null) {
+function confirm($message, $continue, $cancel = null)
+{
     global $OUTPUT;
     if (!($continue instanceof single_button)) {
         if (is_string($continue)) {
@@ -653,7 +656,7 @@ function confirm($message, $continue, $cancel = null) {
         } else if ($continue instanceof moodle_url) {
             $continue = new single_button($continue, get_string('continue'), 'post', 'primary');
         } else {
-            throw new coding_exception('The continue param to gradinggroups::confirm() must be either a'.
+            throw new coding_exception('The continue param to gradinggroups::confirm() must be either a' .
                 ' URL (string/moodle_url) or a single_button instance.');
         }
     }
@@ -666,7 +669,7 @@ function confirm($message, $continue, $cancel = null) {
         } else if ($cancel == null) {
             $cancel = null;
         } else {
-            throw new coding_exception('The cancel param to gradinggroups::confirm() must be either a'.
+            throw new coding_exception('The cancel param to gradinggroups::confirm() must be either a' .
                 ' URL (string/moodle_url), single_button instance or null.');
         }
     }
@@ -687,6 +690,7 @@ function confirm($message, $continue, $cancel = null) {
     $output .= $OUTPUT->box_end();
     return $output;
 }
+
 /**
  * returns table used in group-grading form
  *
@@ -706,7 +710,8 @@ function confirm($message, $continue, $cancel = null) {
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $selected, $context, $course, $missingsource = []) {
+function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $selected, $context, $course, $missingsource = [])
+{
     global $OUTPUT, $USER, $PAGE;
 
     // If he want's to grade all he needs the corresponding capability!
@@ -735,8 +740,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     $tableheaders = [];
     // Determine what mode we have to interpret the selected items the right way!
     if ($filter == GRADINGGROUPS_FILTER_ALL || $filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
-        $count_groups = 0;
-        $count_groups_without_grades = 0;
+        $countgroups = 0;
+        $countgroupswithoutgrades = 0;
         // Multiple groups?
         $tablecolumns = [
             'select',
@@ -744,8 +749,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             'gradeinfo',
         ];
         $button = html_writer::tag('button', get_string('copy', 'gradereport_gradinggroups'), [
-            'name'  => 'copygrades',
-            'type'  => 'submit',
+            'name' => 'copygrades',
+            'type' => 'submit',
             'value' => 'true',
             'class' => 'btn btn-primary',
         ]);
@@ -763,7 +768,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $gradeitem = $gradeitem[$activity];
 
         foreach ($groups as $group) {
-            $count_groups++;
+            $countgroups++;
             $error = "";
             $groupmembers = groups_get_members($group->id);
             // Get grading info for all group members!
@@ -805,12 +810,12 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $finalgrade = $gradegrades[$groupmembers[$key]->id];
                 if (!empty($finalgrade->get_dategraded())) {
                     $grademax = $gradeitem->grademax;
-                    $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
+                    $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) . ' / ' .
                         round($grademax, 2);
                     $radioattr = [
-                        'name'  => 'source['.$group->id.']',
+                        'name' => 'source[' . $group->id . ']',
                         'value' => $groupmembers[$key]->id,
-                        'type'  => 'radio',
+                        'type' => 'radio',
                         'class' => 'form-check-input',
                     ];
 
@@ -826,13 +831,13 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                     } else {
                         $gradeinfocont = '';
                     }
-                    $gradeinfocont .= ' '.fullname($groupmembers[$key])." (".$finalgrade->formatted_grade;
+                    $gradeinfocont .= ' ' . fullname($groupmembers[$key]) . " (" . $finalgrade->formatted_grade;
                     if ($finalgrade->feedback != null) {
-                        $gradeinfocont .= " ".shorten_text(strip_tags($finalgrade->feedback), 15);
+                        $gradeinfocont .= " " . shorten_text(strip_tags($finalgrade->feedback), 15);
                     }
                     $gradeinfocont .= ")";
                     $label = html_writer::tag('label', $gradeinfocont, [
-                        'class' => 'form-check-label gradinginfo'.
+                        'class' => 'form-check-label gradinginfo' .
                             $groupmembers[$key]->id,
                     ]);
                     $gradeinfo[] = html_writer::tag('div', $label, ['class' => 'form-check']);
@@ -862,21 +867,21 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $name = new html_table_cell($group->name);
             if (empty($gradeinfo)) {
                 $gradeinfo = new html_table_cell(get_string('no_grades_present', 'gradereport_gradinggroups'));
-                $count_groups_without_grades++;
+                $countgroupswithoutgrades++;
             } else {
                 $gradeinfo = new html_table_cell(implode("\n", $gradeinfo));
             }
 
             $row = new html_table_row([$select, $name, $gradeinfo]);
             $tmpclass = $row->attributes['class'];
-            $row->attributes['class'] = isset($tmpclass) ? $tmpclass.$error : $tmpclass;
+            $row->attributes['class'] = isset($tmpclass) ? $tmpclass . $error : $tmpclass;
             unset($tmpclass);
             $data[] = $row;
         }
-        if($count_groups_without_grades == $count_groups){
+        if ($countgroupswithoutgrades == $countgroups) {
             $button = html_writer::tag('button disabled', get_string('copy', 'gradereport_gradinggroups'), [
-                'name'  => 'copygrades',
-                'type'  => 'submit',
+                'name' => 'copygrades',
+                'type' => 'submit',
                 'value' => 'true',
                 'class' => 'btn btn-primary',
             ]);
@@ -915,7 +920,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row = [];
                 $finalgrade = $gradegrades[$groupmember->id];
                 $grademax = $gradeitem->grademax;
-                $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) .' / ' .
+                $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) . ' / ' .
                     round($grademax, 2);
                 $checkboxcontroller = optional_param('select', '', PARAM_ALPHA);
                 if ($checkboxcontroller == 'all') {
@@ -930,19 +935,19 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                     $checked, '', ['class' => 'checkbox form-check-element']), ['class' => 'form-check-label']);
 
                 $row[] = new html_table_cell(html_writer::tag('div', $checkbox, ['class' => 'form-check']));
-                $row[] = html_writer::tag('div', fullname($groupmember), ['class' => 'fullname'.$groupmember->id]);
-                $row[] = html_writer::tag('div', $groupmember->idnumber, ['class' => 'idnumber'.$groupmember->id]);
-                $row[] = html_writer::tag('div', $finalgrade->formatted_grade, ['class' => 'grade'.$groupmember->id]);
+                $row[] = html_writer::tag('div', fullname($groupmember), ['class' => 'fullname' . $groupmember->id]);
+                $row[] = html_writer::tag('div', $groupmember->idnumber, ['class' => 'idnumber' . $groupmember->id]);
+                $row[] = html_writer::tag('div', $finalgrade->formatted_grade, ['class' => 'grade' . $groupmember->id]);
                 $row[] = html_writer::tag('div', shorten_text($finalgrade->feedback, 15),
-                    ['class' => 'feedback'.$groupmember->id]);
+                    ['class' => 'feedback' . $groupmember->id]);
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));
                 } else {
                     $row[] = html_writer::tag('button',
                         get_string('copygrade', 'gradereport_gradinggroups'),
                         [
-                            'type'  => 'submit',
-                            'name'  => 'source',
+                            'type' => 'submit',
+                            'name' => 'source',
                             'value' => $groupmember->id,
                             'class' => 'btn btn-primary',
                         ]);
@@ -963,12 +968,12 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 \core\output\notification::NOTIFY_ERROR), 'generalbox centered');
         } else if ($filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
             return $OUTPUT->box($OUTPUT->notification(get_string('no_conflictfree_to_display', 'gradereport_gradinggroups'),
-                    \core\output\notification::NOTIFY_ERROR), 'centered').
+                    \core\output\notification::NOTIFY_ERROR), 'centered') .
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
                     GRADINGGROUPS_FILTER_ALL, $selected, $context, $course, $missingsource);
         } else {
             return $OUTPUT->box($OUTPUT->notification(get_string('no_groupmembers_to_display', 'gradereport_gradinggroups'),
-                    \core\output\notification::NOTIFY_ERROR), 'centered').
+                    \core\output\notification::NOTIFY_ERROR), 'centered') .
                 get_grading_table($activity, $mygroupsonly, $incompleteonly,
                     GRADINGGROUPS_FILTER_ALL, $selected, $context, $course, $missingsource);
         }
@@ -991,10 +996,10 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     ]);
     $selectallurl = new \moodle_url($baseurl, ['select' => 'all']);
     $selectnoneurl = new \moodle_url($baseurl, ['select' => 'none']);
-    $links = get_string('select').' '.
-        \html_writer::link($selectallurl, get_string('all'), ['class' => 'select_all']).'/'.
+    $links = get_string('select') . ' ' .
+        \html_writer::link($selectallurl, get_string('all'), ['class' => 'select_all']) . '/' .
         \html_writer::link($selectnoneurl, get_string('none'), ['class' => 'select_none']);
     $checkboxcontroller = html_writer::tag('div', $links, ['class' => 'checkboxcontroller']);
 
-    return $checkboxcontroller.html_writer::table($table).$tablepostfix;
+    return $checkboxcontroller . html_writer::table($table) . $tablepostfix;
 }

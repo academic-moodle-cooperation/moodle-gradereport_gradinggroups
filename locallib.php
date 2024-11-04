@@ -48,8 +48,7 @@ define('GRADINGGROUPS_FILTER_ALL', 0);
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function view_grading($context, $id, $course, $cm, $gradeitems = null)
-{
+function view_grading($context, $id, $course, $cm, $gradeitems = null) {
     global $PAGE, $OUTPUT, $USER;
 
     if (!has_capability('gradereport/gradinggroups:view', $context)
@@ -327,8 +326,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null)
  * @throws \required_capability_exception
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
-                     $previewonly = true)
-{
+                     $previewonly = true) {
     global $DB, $USER;
     $error = false;
     // If he want's to grade all he needs the corresponding capability!
@@ -646,8 +644,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
  * @throws coding_exception
  * @throws moodle_exception
  */
-function confirm($message, $continue, $cancel = null)
-{
+function confirm($message, $continue, $cancel = null) {
     global $OUTPUT;
     if (!($continue instanceof single_button)) {
         if (is_string($continue)) {
@@ -710,8 +707,7 @@ function confirm($message, $continue, $cancel = null)
  * @throws moodle_exception
  * @throws required_capability_exception
  */
-function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $selected, $context, $course, $missingsource = [])
-{
+function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $selected, $context, $course, $missingsource = []) {
     global $OUTPUT, $USER, $PAGE;
 
     // If he want's to grade all he needs the corresponding capability!

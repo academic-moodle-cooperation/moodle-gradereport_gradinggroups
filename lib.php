@@ -107,7 +107,11 @@ class grade_report_gradinggroups extends grade_report_grader {
 function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
     global $DB, $CFG;
 
-    $source = $DB->get_records('assign_grades', ['assignment' => $id, 'userid' => $fromid], 'id DESC', '*', 0, 1);
+    $source = $DB->get_records('assign_grades', ['assignment' => $id, 'userid' => $fromid],'id DESC', '*', 0, 1);
+
+    if(empty($source)){
+        return;
+    }
     if (!is_array($toid)) {
         $toid = [$toid];
     }

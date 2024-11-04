@@ -17,9 +17,9 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/grade/report/lib.php');
-require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->dirroot.'/grade/report/gradinggroups/locallib.php');
-require_once($CFG->dirroot.'/grade/report/grader/lib.php');
+require_once($CFG->libdir . '/tablelib.php');
+require_once($CFG->dirroot . '/grade/report/gradinggroups/locallib.php');
+require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 
 
 /**
@@ -43,6 +43,7 @@ class grade_report_gradinggroups extends grade_report_grader {
     public function __construct($courseid, $gpr, $context, $page = null) {
         parent::__construct($courseid, $gpr, $context, $page);
     }
+
     /**
      * We get gradeitems for select here.
      */
@@ -76,7 +77,7 @@ class grade_report_gradinggroups extends grade_report_grader {
                 $gradeitem->module = '';
                 $gradeitem->gid = $g->id;
             } else if (strcmp($g->itemtype, 'category') == 0) {  // Category item.
-                $gc = $DB->get_record('grade_categories', ['id' => $g->iteminstance ]);
+                $gc = $DB->get_record('grade_categories', ['id' => $g->iteminstance]);
                 $gradeitem->name = $gc->fullname;
                 $gradeitem->sortorder = $g->sortorder;
                 $gradeitem->type = get_string('gradecategory', 'grades');
@@ -94,20 +95,25 @@ class grade_report_gradinggroups extends grade_report_grader {
         return $gradeitems;
     }
 }
+
 /**
  * Copy Assign Grades from one user to another user (in assign_grade table)
  *
- * @package    gradereport_gradinggroups
  * @param int $id Assignment ID
  * @param int $fromid User ID from whom will be copied
  * @param int $toid User ID to whom will be copied
  * @throws coding_exception
  * @throws dml_exception
+ * @package    gradereport_gradinggroups
  */
 function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
     global $DB, $CFG;
 
     $source = $DB->get_records('assign_grades', ['assignment' => $id, 'userid' => $fromid], 'id DESC', '*', 0, 1);
+
+    if (empty($source)) {
+        return;
+    }
     if (!is_array($toid)) {
         $toid = [$toid];
     }

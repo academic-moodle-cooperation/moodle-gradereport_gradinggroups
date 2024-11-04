@@ -40,7 +40,7 @@ $string['copied_grade_feedback'] = 'Group grading<br />
 +Feedback: <strong>{$a->feedback}</strong>';
 $string['chooseactivity'] = 'You have to choose an activity before data can be displayed!';
 $string['copy'] = 'Copy';
-$string['copy_refgrades_feedback'] = 'Copy reference grades and feedback for selected groups other group members';
+$string['copy_refgrades_feedback'] = 'Copy reference grades and feedback for selected groups to other group members';
 $string['reference_grade_feedback'] = 'Reference-grade / Feedback';
 $string['missing_source_selection'] = 'No source selected!';
 $string['no_grades_present'] = 'No grades to show';

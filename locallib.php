@@ -735,6 +735,8 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
     $tableheaders = [];
     // Determine what mode we have to interpret the selected items the right way!
     if ($filter == GRADINGGROUPS_FILTER_ALL || $filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
+        $count_groups = 0;
+        $count_groups_without_grades = 0;
         // Multiple groups?
         $tablecolumns = [
             'select',
@@ -761,6 +763,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
         $gradeitem = $gradeitem[$activity];
 
         foreach ($groups as $group) {
+            $count_groups++;
             $error = "";
             $groupmembers = groups_get_members($group->id);
             // Get grading info for all group members!
@@ -777,8 +780,6 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $gradegrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
             }
             foreach ($groupmembers as $key => $groupmember) {
-                // $gradegrades = null;
-                // $gradegrades = grade_grade::fetch_users_grades($gradeitem,[(int) $groupmember->id], false);
                 if (!empty($gradegrades[$groupmember->id]->finalgrade)) {
                     $userwithgrades[] = $key;
                 }
@@ -861,6 +862,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $name = new html_table_cell($group->name);
             if (empty($gradeinfo)) {
                 $gradeinfo = new html_table_cell(get_string('no_grades_present', 'gradereport_gradinggroups'));
+                $count_groups_without_grades++;
             } else {
                 $gradeinfo = new html_table_cell(implode("\n", $gradeinfo));
             }
@@ -870,6 +872,14 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             $row->attributes['class'] = isset($tmpclass) ? $tmpclass.$error : $tmpclass;
             unset($tmpclass);
             $data[] = $row;
+        }
+        if($count_groups_without_grades == $count_groups){
+            $button = html_writer::tag('button disabled', get_string('copy', 'gradereport_gradinggroups'), [
+                'name'  => 'copygrades',
+                'type'  => 'submit',
+                'value' => 'true',
+                'class' => 'btn btn-primary',
+            ]);
         }
         $tablepostfix = html_writer::tag('div', $buttontext, ['class' => 'd-flex justify-content-center']);
         $tablepostfix .= html_writer::tag('div', $button, ['class' => 'd-flex justify-content-center']);

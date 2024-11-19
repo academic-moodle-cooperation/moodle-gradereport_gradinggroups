@@ -806,7 +806,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $finalgrade = $gradegrades[$groupmembers[$key]->id];
                 if (!empty($finalgrade->get_dategraded())) {
                     $grademax = $gradeitem->grademax;
-                    $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) . ' / ' .
+                    $finalgradeformatted = round($finalgrade->finalgrade, 2) . ' / ' .
                         round($grademax, 2);
                     $radioattr = [
                         'name' => 'source[' . $group->id . ']',
@@ -827,7 +827,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                     } else {
                         $gradeinfocont = '';
                     }
-                    $gradeinfocont .= ' ' . fullname($groupmembers[$key]) . " (" . $finalgrade->formatted_grade;
+                    $gradeinfocont .= ' ' . fullname($groupmembers[$key]) . " (" . $finalgradeformatted;
                     if ($finalgrade->feedback != null) {
                         $gradeinfocont .= " " . shorten_text(strip_tags($finalgrade->feedback), 15);
                     }
@@ -916,7 +916,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row = [];
                 $finalgrade = $gradegrades[$groupmember->id];
                 $grademax = $gradeitem->grademax;
-                $finalgrade->formatted_grade = round($finalgrade->finalgrade, 2) . ' / ' .
+                $finalgradeformatted = round($finalgrade->finalgrade, 2) . ' / ' .
                     round($grademax, 2);
                 $checkboxcontroller = optional_param('select', '', PARAM_ALPHA);
                 if ($checkboxcontroller == 'all') {
@@ -933,7 +933,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row[] = new html_table_cell(html_writer::tag('div', $checkbox, ['class' => 'form-check']));
                 $row[] = html_writer::tag('div', fullname($groupmember), ['class' => 'fullname' . $groupmember->id]);
                 $row[] = html_writer::tag('div', $groupmember->idnumber, ['class' => 'idnumber' . $groupmember->id]);
-                $row[] = html_writer::tag('div', $finalgrade->formatted_grade, ['class' => 'grade' . $groupmember->id]);
+                $row[] = html_writer::tag('div', $finalgradeformatted, ['class' => 'grade' . $groupmember->id]);
                 $row[] = html_writer::tag('div', shorten_text($finalgrade->feedback, 15),
                     ['class' => 'feedback' . $groupmember->id]);
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {

@@ -501,7 +501,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             $previewtable->head = [
                 '',
                 get_string('fullname') . " (" . $count . ")",
-                get_string('grade', 'grades'),
+                get_string('grade', 'gradereport_gradinggroups'),
                 get_string('feedback'),
             ];
             $previewtable->attributes['class'] = 'table table-hover grading_previewtable';
@@ -604,7 +604,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                 'feedback' => $sourcegrade->feedback,
             ];
-            $info .= html_writer::tag('div', get_string('grade', 'grades') . ": " .
+            $info .= html_writer::tag('div', get_string('grade', 'gradereport_gradinggroups') . ": " .
                 $formattedgrade . html_writer::empty_tag('br') .
                 format_text(get_string('copied_grade_feedback', 'gradereport_gradinggroups',
                     $details),
@@ -898,7 +898,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
             get_string('target', 'gradereport_gradinggroups'),
             get_string('fullname'),
             get_string('idnumber'),
-            get_string('grade', 'grades'),
+            get_string('grade', 'gradereport_gradinggroups'),
             get_string('feedback'),
             get_string('source', 'gradereport_gradinggroups'),
         ];

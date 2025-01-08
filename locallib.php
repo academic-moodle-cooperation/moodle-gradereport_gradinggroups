@@ -917,7 +917,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $finalgrade = $gradegrades[$groupmember->id];
                 $grademax = $gradeitem->grademax;
                 $finalgradeformatted = get_string('no_grade_yet', 'gradereport_gradinggroups');
-                if($finalgrade->finalgrade) {
+                if ($finalgrade->finalgrade) {
                     $finalgradeformatted = round($finalgrade->finalgrade, 2) . ' / ' .
                         round($grademax, 2);
                 }

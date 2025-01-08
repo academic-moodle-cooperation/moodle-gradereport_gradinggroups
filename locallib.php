@@ -916,8 +916,11 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row = [];
                 $finalgrade = $gradegrades[$groupmember->id];
                 $grademax = $gradeitem->grademax;
-                $finalgradeformatted = round($finalgrade->finalgrade, 2) . ' / ' .
-                    round($grademax, 2);
+                $finalgradeformatted = get_string('no_grade_yet', 'gradereport_gradinggroups');
+                if($finalgrade->finalgrade) {
+                    $finalgradeformatted = round($finalgrade->finalgrade, 2) . ' / ' .
+                        round($grademax, 2);
+                }
                 $checkboxcontroller = optional_param('select', '', PARAM_ALPHA);
                 if ($checkboxcontroller == 'all') {
                     $checked = true;
@@ -934,7 +937,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 $row[] = html_writer::tag('div', fullname($groupmember), ['class' => 'fullname' . $groupmember->id]);
                 $row[] = html_writer::tag('div', $groupmember->idnumber, ['class' => 'idnumber' . $groupmember->id]);
                 $row[] = html_writer::tag('div', $finalgradeformatted, ['class' => 'grade' . $groupmember->id]);
-                $row[] = html_writer::tag('div', shorten_text($finalgrade->feedback, 15),
+                $row[] = html_writer::tag('div', shorten_text($finalgrade->feedback . "", 15),
                     ['class' => 'feedback' . $groupmember->id]);
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));

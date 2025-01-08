@@ -71,3 +71,5 @@ $string['gradinggroups:grade'] = 'Copy grades from a group-member to others';
 $string['gradinggroups:grade_own_submission'] = 'Copy grades from a group-member to others, if it is you own submission';
 $string['gradinggroups:view'] = 'View Grade report Gradinggroups';
 $string['grade'] = 'Grade';
+$string['no_grade_yet'] = 'No grade yet';
+

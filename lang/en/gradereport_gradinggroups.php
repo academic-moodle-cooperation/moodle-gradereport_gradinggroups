@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of gradereport_gradinggroups for Moodle - http://moodle.org/
 //
 // It is free software: you can redistribute it and/or modify

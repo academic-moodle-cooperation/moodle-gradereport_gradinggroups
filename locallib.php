@@ -802,6 +802,7 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 // Skip groups fully graded if it's wished!
                 continue;
             }
+            $first = true;
             foreach ($userwithgrades as $key) {
                 $finalgrade = $gradegrades[$groupmembers[$key]->id];
                 if (!empty($finalgrade->get_dategraded())) {
@@ -823,6 +824,10 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                         $radioattr['type'] = 'hidden';
                         $gradeinfocont .= html_writer::empty_tag('input', $radioattr);
                     } else if (count($userwithgrades) > 1) {
+                        if ($first) {
+                            $radioattr['checked'] = 'checked';
+                            $first = false;
+                        }
                         $gradeinfocont = html_writer::empty_tag('input', $radioattr);
                     } else {
                         $gradeinfocont = '';

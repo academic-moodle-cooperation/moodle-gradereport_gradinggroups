@@ -17,9 +17,10 @@
 /**
  * Local language pack from https://devil.zserv.tuwien.ac.at/moodle_dev/moodle_assembled_qa
  *
- * @package    gradereport
- * @subpackage gradinggroups
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   gradereport_gradinggroups
+ * @author    Thomas Niedermeier
+ * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

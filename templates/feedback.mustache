@@ -19,11 +19,11 @@ along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
     @template gradereport_gradinggroups/feedc´back
 
     Example context (json):
-    {
-        'student' => fullname($sourceusers[$source[$group]]),
-        'teacher' => fullname($origteacher),
-        'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-         'feedback' => $sourcegrade->feedback,
+     {
+        "student": "Name Name" ,
+        "missing": "Name Name",
+        "date": " 28/01/25, 13:10",
+        "feedback": "Feedback"
     }
 
 }}

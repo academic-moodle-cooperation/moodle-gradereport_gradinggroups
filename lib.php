@@ -107,7 +107,7 @@ class grade_report_gradinggroups extends grade_report_grader {
  * @package    gradereport_gradinggroups
  */
 function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
-    global $DB, $CFG;
+    global $DB, $CFG, $OUTPUT;
 
     $source = $DB->get_records('assign_grades', ['assignment' => $id, 'userid' => $fromid], 'id DESC', '*', 0, 1);
 
@@ -151,10 +151,7 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                         get_string('strftimedatetimeshort')),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
-                $newfeedbackcomment->commenttext = format_text(get_string('copied_grade_feedback',
-                    'gradinggroups',
-                    $details),
-                    $newfeedbackcomment->commentformat);
+                $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $record->id,
@@ -192,10 +189,7 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                         get_string('strftimedatetimeshort')),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
-                $newfeedbackcomment->commenttext = format_text(get_string('copied_grade_feedback',
-                    'grouptool',
-                    $details),
-                    $newfeedbackcomment->commentformat);
+                $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $gradeid,

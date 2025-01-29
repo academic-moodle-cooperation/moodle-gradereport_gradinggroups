@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * This file contains the moodle hooks for the gradegroup module.
+ *
+ * @package    gradereport_gradinggroups
+ * @author     Anne Kreppenhofer
+ * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/grade/report/lib.php');
@@ -25,10 +34,6 @@ require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 /**
  * This file contains the moodle hooks for the gradegroup module.
  *
- * @package    gradereport_gradinggroups
- * @author     Anne Kreppenhofer
- * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_report_gradinggroups extends grade_report_grader {
 

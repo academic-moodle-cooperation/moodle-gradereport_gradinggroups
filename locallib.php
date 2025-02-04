@@ -327,7 +327,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
  */
 function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $course, $cm, $overwrite = false,
                      $previewonly = true) {
-    global $DB, $USER;
+    global $DB, $USER, $OUTPUT;
     $error = false;
     // If he want's to grade all he needs the corresponding capability!
     if (!$mygroupsonly) {
@@ -408,10 +408,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
-                $currentgrade->feedback = format_text(get_string('copied_grade_feedback',
-                    'gradereport_gradinggroups',
-                    $details),
-                    $currentgrade->feedbackformat);
+                $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 $currentgrade->usermodified = $USER->id;
                 if ($previewonly) {
                     $rowcells = [];
@@ -475,7 +472,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
-                $temp = get_string('copied_grade_feedback', 'gradereport_gradinggroups', $data);
+                $temp = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $data);
                 $grpinfo .= html_writer::tag('div', $formattedgrade . html_writer::empty_tag('br') .
                     format_text($temp,
                         $sourcegrade->feedbackformat));
@@ -489,8 +486,11 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $targetusers = $DB->get_records_list('user', 'id', $selected);
         $sourcegrade = grade_grade::fetch_users_grades($gradeitem, [$source], false);
         $sourcegrade = reset($sourcegrade);
+        if (!$sourcegrade) {
+            return [true, "Not graded yet"];
+        }
         $origteacher = $DB->get_record('user', ['id' => $sourcegrade->usermodified]);
-        $formattedgrade = round($sourcegrade->finalgrade, 2) . ' / ' .
+        $formattedgrade = ($sourcegrade->finalgrade != null) ? round($sourcegrade->finalgrade, 2) : 0 . ' / ' .
             round($gradeitem->grademax, 2);
         $targetgrades = grade_grade::fetch_users_grades($gradeitem, $selected, true);
         $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
@@ -543,11 +543,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(),
                     get_string('strftimedatetimeshort')),
-                'feedback' => $sourcegrade->feedback,
+                'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
             ];
-            $currentgrade->feedback = format_text(
-                get_string('copied_grade_feedback', 'gradereport_gradinggroups', $details),
-                $currentgrade->feedbackformat);
+            $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
             $currentgrade->usermodified = $USER->id;
             if ($previewonly) {
                 $rowcells = [];
@@ -606,9 +604,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
             ];
             $info .= html_writer::tag('div', get_string('grade', 'gradereport_gradinggroups') . ": " .
                 $formattedgrade . html_writer::empty_tag('br') .
-                format_text(get_string('copied_grade_feedback', 'gradereport_gradinggroups',
-                    $details),
-                    $sourcegrade->feedbackformat),
+                $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details),
                 ['class' => 'gradeinfo']);
         }
         /*
@@ -947,14 +943,27 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));
                 } else {
-                    $row[] = html_writer::tag('button',
-                        get_string('copygrade', 'gradereport_gradinggroups'),
-                        [
-                            'type' => 'submit',
-                            'name' => 'source',
-                            'value' => $groupmember->id,
-                            'class' => 'btn btn-primary',
-                        ]);
+                    if ($finalgradeformatted == get_string('no_grade_yet', 'gradereport_gradinggroups')) {
+                        $row[] = html_writer::tag('button',
+                            get_string('copygrade', 'gradereport_gradinggroups'),
+                            [
+                                'disabled' => 'disabled',
+                                'type' => 'submit',
+                                'name' => 'source',
+                                'value' => $groupmember->id,
+                                'class' => 'btn btn-primary',
+                            ]);
+                    } else {
+                        $row[] = html_writer::tag('button',
+                            get_string('copygrade', 'gradereport_gradinggroups'),
+                            [
+                                'type' => 'submit',
+                                'name' => 'source',
+                                'value' => $groupmember->id,
+                                'class' => 'btn btn-primary',
+                            ]);
+                    }
+
                 }
                 $data[] = $row;
             }

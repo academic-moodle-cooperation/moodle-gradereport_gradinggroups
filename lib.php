@@ -14,6 +14,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ * This file contains the moodle hooks for the gradegroup module.
+ *
+ * @package    gradereport_gradinggroups
+ * @author     Anne Kreppenhofer
+ * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/grade/report/lib.php');
@@ -25,10 +34,6 @@ require_once($CFG->dirroot . '/grade/report/grader/lib.php');
 /**
  * This file contains the moodle hooks for the gradegroup module.
  *
- * @package    gradereport_gradinggroups
- * @author     Anne Kreppenhofer
- * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class grade_report_gradinggroups extends grade_report_grader {
 
@@ -107,7 +112,7 @@ class grade_report_gradinggroups extends grade_report_grader {
  * @package    gradereport_gradinggroups
  */
 function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
-    global $DB, $CFG;
+    global $DB, $CFG, $OUTPUT;
 
     $source = $DB->get_records('assign_grades', ['assignment' => $id, 'userid' => $fromid], 'id DESC', '*', 0, 1);
 
@@ -151,10 +156,7 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                         get_string('strftimedatetimeshort')),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
-                $newfeedbackcomment->commenttext = format_text(get_string('copied_grade_feedback',
-                    'gradinggroups',
-                    $details),
-                    $newfeedbackcomment->commentformat);
+                $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $record->id,
@@ -192,10 +194,7 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                         get_string('strftimedatetimeshort')),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
-                $newfeedbackcomment->commenttext = format_text(get_string('copied_grade_feedback',
-                    'grouptool',
-                    $details),
-                    $newfeedbackcomment->commentformat);
+                $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $gradeid,

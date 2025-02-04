@@ -486,8 +486,11 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
         $targetusers = $DB->get_records_list('user', 'id', $selected);
         $sourcegrade = grade_grade::fetch_users_grades($gradeitem, [$source], false);
         $sourcegrade = reset($sourcegrade);
+        if(!$sourcegrade){
+           return [true, "Not graded yet"];
+        }
         $origteacher = $DB->get_record('user', ['id' => $sourcegrade->usermodified]);
-        $formattedgrade = round($sourcegrade->finalgrade, 2) . ' / ' .
+        $formattedgrade =  ($sourcegrade->finalgrade != null) ? round($sourcegrade->finalgrade, 2) : 0 . ' / ' .
             round($gradeitem->grademax, 2);
         $targetgrades = grade_grade::fetch_users_grades($gradeitem, $selected, true);
         $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
@@ -540,7 +543,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(),
                     get_string('strftimedatetimeshort')),
-                'feedback' => $sourcegrade->feedback,
+                'feedback' => ($sourcegrade->feedback)? strip_tags(($sourcegrade->feedback)) : "",
             ];
             $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
             $currentgrade->usermodified = $USER->id;
@@ -940,14 +943,27 @@ function get_grading_table($activity, $mygroupsonly, $incompleteonly, $filter, $
                 if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));
                 } else {
-                    $row[] = html_writer::tag('button',
-                        get_string('copygrade', 'gradereport_gradinggroups'),
-                        [
-                            'type' => 'submit',
-                            'name' => 'source',
-                            'value' => $groupmember->id,
-                            'class' => 'btn btn-primary',
-                        ]);
+                    if ($finalgradeformatted == get_string('no_grade_yet', 'gradereport_gradinggroups')){
+                        $row[] = html_writer::tag('button',
+                            get_string('copygrade', 'gradereport_gradinggroups'),
+                            [
+                                'disabled' => 'disabled',
+                                'type' => 'submit',
+                                'name' => 'source',
+                                'value' => $groupmember->id,
+                                'class' => 'btn btn-primary',
+                            ]);
+                    } else {
+                        $row[] = html_writer::tag('button',
+                            get_string('copygrade', 'gradereport_gradinggroups'),
+                            [
+                                'type' => 'submit',
+                                'name' => 'source',
+                                'value' => $groupmember->id,
+                                'class' => 'btn btn-primary',
+                            ]);
+                    }
+
                 }
                 $data[] = $row;
             }

@@ -19,14 +19,14 @@
  *
  * @package       gradereport_gradinggroups
  * @author        Anne Kreppenhofer (annek03@univie.ac.at)
- * @copyright     2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright     2025 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version  = 2025010101;
-$plugin->release = "v4.5.0";       // User-friendly version number.
+$plugin->version  = 20250520.00;
+$plugin->release = "v5.0.0";       // User-friendly version number.
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires = 2024100700;      // Requires this Moodle version!
 $plugin->component = 'gradereport_gradinggroups';    // To check on upgrade, that module sits in correct place.

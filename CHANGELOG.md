@@ -1,6 +1,10 @@
 
 CHANGELOG
 =========
+5.0.0 (2025-05-20)
+------------------
+* [BUG] #8350 Fix error message in event monitoring
+* Update for Moodle 5.0
 
 4.5.0 (2024-11-19)
 ------------------

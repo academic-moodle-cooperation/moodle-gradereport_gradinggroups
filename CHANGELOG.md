@@ -4,6 +4,8 @@ CHANGELOG
 5.0.0 (2025-05-20)
 ------------------
 * [BUG] #8350 Fix error message in event monitoring
+* [LANGSTRING] #8227 Compare german and english lang strings and edit accordingly
+* [LANGSTRING] #8278 Prepare langstring for AMOS
 * Update for Moodle 5.0
 
 4.5.0 (2024-11-19)

@@ -26,11 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['chooseactivity'] = 'Sie müssen eine Aktivität auswählen, bevor Daten angezeigt werden können!';
-$string['copied_grade_feedback'] = 'Gruppenbewertung<br />
-+Abgabe von: <strong>{$a->student}</strong><br />
-+Note von: <strong>{$a->teacher}</strong><br />
-+Original Datum/Zeit: <strong>{$a->date}</strong><br />
-+Kommentar: <strong>{$a->feedback}</strong>';
+$string['copied_grade_feedback'] = 'Gruppenbewertung<br />+Abgabe von: <strong>{$a->student}</strong><br />+Note von: <strong>{$a->teacher}</strong><br />+Original Datum/Zeit: <strong>{$a->date}</strong><br />+Kommentar: <strong>{$a->feedback}</strong>';
 $string['copy'] = 'Übertragen';
 $string['copy_grades_confirm'] = 'Sind Sie sich wirklich sicher?';
 $string['copy_grades_errors'] = 'Zumindest 1 Fehler trat während des Übertragens der Bewertungen auf:';
@@ -40,14 +36,15 @@ $string['copy_refgrades_feedback'] = 'Übertrage Referenzbewertungen und Komment
 $string['copygrade'] = 'Bewertung kopieren';
 $string['coursesum'] = 'Summe für den Kurs';
 $string['filters_legend'] = 'Filtere Daten';
+$string['grade'] = 'Note';
 $string['gradereport_gradinggroups'] = 'Gruppenbewertung';
 $string['grading_activity_title'] = 'Aktivität';
 $string['grading_filter_select_title'] = 'Gruppe(n)';
 $string['grading_filter_select_title_help'] = 'Auswählen welche Gruppe bzw. Gruppen bearbeitet werden:<ul><li>konfliktfrei - Alle Gruppen, bei denen nur 1 Gruppenmitglied eine Bewertung für die ausgewählte Aktivität erhalten hat.</li><li>Alle - Alle Gruppen</li><li>"Gruppenname" - nur die jeweils ausgewählte Gruppe</li></ul>';
 $string['grading_grouping_select_title'] = 'Nach Gruppierung filtern';
-$string['graidnggroups:grade'] = 'Noten von einem Gruppenmitglied auf andere kopieren';
-$string['graidnggroups:grade_own_submission'] = 'Noten von einem Gruppenmitglied auf andere kopieren, wenn es sich um die eigene Einreichung handelt.';
-$string['graidnggroups:view'] = 'Bewertungsbericht für Bewertungsgruppen anzeigen';
+$string['gradinggroups:grade'] = 'Noten von einem Gruppenmitglied auf andere kopieren';
+$string['gradinggroups:grade_own_submission'] = 'Noten von einem Gruppenmitglied auf andere kopieren, wenn es sich um die eigene Einreichung handelt.';
+$string['gradinggroups:view'] = 'Bewertungsbericht für Bewertungsgruppen anzeigen';
 $string['groupselection'] = 'Gruppenauswahl';
 $string['groupselection_help'] = 'Auswählen welche Gruppe bzw. Gruppen bearbeitet werden:<ul><li>konfliktfrei - Alle Gruppen, bei denen nur 1 Gruppenmitglied eine Bewertung für die ausgewählte Aktivität erhalten hat.</li><li>Alle - Alle Gruppen</li><li>"Gruppenname" - nur die jeweils ausgewählte Gruppe</li></ul>';
 $string['incomplete_only_label'] = 'Zeige nur Gruppen mit fehlenden Bewertungen';
@@ -55,6 +52,7 @@ $string['missing_source_selection'] = 'No source selected!';
 $string['mygroups_only_label'] = 'Zeige nur Quellen, die ich bewertet habe';
 $string['no_conflictfree_to_display'] = 'Keine konfliktfreien Gruppen anzuzeigen. Stattdessen alle angezeigt!';
 $string['no_data_to_display'] = 'Keine Gruppendaten anzuzeigen!';
+$string['no_grade_yet'] = 'Noch keine Berwertungen vorhanden';
 $string['no_grades_present'] = 'Keine Bewertungen anzuzeigen';
 $string['no_groupmembers_to_display'] = 'Keine Gruppenmitglieder zum Anzeigen vorhanden, stattdessen werden alle Gruppen angezeigt!';
 $string['no_target_selected'] = 'Es wurde kein Ziel für den Kopiervorgang gewählt! Es muss zumindest 1 Ziel gewählt werden!';

@@ -26,11 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['chooseactivity'] = 'You have to choose an activity before data can be displayed!';
-$string['copied_grade_feedback'] = 'Group grading<br />
-+Submission from: <strong>{$a->student}</strong><br />
-+Graded by: <strong>{$a->teacher}</strong><br />
-+Original Date/Time: <strong>{$a->date}</strong><br />
-+Feedback: <strong>{$a->feedback}</strong>';
+$string['copied_grade_feedback'] = 'Group grading<br />+Submission from: <strong>{$a->student}</strong><br />+Graded by: <strong>{$a->teacher}</strong><br />+Original Date/Time: <strong>{$a->date}</strong><br />+Feedback: <strong>{$a->feedback}</strong>';
 $string['copy'] = 'Copy';
 $string['copy_grades_confirm'] = 'Continue copying these grades?';
 $string['copy_grades_errors'] = 'At least 1 error occurred during copying of grades:';

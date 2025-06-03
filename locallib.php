@@ -613,12 +613,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details),
                 ['class' => 'gradeinfo']);
         }
-        /*
-        if (!$previewonly) {
-            // Trigger the event!
-            // TODO Log the event extra
-        }
-        */
     }
     if ($previewonly) {
         return [

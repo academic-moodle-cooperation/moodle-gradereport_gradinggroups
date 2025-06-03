@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['chooseactivity'] = 'You have to choose an activity before data can be displayed!';
-$string['copied_grade_feedback_feedback'] ='Feedback:';
-$string['copied_grade_feedback_grade'] ='Graded by:';
-$string['copied_grade_feedback_original_date'] ='Original Date/Time:';
-$string['copied_grade_feedback_submission'] ='Submission from:';
+$string['copied_grade_feedback_feedback'] = 'Feedback:';
+$string['copied_grade_feedback_grade'] = 'Graded by:';
+$string['copied_grade_feedback_original_date'] = 'Original Date/Time:';
+$string['copied_grade_feedback_submission'] = 'Submission from:';
 $string['copied_grade_feedback_title'] = 'Group grading';
 $string['copy'] = 'Copy';
 $string['copy_grades_confirm'] = 'Continue copying these grades?';

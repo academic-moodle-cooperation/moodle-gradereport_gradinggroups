@@ -26,10 +26,10 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['chooseactivity'] = 'Sie müssen eine Aktivität auswählen, bevor Daten angezeigt werden können!';
-$string['copied_grade_feedback_feedback'] ='Kommentar:';
-$string['copied_grade_feedback_grade'] ='Note von:';
-$string['copied_grade_feedback_original_date'] ='Original Datum/Zeit:';
-$string['copied_grade_feedback_submission'] ='Abgabe von:';
+$string['copied_grade_feedback_feedback'] = 'Kommentar:';
+$string['copied_grade_feedback_grade'] = 'Note von:';
+$string['copied_grade_feedback_original_date'] = 'Original Datum/Zeit:';
+$string['copied_grade_feedback_submission'] = 'Abgabe von:';
 $string['copied_grade_feedback_title'] = 'Gruppenbewertung';
 $string['copy'] = 'Übertragen';
 $string['copy_grades_confirm'] = 'Sind Sie sich wirklich sicher?';

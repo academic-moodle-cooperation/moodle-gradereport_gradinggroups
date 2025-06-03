@@ -58,9 +58,9 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
 
     $refreshtable = optional_param('refresh_table', 0, PARAM_BOOL);
     $activity = optional_param('activity', null, PARAM_INT); // This is the coursemodule-ID.
-    if($activity === null) {
+    if ($activity === null) {
         foreach ($gradeitems as $gradeitem) {
-            $activity =  $gradeitem->gid;
+            $activity = $gradeitem->gid;
             break;
         }
     }

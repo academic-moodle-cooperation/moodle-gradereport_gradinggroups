@@ -68,49 +68,6 @@ class grading_form extends  \moodleform {
 
         $mform->addElement('header', 'filterslegend', get_string('filters_legend', 'gradereport_gradinggroups'));
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
-        /*
-
-        $activityselect = $mform->createElement('selectgroups', 'activity', $label, null);
-        if ($modinfo = get_fast_modinfo($this->_customdata['course'])) {
-            $sections = $modinfo->get_sections();
-            foreach ($sections as $curnumber => $sectionmodules) {
-                $activities = [];
-                $sectiontext = course_get_format($this->_customdata['course'])->get_section_name($curnumber);
-
-                foreach ($sectionmodules as $curcmid) {
-                    $mod = $modinfo->get_cm($curcmid);
-                    if ($mod->modname == "label") {
-                        continue;
-                    }
-
-                    if (file_exists($CFG->dirroot . '/mod/'.$mod->modname.'/lib.php')) {
-                        require_once($CFG->dirroot . '/mod/'.$mod->modname.'/lib.php');
-                        $supportfn = $mod->modname."_supports";
-                        if (function_exists($supportfn)) {
-                            if ($supportfn(FEATURE_GRADE_HAS_GRADE) !== true) {
-                                continue;
-                            }
-                        }
-                    }
-
-                    $name = strip_tags(format_string($mod->name, true));
-                    if (\core_text::strlen($name) > 55) {
-                        $name = \core_text::substr($name, 0, 50)."...";
-                    }
-                    if (!$mod->visible) {
-                        $name = "(".$name.")";
-                    }
-                    $activities["$curcmid"] = $name;
-                }
-                $activityselect->addOptGroup($sectiontext, $activities);
-            }
-            // TODO add custom grade items
-        }
-
-        $mform->addElement($activityselect);
-
-        */
-        // $gradeselect = $mform->createElement('selectgroups', 'Gradeitems', $label, null);
 
         if ($gradeitems = $this->_customdata['gradeitems']) {
             $grades  = [];
@@ -118,7 +75,6 @@ class grading_form extends  \moodleform {
                 $grades[$gradeitem->gid] = $gradeitem->name;
             }
         }
-            // TODO add custom grade items
 
         $mform->addElement('select', 'activity', $label, $grades);
 

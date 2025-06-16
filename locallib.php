@@ -58,7 +58,12 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
 
     $refreshtable = optional_param('refresh_table', 0, PARAM_BOOL);
     $activity = optional_param('activity', null, PARAM_INT); // This is the coursemodule-ID.
-
+    if ($activity === null) {
+        foreach ($gradeitems as $gradeitem) {
+            $activity = $gradeitem->gid;
+            break;
+        }
+    }
     // Show only groups with grades given by current user!
     $mygroupsonly = optional_param('mygroups_only', null, PARAM_BOOL);
 
@@ -295,7 +300,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
             'gradeitems' => $gradeitems,
             'context' => $context,
         ];
-        $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform', // TODO maybe change
+        $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform',
             'id' => 'grading_form',
             'name' => 'grading_form',
         ]);
@@ -304,6 +309,7 @@ function view_grading($context, $id, $course, $cm, $gradeitems = null) {
         $params->contextid = $context->id;
         $PAGE->requires->js_call_amd('gradereport_gradinggroups/grading', 'initializer', [$params]);
         $mform->display();
+
     }
 }
 
@@ -472,13 +478,9 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
                     'feedback' => $sourcegrade->feedback,
                 ];
-                $temp = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $data);
                 $grpinfo .= html_writer::tag('div', $formattedgrade . html_writer::empty_tag('br') .
-                    format_text($temp,
-                        $sourcegrade->feedbackformat));
+                    $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $data));
                 $info .= html_writer::tag('div', $grpinfo, ['class' => 'box1embottom']);
-                // Trigger the event!
-                // TODO Log the event extra
             }
         }
     } else {
@@ -607,12 +609,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details),
                 ['class' => 'gradeinfo']);
         }
-        /*
-        if (!$previewonly) {
-            // Trigger the event!
-            // TODO Log the event extra
-        }
-        */
     }
     if ($previewonly) {
         return [

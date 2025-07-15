@@ -577,8 +577,8 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 $currentgrade->set_overridden(true, false);
                 $currentgrade->grade_item->force_regrading();
                 $fullname = fullname($targetusers[$currentgrade->userid]);
-                if (function_exists('gradinggroups_copy_' . $gradeitem->itemtype . '_grades')) {
-                    $copyfunction = 'gradinggroups_copy_' . $gradeitem->itemtype . '_grades';
+                if (function_exists('gradinggroups_copy_' . $gradeitem->itemmodule . '_grades')) {
+                    $copyfunction = 'gradinggroups_copy_' . $gradeitem->itemmodule . '_grades';
                     $copyfunction($gradeitem->iteminstance, $sourcegrade->userid, $currentgrade->userid);
                 }
                 if ($noerror) {

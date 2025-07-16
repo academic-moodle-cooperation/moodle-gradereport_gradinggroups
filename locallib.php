@@ -412,7 +412,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                    // TODO @Anne maybe add a strip of html tags here (?)
                     'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
                 ];
                 $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
@@ -477,7 +476,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                    // TODO @Anne maybe add a strip of html tags here (?)
                     'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
                 ];
                 $grpinfo .= html_writer::tag('div', $formattedgrade . html_writer::empty_tag('br') .
@@ -547,7 +545,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(),
                     get_string('strftimedatetimeshort')),
-                // TODO @Anne maybe add a strip of html tags here (?) like this everywhere
                 'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
             ];
             $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
@@ -605,7 +602,6 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'student' => fullname($sourceuser),
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                // TODO @Anne maybe add a strip of html tags here (?)
                 'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
             ];
             $info .= html_writer::tag('div', get_string('grade', 'gradereport_gradinggroups') . ": " .

@@ -12,7 +12,7 @@ This file is part of the gradereport_gradinggroups plugin for Moodle - <http://m
 
 Description
 -----------
-Plugin to copy grades between groups in a course. It is useful for courses with multiple groups, where the same grading applies to all groups members The plugin allows teachers to copy grades from one group member to another, making it easier to manage grading in such courses.
+Plugin to copy grades between groups in a course. It is useful for courses with multiple groups, where the same grading applies to all group members. The plugin allows teachers to copy grades from one group member to another, making it easier to manage grading in such courses.
 
 Example
 -------

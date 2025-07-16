@@ -3,6 +3,7 @@ CHANGELOG
 =========
 5.0.0 (2025-07-16)
 ------------------
+* [BUG] #8131 Fix If you call "groupgrade" in course "Gradings" an error message appears instead of the group listing
 * [BUG] #7508 Fix Feedback text when shifting grades with wrong html tags
 * [BUG] #8220 Fix deprecated message on index.php confirmation status
 * [BUG] #8408 Fix not showing grades in assignment correctly

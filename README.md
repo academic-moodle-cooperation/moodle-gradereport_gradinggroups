@@ -17,12 +17,24 @@ With Groupgrade, you can transfer the grading and the feedback of a student in a
 
 Usage
 -------
-Students have to give group presentations in a seminar. The teacher has created the groups in advance in the Moodle course and added an grade item for the group presentation in the “Grades”. After the presentations, she enters the points and feedback for one member of each group in the “Grades”. The members of a group shall all be graded equally and receive the same feedback. The teacher uses the “Gropugrade” option in the “Grades” to easily and simply transfer points and feedback to the other group members. All she has to do is select the grade item in the filter options and specify the groups for which the grade transfer should be applied.
+Students have to give group presentations in a seminar. 
+The teacher has created the groups in advance in the Moodle course and added an grade item for the group presentation in the “Grades”. 
+After the presentations, she enters the points and feedback for one member of each group in the “Grades”. 
+The members of a group shall all be graded equally and receive the same feedback. 
+The teacher uses the “Groupgrade” option in the “Grades” to easily and simply transfer points and feedback to the other group members. 
+All she has to do is select the grade item in the filter options and specify the groups for which the grade transfer should be applied.
 
 Installation
 ------------
-Copy the code directly into the directory gradereport/gradinggroups. The installation starts automatically when you call up the administration area (http://your-moodle-site/admin).
+* Copy the code directly into the directory gradereport/gradinggroups. 
+* Log into Moodle as administrator.
+* Open the administration area (http://your-moodle-site/admin) to start the installation
+  automatically.
 
+Privacy API 
+--------------
+
+The plugin fully implements the Moodle Privacy API.
 
 Documentation
 -------------

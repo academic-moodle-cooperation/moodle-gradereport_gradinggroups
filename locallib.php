@@ -412,7 +412,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                    'feedback' => $sourcegrade->feedback,
+                    'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
                 ];
                 $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
                 $currentgrade->usermodified = $USER->id;
@@ -476,7 +476,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                     'student' => fullname($sourceusers[$source[$group]]),
                     'teacher' => fullname($origteacher),
                     'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                    'feedback' => $sourcegrade->feedback,
+                    'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
                 ];
                 $grpinfo .= html_writer::tag('div', $formattedgrade . html_writer::empty_tag('br') .
                     $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $data));
@@ -602,7 +602,7 @@ function copy_grades($activity, $mygroupsonly, $selected, $source, $context, $co
                 'student' => fullname($sourceuser),
                 'teacher' => fullname($origteacher),
                 'date' => userdate($sourcegrade->get_dategraded(), get_string('strftimedatetimeshort')),
-                'feedback' => $sourcegrade->feedback,
+                'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
             ];
             $info .= html_writer::tag('div', get_string('grade', 'gradereport_gradinggroups') . ": " .
                 $formattedgrade . html_writer::empty_tag('br') .

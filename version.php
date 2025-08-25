@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-$plugin->version  = 2025010101;
-$plugin->release = "v4.5.0";       // User-friendly version number.
+$plugin->version  = 2025010201;
+$plugin->release = "v4.5.1";       // User-friendly version number.
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires = 2024100700;      // Requires this Moodle version!
 $plugin->component = 'gradereport_gradinggroups';    // To check on upgrade, that module sits in correct place.

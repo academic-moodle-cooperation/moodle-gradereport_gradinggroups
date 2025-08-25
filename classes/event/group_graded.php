@@ -23,7 +23,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace gradereport_gradinggroups\event;
-use function gradereport_gradinggroups\event\get_string;
 
 defined('MOODLE_INTERNAL') || die();
 

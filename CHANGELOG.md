@@ -2,6 +2,10 @@
 CHANGELOG
 =========
 
+4.5.1 (2025-08-25)
+------------------
+* [BUG] #8452 Fix error message when opening eventlist
+
 4.5.0 (2024-11-19)
 ------------------
 * [BUG] #8111 fix dynamic property deprecated of finalgrade

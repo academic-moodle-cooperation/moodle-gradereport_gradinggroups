@@ -5,7 +5,7 @@ CHANGELOG
 ------------------
 * [BUG] #8452 Fix error message when opening eventlist
 
-4.5.0 (2025-01-02)
+4.5.0 (2025-01-01)
 ------------------
 * [BUG] #8111 fix dynamic property deprecated of finalgrade
 * [BUG] #8103 Fix typo in lang string, so that capabilities are not missing anymore

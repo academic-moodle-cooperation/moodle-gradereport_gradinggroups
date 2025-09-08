@@ -1,7 +1,7 @@
 
 CHANGELOG
 =========
-4.5.1 (2025-08-25)
+4.5.2 (2025-08-25)
 ------------------
 * [BUG] #8452 Fix error message when opening eventlist
 

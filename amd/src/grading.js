@@ -60,7 +60,7 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
 
         var cfg = {
             method: 'get',
-            url: config.wwwroot + '/mod/grouptool/groupinggroups_ajax.php',
+            url: config.wwwroot + '/grade/gradinggroups/groupinggroups_ajax.php',
             data: {
                 'groupingid': groupingid,
                 'lang': config.lang,

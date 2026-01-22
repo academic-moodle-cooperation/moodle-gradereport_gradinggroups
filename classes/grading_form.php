@@ -29,7 +29,6 @@ defined('MOODLE_INTERNAL') || die();
 // Global variable $CFG is always set, but with this little wrapper PHPStorm won't give wrong error messages!
 if (isset($CFG)) {
     require_once($CFG->libdir . '/formslib.php');
-    require_once($CFG->dirroot . '/mod/grouptool/definitions.php');
     require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
     require_once($CFG->dirroot . '/grade/lib.php');
 }

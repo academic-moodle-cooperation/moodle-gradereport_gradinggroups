@@ -41,7 +41,7 @@ if (isset($CFG)) {
  * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class grading_form extends  \moodleform {
+class grading_form extends \moodleform {
     /** @var \context_module context object */
     protected $context = null;
 
@@ -77,20 +77,38 @@ class grading_form extends  \moodleform {
 
         $mform->addElement('select', 'activity', $label, $grades);
 
-        $mform->addElement('advcheckbox', 'mygroups_only', null, get_string('mygroups_only_label', 'gradereport_gradinggroups'),
-                ['group' => '1'], [0, 1]);
+        $mform->addElement(
+            'advcheckbox',
+            'mygroups_only',
+            null,
+            get_string('mygroups_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
         $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
         if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
             $mform->setConstant('mygroups_only', 1);
             $mform->freeze('mygroups_only');
         }
 
-        $mform->addElement('advcheckbox', 'incomplete_only', null, get_string('incomplete_only_label', 'gradereport_gradinggroups'),
-                ['group' => '1'], [0, 1]);
+        $mform->addElement(
+            'advcheckbox',
+            'incomplete_only',
+            null,
+            get_string('incomplete_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
         $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
 
-        $mform->addElement('advcheckbox', 'overwrite', null, get_string('overwrite_label', 'gradereport_gradinggroups'),
-                ['group' => '1'], [0, 1]);
+        $mform->addElement(
+            'advcheckbox',
+            'overwrite',
+            null,
+            get_string('overwrite_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
         $mform->setDefault('overwrite', $this->_customdata['overwrite']);
 
         $groupings = groups_get_all_groupings($this->_customdata['course']->id);
@@ -111,7 +129,7 @@ class grading_form extends  \moodleform {
             if ($membercount == 0) {
                 continue;
             }
-            $options[$key] = $group->name.' ('.$membercount.')';
+            $options[$key] = $group->name . ' (' . $membercount . ')';
         }
         $mform->addElement('select', 'filter', get_string('grading_filter_select_title', 'gradereport_gradinggroups'), $options);
         $mform->addHelpButton('filter', 'grading_filter_select_title', 'gradereport_gradinggroups');
@@ -123,7 +141,6 @@ class grading_form extends  \moodleform {
         $mform->addHelpButton('gradingtable', 'groupselection', 'gradereport_gradinggroups');
 
         $mform->addElement('html', $this->_customdata['table']);
-
     }
 
     /**
@@ -142,4 +159,3 @@ class grading_form extends  \moodleform {
         return $errors;
     }
 }
-

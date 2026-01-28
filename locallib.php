@@ -384,7 +384,7 @@ function gradereport_gradinggroups_view_grading(
  *
  * @param int $activity ID of activity to get/set grades from/for
  * @param bool $mygroupsonly limit source-grades to those given by current user
- * @param int[] | null $selected array with ids of groups/users to copy grades to as keys (depends on filter)
+ * @param int[]|null $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param int[] $source optional array with ids of entries for whom no source has been selected
  *                       (just to display a clue to select a source)
  * @param context_course $context
@@ -777,7 +777,7 @@ function gradereport_gradinggroups_confirm($message, $continue, $cancel = null) 
  * @param int $filter GRADINGGROUPS_FILTER_ALL => all groups
  *                     GRADINGGROUPS_FILTER_NONCONFLICTING => groups with exactly 1 graded member
  *                     >0 => id of single group
- * @param int[] $selected array with ids of groups/users to copy grades to as keys (depends on filter)
+ * @param int[]|null $selected array with ids of groups/users to copy grades to as keys (depends on filter)
  * @param course_context|context_course|context|stdClass $context $context
  * @param course|stdClass $course $course
  * @param int[] $missingsource optional array with ids of entries for whom no source has been selected

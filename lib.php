@@ -36,7 +36,6 @@ require_once($CFG->dirroot . '/grade/report/grader/lib.php');
  *
  */
 class grade_report_gradinggroups extends grade_report_grader {
-
     /**
      * Constructor
      * @param int $courseid Course id
@@ -66,8 +65,10 @@ class grade_report_gradinggroups extends grade_report_grader {
 
             $gradeitem = new stdClass();
             if ($g->display == 0) { // If display type is "default" check what default is.
-                if ($coursedefault = $DB->get_field('grade_settings', 'value', ['courseid' => $g->courseid,
-                    'name' => 'displaytype', ])) { // If course default exists take it.
+                if (
+                    $coursedefault = $DB->get_field('grade_settings', 'value', ['courseid' => $g->courseid,
+                    'name' => 'displaytype', ])
+                ) { // If course default exists take it.
                     $g->display = $coursedefault;
                 } else { // Else take system default.
                     $g->display = $CFG->grade_displaytype;
@@ -138,11 +139,13 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
         $record = clone $source;
         $record->userid = $curid;
         unset($record->id);
-        if ($record->id = $DB->get_field('assign_grades', 'id', [
+        if (
+            $record->id = $DB->get_field('assign_grades', 'id', [
             'assignment' => $id,
             'userid' => $curid,
             'attemptnumber' => $source->attemptnumber,
-        ])) {
+            ])
+        ) {
             $DB->update_record('assign_grades', $record);
             if ($feedbackcomment) {
                 $newfeedbackcomment = clone $feedbackcomment;
@@ -152,15 +155,19 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                 $details = [
                     'student' => fullname($user),
                     'teacher' => fullname($grader),
-                    'date' => userdate($source->timemodified,
-                        get_string('strftimedatetimeshort')),
+                    'date' => userdate(
+                        $source->timemodified,
+                        get_string('strftimedatetimeshort')
+                    ),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
                 $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
-                if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
+                if (
+                    $newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $record->id,
-                ])) {
+                    ])
+                ) {
                     $DB->update_record('assignfeedback_comments', $newfeedbackcomment);
                 } else {
                     $DB->insert_record('assignfeedback_comments', $newfeedbackcomment);
@@ -171,10 +178,12 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                 unset($newfeedbackfile->id);
                 $newfeedbackfile->grade = $record->id;
                 $newfeedbackfile->assignment = $id;
-                if ($newfeedbackfile->id = $DB->get_field('assignfeedback_file', 'id', [
+                if (
+                    $newfeedbackfile->id = $DB->get_field('assignfeedback_file', 'id', [
                     'assignment' => $id,
                     'grade' => $record->id,
-                ])) {
+                    ])
+                ) {
                     $DB->update_record('assignfeedback_file', $newfeedbackfile);
                 } else {
                     $DB->insert_record('assignfeedback_file', $newfeedbackfile);
@@ -190,15 +199,19 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                 $details = [
                     'student' => fullname($user),
                     'teacher' => fullname($grader),
-                    'date' => userdate($source->timemodified,
-                        get_string('strftimedatetimeshort')),
+                    'date' => userdate(
+                        $source->timemodified,
+                        get_string('strftimedatetimeshort')
+                    ),
                     'feedback' => $newfeedbackcomment->commenttext,
                 ];
                 $newfeedbackcomment->commenttext = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
-                if ($newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
+                if (
+                    $newfeedbackcomment->id = $DB->get_field('assignfeedback_comments', 'id', [
                     'assignment' => $id,
                     'grade' => $gradeid,
-                ])) {
+                    ])
+                ) {
                     $DB->update_record('assignfeedback_comments', $newfeedbackcomment);
                 } else {
                     $DB->insert_record('assignfeedback_comments', $newfeedbackcomment);
@@ -209,10 +222,12 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
                 unset($newfeedbackfile->id);
                 $newfeedbackfile->grade = $gradeid;
                 $newfeedbackfile->assignment = $id;
-                if ($newfeedbackfile->id = $DB->get_field('assignfeedback_file', 'id', [
+                if (
+                    $newfeedbackfile->id = $DB->get_field('assignfeedback_file', 'id', [
                     'assignment' => $id,
                     'grade' => $gradeid,
-                ])) {
+                    ])
+                ) {
                     $DB->update_record('assignfeedback_file', $newfeedbackfile);
                 } else {
                     $DB->insert_record('assignfeedback_file', $newfeedbackfile);
@@ -236,4 +251,3 @@ function gradinggroups_copy_assign_grades($id, $fromid, $toid) {
         }
     }
 }
-

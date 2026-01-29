@@ -92,12 +92,12 @@ class group_graded extends \core\event\base {
     public function get_description() {
         switch ($this->data['other']['type']) {
             case 'group':
-                return "The user with id '".$this->userid."' group-graded group with id '".$this->data['other']['groupid'].
-                       "' using ".$this->objecttable." with course module id '$this->contextinstanceid'.";
+                return "The user with id '" . $this->userid . "' group-graded group with id '" . $this->data['other']['groupid'] .
+                       "' using " . $this->objecttable . " with course module id '$this->contextinstanceid'.";
             break;
             case 'users':
-                return "The user with id '".$this->userid."' group-graded the user(s) with id(s) '".
-                       implode(', ', $this->data['other']['selected'])."' using ".$this->objecttable.
+                return "The user with id '" . $this->userid . "' group-graded the user(s) with id(s) '" .
+                       implode(', ', $this->data['other']['selected']) . "' using " . $this->objecttable .
                        " with course module id '$this->contextinstanceid'.";
             break;
         }
@@ -169,4 +169,3 @@ class group_graded extends \core\event\base {
         }
     }
 }
-

@@ -24,11 +24,11 @@
  */
 
 require_once('../../../config.php');
-require_once($CFG->libdir.'/gradelib.php');
-require_once($CFG->dirroot.'/grade/lib.php');
-require_once($CFG->dirroot.'/grade/report/overview/lib.php');
-require_once($CFG->dirroot.'/grade/report/gradinggroups/locallib.php');
-require_once($CFG->dirroot.'/grade/report/gradinggroups/lib.php');
+require_once($CFG->libdir . '/gradelib.php');
+require_once($CFG->dirroot . '/grade/lib.php');
+require_once($CFG->dirroot . '/grade/report/overview/lib.php');
+require_once($CFG->dirroot . '/grade/report/gradinggroups/locallib.php');
+require_once($CFG->dirroot . '/grade/report/gradinggroups/lib.php');
 
 global $DB, $OUTPUT, $PAGE;
 
@@ -67,5 +67,5 @@ global $PAGE, $OUTPUT, $USER;
 $report = new grade_report_gradinggroups($id, $gpr, $context);
 $gradeitems = $report->get_gradeitems();
 print_grade_page_head($id, 'report', 'gradinggroups');
-view_grading($context, $id, $course, get_coursemodule_from_id('grouptool', $id), $gradeitems);
+gradereport_gradinggroups_view_grading($context, $id, $course, $gradeitems);
 echo $OUTPUT->footer();

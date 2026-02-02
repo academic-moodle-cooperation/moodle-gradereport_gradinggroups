@@ -49,9 +49,9 @@ define('GRADINGGROUPS_FILTER_ALL', 0);
  * @throws required_capability_exception
  */
 function gradereport_gradinggroups_view_grading(
-    context_course $context,
-    int $id,
-    course|stdClass $course,
+    context_course        $context,
+    int                   $id,
+    course|stdClass       $course,
     grade_item|array|null $gradeitems = null
 ): void {
     global $PAGE, $OUTPUT, $USER;
@@ -103,7 +103,7 @@ function gradereport_gradinggroups_view_grading(
             // Serialized data TODO: better PARAM_TYPE?
             $selected = optional_param('selected', null, PARAM_RAW);
             if (!empty($selected)) {
-                $selected = json_decode($selected,true);
+                $selected = json_decode($selected, true);
             }
         } else {
             if ($refreshtable) {
@@ -121,11 +121,11 @@ function gradereport_gradinggroups_view_grading(
         if ($step == 2) {
             $source = optional_param('source', null, PARAM_RAW);
             if (!empty($source)) {
-                $source = json_decode($source,true);
+                $source = json_decode($source, true);
             }
             $selected = optional_param('selected', null, PARAM_RAW);
             if (!empty($selected)) {
-                $selected = json_decode($selected,true);
+                $selected = json_decode($selected, true);
             }
         } else {
             $source = optional_param_array('source', [], PARAM_INT);
@@ -198,16 +198,16 @@ function gradereport_gradinggroups_view_grading(
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
+                            $continue,
+                            $cancel
+                        );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
+                            $continue,
+                            $cancel
+                        );
                 }
             } else {
                 $boxcontent = $OUTPUT->notification(
@@ -266,16 +266,16 @@ function gradereport_gradinggroups_view_grading(
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
+                            $continue,
+                            $cancel
+                        );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
+                            $continue,
+                            $cancel
+                        );
                 }
             } else {
                 if (empty($selected)) {
@@ -316,16 +316,16 @@ function gradereport_gradinggroups_view_grading(
         );
         if ($error) {
             $boxcontent = $OUTPUT->notification(
-                get_string('copy_grades_errors', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_ERROR
-            ) . $info;
+                    get_string('copy_grades_errors', 'gradereport_gradinggroups'),
+                    \core\output\notification::NOTIFY_ERROR
+                ) . $info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
         } else {
             $boxcontent = $OUTPUT->notification(
-                get_string('copy_grades_success', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_SUCCESS
-            ) . $info;
+                    get_string('copy_grades_success', 'gradereport_gradinggroups'),
+                    \core\output\notification::NOTIFY_SUCCESS
+                ) . $info;
             echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
             unset($boxcontent);
         }
@@ -791,14 +791,14 @@ function gradereport_gradinggroups_confirm($message, $continue, $cancel = null) 
  * @throws required_capability_exception
  */
 function gradereport_gradinggroups_get_grading_table(
-    int $activity,
-    bool|null $mygroupsonly,
-    bool|null $incompleteonly,
-    int $filter,
-    array|null $selected,
+    int                                            $activity,
+    bool|null                                      $mygroupsonly,
+    bool|null                                      $incompleteonly,
+    int                                            $filter,
+    array|null                                     $selected,
     course_context|context_course|context|stdClass $context,
-    course|stdClass $course,
-    array $missingsource = []
+    course|stdClass                                $course,
+    array                                          $missingsource = []
 ): string {
     global $OUTPUT, $USER, $PAGE;
 
@@ -1101,9 +1101,9 @@ function gradereport_gradinggroups_get_grading_table(
             ), 'generalbox centered');
         } else if ($filter == GRADINGGROUPS_FILTER_NONCONFLICTING) {
             return $OUTPUT->box($OUTPUT->notification(
-                get_string('no_conflictfree_to_display', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_ERROR
-            ), 'centered') .
+                    get_string('no_conflictfree_to_display', 'gradereport_gradinggroups'),
+                    \core\output\notification::NOTIFY_ERROR
+                ), 'centered') .
                 gradereport_gradinggroups_get_grading_table(
                     $activity,
                     $mygroupsonly,
@@ -1116,9 +1116,9 @@ function gradereport_gradinggroups_get_grading_table(
                 );
         } else {
             return $OUTPUT->box($OUTPUT->notification(
-                get_string('no_groupmembers_to_display', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_ERROR
-            ), 'centered') .
+                    get_string('no_groupmembers_to_display', 'gradereport_gradinggroups'),
+                    \core\output\notification::NOTIFY_ERROR
+                ), 'centered') .
                 gradereport_gradinggroups_get_grading_table(
                     $activity,
                     $mygroupsonly,

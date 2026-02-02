@@ -103,7 +103,7 @@ function gradereport_gradinggroups_view_grading(
             // Serialized data TODO: better PARAM_TYPE?
             $selected = optional_param('selected', null, PARAM_RAW);
             if (!empty($selected)) {
-                $selected = unserialize($selected);
+                $selected = json_decode($selected,true);
             }
         } else {
             if ($refreshtable) {
@@ -121,11 +121,11 @@ function gradereport_gradinggroups_view_grading(
         if ($step == 2) {
             $source = optional_param('source', null, PARAM_RAW);
             if (!empty($source)) {
-                $source = unserialize($source);
+                $source = json_decode($source,true);
             }
             $selected = optional_param('selected', null, PARAM_RAW);
             if (!empty($selected)) {
-                $selected = unserialize($selected);
+                $selected = json_decode($selected,true);
             }
         } else {
             $source = optional_param_array('source', [], PARAM_INT);
@@ -181,8 +181,8 @@ function gradereport_gradinggroups_view_grading(
                     'activity' => $activity,
                     'mygroups_only' => $mygroupsonly,
                     'overwrite' => $overwrite,
-                    'selected' => serialize($selected),
-                    'source' => serialize($source),
+                    'selected' => json_encode($selected),
+                    'source' => json_encode($source),
                 ]);
                 $cancel = new moodle_url("index.php?id=" . $id, [
                     'tab' => 'grading',
@@ -192,8 +192,8 @@ function gradereport_gradinggroups_view_grading(
                     'activity' => $activity,
                     'mygroups_only' => $mygroupsonly,
                     'overwrite' => $overwrite,
-                    'selected' => serialize($selected),
-                    'source' => serialize($source),
+                    'selected' => json_encode($selected),
+                    'source' => json_encode($source),
                 ]);
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
@@ -249,8 +249,8 @@ function gradereport_gradinggroups_view_grading(
                     'mygroups_only' => $mygroupsonly,
                     'overwrite' => $overwrite,
                     'step' => '2',
-                    'selected' => serialize($selected),
-                    'source' => serialize($source),
+                    'selected' => json_encode($selected),
+                    'source' => json_encode($source),
                 ]);
                 $cancel = new moodle_url("index.php?id=" . $id, [
                     'tab' => 'grading',
@@ -260,8 +260,8 @@ function gradereport_gradinggroups_view_grading(
                     'mygroups_only' => $mygroupsonly,
                     'overwrite' => $overwrite,
                     'step' => '2',
-                    'selected' => serialize($selected),
-                    'source' => serialize($source),
+                    'selected' => json_encode($selected),
+                    'source' => json_encode($source),
                 ]);
                 $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
                 if ($overwrite) {
@@ -561,6 +561,8 @@ function gradereport_gradinggroups_copy_grades(
             }
         }
     } else {
+        print_r($source);
+        die();
         $sourceuser = $DB->get_record('user', ['id' => $source]);
         $targetusers = $DB->get_records_list('user', 'id', $selected);
         $sourcegrade = grade_grade::fetch_users_grades($gradeitem, [$source], false);

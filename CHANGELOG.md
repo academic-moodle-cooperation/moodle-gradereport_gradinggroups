@@ -1,6 +1,18 @@
 
 CHANGELOG
 =========
+
+5.1.0 (2026-02-02)
+------------------
+* [BUG] #8454 Fix missing langstring in eventlist
+* [BUG] #8482 Fix missing dependency definition in version.php
+* [BUG] #8483 Fix namespace collisions
+* [BUG] #8484 Fix deprecated function usage
+* [LANGSTRING] #8485 Fix missing language strings
+* [BUG] #8486 Replace unserialize() with a secure alternative
+* [BUG] #8487 Fix non-existent database table definition in event
+* Update for Moodle 5.1
+
 5.0.0 (2025-07-16)
 ------------------
 * [BUG] #8131 Fix If you call "groupgrade" in course "Gradings" an error message appears instead of the group listing

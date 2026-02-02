@@ -561,8 +561,6 @@ function gradereport_gradinggroups_copy_grades(
             }
         }
     } else {
-        print_r($source);
-        die();
         $sourceuser = $DB->get_record('user', ['id' => $source]);
         $targetusers = $DB->get_records_list('user', 'id', $selected);
         $sourcegrade = grade_grade::fetch_users_grades($gradeitem, [$source], false);

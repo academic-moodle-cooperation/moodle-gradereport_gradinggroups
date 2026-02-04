@@ -35,7 +35,7 @@ global $DB, $OUTPUT, $PAGE;
 $id = required_param('id', PARAM_INT);   // Course.
 $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 if (!$course = $DB->get_record('course', ['id' => $id])) {
-    throw new moodle_exception('nocourseid');
+    throw new moodle_exception('invalidcourseid');
 }
 require_login($course);
 $context = context_course::instance($course->id);

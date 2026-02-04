@@ -112,7 +112,7 @@ class group_graded extends \core\event\base {
      * @throws \coding_exception
      */
     public static function get_name() {
-        return get_string('eventgroupgraded', 'graderreport_gradinggroups');
+        return get_string('eventgroupgraded', 'gradereport_gradinggroups');
     }
 
     /**

@@ -39,6 +39,7 @@ $string['copy_grades_success'] = 'Die folgenden Bewertungen wurden erfolgreich a
 $string['copy_refgrades_feedback'] = 'Übertrage Referenzberwertungen und -kommentar der gewählten Gruppen auf andere Gruppenmitglieder';
 $string['copygrade'] = 'Bewertung kopieren';
 $string['coursesum'] = 'Summe für den Kurs';
+$string['eventgroupgraded'] = 'Gruppe bewertet';
 $string['filters_legend'] = 'Filtere Daten';
 $string['grade'] = 'Note';
 $string['gradereport_gradinggroups'] = 'Gruppenbewertung';

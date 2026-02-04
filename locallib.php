@@ -592,7 +592,7 @@ function gradereport_gradinggroups_copy_grades(
             if ($currentgrade->id == $sourcegrade->id) {
                 continue;
             }
-            if (!$overwrite && ($currentgrade->rawgrade != null)) {
+            if (!$overwrite && ($currentgrade->finalgrade != null)) {
                 if ($previewonly) {
                     $rowcells = [];
                     if (empty($grouprows)) {

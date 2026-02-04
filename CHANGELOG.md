@@ -8,6 +8,7 @@ CHANGELOG
 * [BUG] #8482 Fix missing dependency definition in version.php
 * [BUG] #8483 Fix namespace collisions
 * [BUG] #8484 Fix deprecated function usage
+* [BUG] #8604 Fix overwriting only when activated 
 * [LANGSTRING] #8485 Fix missing language strings
 * [BUG] #8486 Replace unserialize() with a secure alternative
 * [BUG] #8487 Fix non-existent database table definition in event

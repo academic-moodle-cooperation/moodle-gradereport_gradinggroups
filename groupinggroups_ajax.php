@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+
 /**
  * Sends groups belonging to a grouping to JS updating select-box-content
  *
@@ -24,7 +25,7 @@
  */
 
 define('AJAX_SCRIPT', true);
-require_once(dirname(__FILE__) . '/../../config.php');
+require_once('../../../config.php');
 require_once($CFG->libdir . '/grouplib.php');
 
 $groupingid = required_param('groupingid', PARAM_INT);

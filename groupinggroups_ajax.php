@@ -1,5 +1,5 @@
 <?php
-// This file is part of mod_grouptool for Moodle - http://moodle.org/
+// This file is part of gradereport_gradinggroups for Moodle - http://moodle.org/
 //
 // It is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 /**
  * Sends groups belonging to a grouping to JS updating select-box-content
  *
- * @package   mod_grouptool
+ * @package   gradereport_gradinggroups
  * @author    Philipp Hager
  * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -52,7 +52,7 @@ $PAGE->set_url('/grade/gradinggroups/groupinggroups_ajax.php', [
 // Get groupings groups.
 $nonconf = new stdClass();
 $nonconf->id = -1;
-$nonconf->name = get_string('nonconflicting', 'grouptool');
+$nonconf->name = get_string('nonconflicting', 'gradinggroups');
 $all = new stdClass();
 $all->id = 0;
 $all->name = get_string('all');

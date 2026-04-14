@@ -1,4 +1,4 @@
-// This file is part of mod_grouptool for Moodle - http://moodle.org/
+// This file is part of gradereport_gradinggroups for Moodle - http://moodle.org/
 //
 // It is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
     Grading.prototype.updateGroups = function(e) {
         var groupingid = 0;
 
-        log.info("Update groups!", "grouptool");
+        log.info("Update groups!", "gradinggroups");
 
         groupingid = $(e.data.SELECTORS.GROUPINGSELECT).val();
 
@@ -68,7 +68,7 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
             },
             dataType: 'json',
             beforeSend: function() {
-                log.info("Request groups for grouping " + groupingid, "grouptool");
+                log.info("Request groups for grouping " + groupingid, "gradinggroups");
             },
             success: function(data) {
 
@@ -87,11 +87,11 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
                     $(e.data.SELECTORS.GROUPSELECT).html(options);
                     $(e.data.SELECTORS.GROUPSELECT).val(oldsel);
                 } else {
-                    log.error(data.error, "grouptool");
+                    log.error(data.error, "gradinggroups");
                 }
             },
             error: function(jqXHR, error) {
-                log.error(error, "grouptool");
+                log.error(error, "gradinggroups");
             }
         };
 

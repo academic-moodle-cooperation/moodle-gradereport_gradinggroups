@@ -704,8 +704,6 @@ function gradereport_gradinggroups_copy_grades(
             $propertiestocopy = [
                 'rawgrade',
                 'finalgrade',
-                'feedback',
-                'feedbackformat',
             ];
 
             foreach ($targetgrades as $currentgrade) {
@@ -780,7 +778,7 @@ function gradereport_gradinggroups_copy_grades(
                     'gradereport_gradinggroups/feedback',
                     $details
                 );
-
+                $currentgrade->feedbackformat = FORMAT_HTML;
                 $currentgrade->usermodified = $USER->id;
 
                 if ($previewonly) {
@@ -983,8 +981,6 @@ function gradereport_gradinggroups_copy_grades(
         $propertiestocopy = [
             'rawgrade',
             'finalgrade',
-            'feedback',
-            'feedbackformat',
         ];
 
         $nameinfo = '';
@@ -1074,12 +1070,8 @@ function gradereport_gradinggroups_copy_grades(
                     ? strip_tags($sourcegrade->feedback)
                     : '',
             ];
-
-            $currentgrade->feedback = $OUTPUT->render_from_template(
-                'gradereport_gradinggroups/feedback',
-                $details
-            );
-
+            $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
+            $currentgrade->feedbackformat = FORMAT_HTML;
             $currentgrade->usermodified = $USER->id;
 
             if ($previewonly) {

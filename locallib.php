@@ -450,7 +450,7 @@ function gradereport_gradinggroups_copy_grades(
                 round($gradeitem->grademax, 2);
             $groupmembers = groups_get_members($group);
             $targetgrades = grade_grade::fetch_users_grades($gradeitem, array_keys($groupmembers), true);
-            $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
+            $propertiestocopy = ['rawgrade', 'finalgrade'];
             foreach ($targetgrades as $currentgrade) {
                 if ($currentgrade->id == $sourcegrade->id) {
                     continue;
@@ -488,6 +488,7 @@ function gradereport_gradinggroups_copy_grades(
                     'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
                 ];
                 $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
+                $currentgrade->feedbackformat = FORMAT_HTML;
                 $currentgrade->usermodified = $USER->id;
                 if ($previewonly) {
                     $rowcells = [];
@@ -572,7 +573,7 @@ function gradereport_gradinggroups_copy_grades(
         $formattedgrade = ($sourcegrade->finalgrade != null) ? round($sourcegrade->finalgrade, 2) : 0 . ' / ' .
             round($gradeitem->grademax, 2);
         $targetgrades = grade_grade::fetch_users_grades($gradeitem, $selected, true);
-        $propertiestocopy = ['rawgrade', 'finalgrade', 'feedback', 'feedbackformat'];
+        $propertiestocopy = ['rawgrade', 'finalgrade'];
         $nameinfo = "";
         $grouprows = [];
         if ($previewonly) {
@@ -627,6 +628,7 @@ function gradereport_gradinggroups_copy_grades(
                 'feedback' => ($sourcegrade->feedback) ? strip_tags(($sourcegrade->feedback)) : "",
             ];
             $currentgrade->feedback = $OUTPUT->render_from_template('gradereport_gradinggroups/feedback', $details);
+            $currentgrade->feedbackformat = FORMAT_HTML;
             $currentgrade->usermodified = $USER->id;
             if ($previewonly) {
                 $rowcells = [];

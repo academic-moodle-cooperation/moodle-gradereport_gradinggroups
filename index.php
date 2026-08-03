@@ -65,6 +65,10 @@ $USER->grade_last_report[$course->id] = 'gradinggroups';
 $access = true;
 global $PAGE, $OUTPUT, $USER;
 $report = new grade_report_gradinggroups($id, $gpr, $context);
+$event = \gradereport_gradinggroups\event\grade_report_viewed::create([
+    'context' => $context,
+]);
+$event->trigger();
 $gradeitems = $report->get_gradeitems();
 print_grade_page_head($id, 'report', 'gradinggroups');
 gradereport_gradinggroups_view_grading($context, $id, $course, $gradeitems);

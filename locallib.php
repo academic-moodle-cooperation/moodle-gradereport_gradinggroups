@@ -119,6 +119,13 @@ function gradereport_gradinggroups_view_grading(
         PARAM_INT
     );
 
+    // Each option only applies to the filter modes in which it is available.
+    if ($filter > GRADINGGROUPS_FILTER_ALL) {
+        $incompleteonly = 0;
+    } else if ($cangradeall) {
+        $mygroupsonly = 0;
+    }
+
     // Steps: 0 = show, 1 = confirm, 2 = perform action.
     $step = optional_param('step', 0, PARAM_INT);
 
@@ -1895,9 +1902,30 @@ function gradereport_gradinggroups_get_grading_table(
 
         if ($filter === GRADINGGROUPS_FILTER_NONCONFLICTING) {
             return $OUTPUT->box(
+                    $OUTPUT->notification(
+                        get_string(
+                            'no_conflictfree_to_display',
+                            'gradereport_gradinggroups'
+                        ),
+                        \core\output\notification::NOTIFY_ERROR
+                    ),
+                    'centered'
+                ) . gradereport_gradinggroups_get_grading_table(
+                    $activity,
+                    $mygroupsonly,
+                    $incompleteonly,
+                    GRADINGGROUPS_FILTER_ALL,
+                    $selected,
+                    $context,
+                    $course,
+                    $missingsource
+                );
+        }
+
+        return $OUTPUT->box(
                 $OUTPUT->notification(
                     get_string(
-                        'no_conflictfree_to_display',
+                        'no_groupmembers_to_display',
                         'gradereport_gradinggroups'
                     ),
                     \core\output\notification::NOTIFY_ERROR
@@ -1913,27 +1941,6 @@ function gradereport_gradinggroups_get_grading_table(
                 $course,
                 $missingsource
             );
-        }
-
-        return $OUTPUT->box(
-            $OUTPUT->notification(
-                get_string(
-                    'no_groupmembers_to_display',
-                    'gradereport_gradinggroups'
-                ),
-                \core\output\notification::NOTIFY_ERROR
-            ),
-            'centered'
-        ) . gradereport_gradinggroups_get_grading_table(
-            $activity,
-            $mygroupsonly,
-            $incompleteonly,
-            GRADINGGROUPS_FILTER_ALL,
-            $selected,
-            $context,
-            $course,
-            $missingsource
-        );
     }
 
     $table->colclasses = $tablecolumns;

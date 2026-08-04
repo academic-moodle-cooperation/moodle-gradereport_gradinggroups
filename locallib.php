@@ -288,29 +288,29 @@ function gradereport_gradinggroups_view_grading(
                 );
 
                 $preview = $OUTPUT->heading(
-                        get_string('preview'),
-                        2,
-                        'centered'
-                    ) . $preview;
+                    get_string('preview'),
+                    2,
+                    'centered'
+                ) . $preview;
 
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                            get_string(
-                                'copy_grades_overwrite_confirm',
-                                'gradereport_gradinggroups'
-                            ),
-                            $continue,
-                            $cancel
-                        );
+                        get_string(
+                            'copy_grades_overwrite_confirm',
+                            'gradereport_gradinggroups'
+                        ),
+                        $continue,
+                        $cancel
+                    );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                            get_string(
-                                'copy_grades_confirm',
-                                'gradereport_gradinggroups'
-                            ),
-                            $continue,
-                            $cancel
-                        );
+                        get_string(
+                            'copy_grades_confirm',
+                            'gradereport_gradinggroups'
+                        ),
+                        $continue,
+                        $cancel
+                    );
                 }
             } else {
                 $boxcontent = $OUTPUT->notification(
@@ -382,29 +382,29 @@ function gradereport_gradinggroups_view_grading(
                 );
 
                 $preview = $OUTPUT->heading(
-                        get_string('preview'),
-                        2,
-                        'centered'
-                    ) . $preview;
+                    get_string('preview'),
+                    2,
+                    'centered'
+                ) . $preview;
 
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                            get_string(
-                                'copy_grades_overwrite_confirm',
-                                'gradereport_gradinggroups'
-                            ),
-                            $continue,
-                            $cancel
-                        );
+                        get_string(
+                            'copy_grades_overwrite_confirm',
+                            'gradereport_gradinggroups'
+                        ),
+                        $continue,
+                        $cancel
+                    );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                            get_string(
-                                'copy_grades_confirm',
-                                'gradereport_gradinggroups'
-                            ),
-                            $continue,
-                            $cancel
-                        );
+                        get_string(
+                            'copy_grades_confirm',
+                            'gradereport_gradinggroups'
+                        ),
+                        $continue,
+                        $cancel
+                    );
                 }
             } else {
                 if (empty($selected)) {
@@ -456,12 +456,12 @@ function gradereport_gradinggroups_view_grading(
 
         if ($error) {
             $boxcontent = $OUTPUT->notification(
-                    get_string(
-                        'copy_grades_errors',
-                        'gradereport_gradinggroups'
-                    ),
-                    \core\output\notification::NOTIFY_ERROR
-                ) . $info;
+                get_string(
+                    'copy_grades_errors',
+                    'gradereport_gradinggroups'
+                ),
+                \core\output\notification::NOTIFY_ERROR
+            ) . $info;
 
             echo $OUTPUT->box(
                 $boxcontent,
@@ -470,12 +470,12 @@ function gradereport_gradinggroups_view_grading(
             unset($boxcontent);
         } else {
             $boxcontent = $OUTPUT->notification(
-                    get_string(
-                        'copy_grades_success',
-                        'gradereport_gradinggroups'
-                    ),
-                    \core\output\notification::NOTIFY_SUCCESS
-                ) . $info;
+                get_string(
+                    'copy_grades_success',
+                    'gradereport_gradinggroups'
+                ),
+                \core\output\notification::NOTIFY_SUCCESS
+            ) . $info;
 
             echo $OUTPUT->box(
                 $boxcontent,

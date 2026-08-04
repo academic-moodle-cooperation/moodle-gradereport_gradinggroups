@@ -86,7 +86,7 @@ class grading_form extends \moodleform {
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
 
         if ($gradeitems = $this->_customdata['gradeitems']) {
-            $grades = [];
+            $grades  = [];
             foreach ($gradeitems as $gradeitem) {
                 $grades[$gradeitem->gid] = $gradeitem->name;
             }

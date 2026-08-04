@@ -79,30 +79,6 @@ class grading_form extends \moodleform {
 
         $mform->addElement(
             'advcheckbox',
-            'mygroups_only',
-            null,
-            get_string('mygroups_only_label', 'gradereport_gradinggroups'),
-            ['group' => '1'],
-            [0, 1]
-        );
-        $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
-        if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
-            $mform->setConstant('mygroups_only', 1);
-            $mform->freeze('mygroups_only');
-        }
-
-        $mform->addElement(
-            'advcheckbox',
-            'incomplete_only',
-            null,
-            get_string('incomplete_only_label', 'gradereport_gradinggroups'),
-            ['group' => '1'],
-            [0, 1]
-        );
-        $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
-
-        $mform->addElement(
-            'advcheckbox',
             'overwrite',
             null,
             get_string('overwrite_label', 'gradereport_gradinggroups'),
@@ -124,8 +100,10 @@ class grading_form extends \moodleform {
             "0"  => get_string('all'),
         ];
         $groups = groups_get_all_groups($this->_customdata['course']->id, null, $this->_customdata['grouping'], 'g.id, g.name');
+        $groupids = [];
         foreach ($groups as $key => $group) {
             $membercount = $DB->count_records('groups_members', ['groupid' => $group->id]);
+            $groupids[] = $group->id;
             if ($membercount == 0) {
                 continue;
             }
@@ -134,6 +112,33 @@ class grading_form extends \moodleform {
         $mform->addElement('select', 'filter', get_string('grading_filter_select_title', 'gradereport_gradinggroups'), $options);
         $mform->addHelpButton('filter', 'grading_filter_select_title', 'gradereport_gradinggroups');
         $mform->setDefault('filter', $this->_customdata['filter']);
+
+        $mform->addElement(
+            'advcheckbox',
+            'incomplete_only',
+            null,
+            get_string('incomplete_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
+        $mform->addHelpButton('incomplete_only', 'incomplete_only', 'gradereport_gradinggroups');
+        $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
+        $mform->hideIf('incomplete_only', 'filter', 'in', $groupids);
+        $mform->addElement(
+            'advcheckbox',
+            'mygroups_only',
+            null,
+            get_string('mygroups_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
+        $mform->addHelpButton('mygroups_only', 'mygroups_only', 'gradereport_gradinggroups');
+        $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
+        $mform->hideIf('mygroups_only', 'filter', 'eq', -1);
+        if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
+            $mform->setConstant('mygroups_only', 1);
+            $mform->freeze('mygroups_only');
+        }
 
         $mform->addElement('submit', 'refresh_table', get_string('refresh_table_button', 'gradereport_gradinggroups'));
 

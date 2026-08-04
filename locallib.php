@@ -35,14 +35,13 @@ define('GRADINGGROUPS_FILTER_NONCONFLICTING', -1);
 define('GRADINGGROUPS_FILTER_ALL', 0);
 
 /**
- * View Grading
+ * View Grading.
  *
  * @param context_course $context Course context
- * @param int $id Course id
- * @param course|stdClass $course $course Course
- * @param grade_item|array|null $gradeitems
+ * @param int $id Course ID
+ * @param course|stdClass $course Course
+ * @param grade_item|array|null $gradeitems Grade items
  * @return void
- * @throws \core\exception\moodle_exception
  * @throws coding_exception
  * @throws dml_exception
  * @throws moodle_exception
@@ -56,42 +55,86 @@ function gradereport_gradinggroups_view_grading(
 ): void {
     global $PAGE, $OUTPUT, $USER;
 
-    if (
-        !has_capability('gradereport/gradinggroups:view', $context)
-        && !has_capability('gradereport/gradinggroups:view', $context)
-    ) {
-        throw new moodle_exception('nopermissions');
-    }
+    require_capability('gradereport/gradinggroups:view', $context);
+
+    $cangradeall = has_capability(
+        'gradereport/gradinggroups:grade',
+        $context
+    );
+    $cangradeown = has_capability(
+        'gradereport/gradinggroups:grade_own_submission',
+        $context
+    );
+    $cancopygrades = $cangradeall || $cangradeown;
 
     $refreshtable = optional_param('refresh_table', 0, PARAM_BOOL);
-    $activity = optional_param('activity', null, PARAM_INT); // This is the coursemodule-ID.
+    $activity = optional_param('activity', null, PARAM_INT);
+
     if ($activity === null) {
         foreach ($gradeitems as $gradeitem) {
             $activity = $gradeitem->gid;
             break;
         }
     }
-    // Show only groups with grades given by current user!
+
+    // Show only groups with grades given by the current user.
     $mygroupsonly = optional_param('mygroups_only', null, PARAM_BOOL);
 
-    if (!has_capability('gradereport/gradinggroups:grade', $context)) {
+    if ($cangradeall) {
+        // Users with the general grade capability may change the filter.
+        if ($mygroupsonly !== null) {
+            set_user_preference(
+                'gradereport_gradinggroups_mygroups_only',
+                $mygroupsonly,
+                $USER->id
+            );
+        }
+
+        $mygroupsonly = get_user_preferences(
+            'gradereport_gradinggroups_mygroups_only',
+            0,
+            $USER->id
+        );
+    } else if ($cangradeown) {
+        // The filter is mandatory for users who may only copy their own grades.
         $mygroupsonly = 1;
+    } else {
+        // Users without grading capabilities may still view the report.
+        $mygroupsonly = 0;
     }
 
-    if ($mygroupsonly != null) {
-        set_user_preference('gradereport_gradinggroups_mygroups_only', $mygroupsonly, $USER->id);
-    }
-
-    // Show only groups with missing grades (groups with at least 1 not-graded member)!
-    $incompleteonly = optional_param('incomplete_only', 0, PARAM_BOOL);
+    // Show only groups containing at least one member without a grade.
+    $incompleteonly = optional_param(
+        'incomplete_only',
+        0,
+        PARAM_BOOL
+    );
 
     $overwrite = optional_param('overwrite', 0, PARAM_BOOL);
 
-    // Here -1 = nonconflicting, 0 = all     or groupid for certain group!
-    $filter = optional_param('filter', GRADINGGROUPS_FILTER_NONCONFLICTING, PARAM_INT);
-    // Steps: 0 = show, 1 = confirm, 2 = action!
+    // -1 = nonconflicting, 0 = all, positive value = a particular group.
+    $filter = optional_param(
+        'filter',
+        GRADINGGROUPS_FILTER_NONCONFLICTING,
+        PARAM_INT
+    );
+
+    // Each option only applies to the filter modes in which it is available.
+    if ($filter > GRADINGGROUPS_FILTER_ALL) {
+        $incompleteonly = 0;
+    } else if ($cangradeall) {
+        $mygroupsonly = 0;
+    }
+
+    // Steps: 0 = show, 1 = confirm, 2 = perform action.
     $step = optional_param('step', 0, PARAM_INT);
-    if ($refreshtable) { // If it was just a refresh, reset step!
+
+    if ($refreshtable) {
+        $step = 0;
+    }
+
+    // Prevent manipulated requests from starting the copy workflow.
+    if (!$cancopygrades) {
         $step = 0;
     }
 
@@ -100,61 +143,98 @@ function gradereport_gradinggroups_view_grading(
     if ($filter > 0) {
         if ($step == 2) {
             $source = optional_param('source', null, PARAM_INT);
-            // Serialized data TODO: better PARAM_TYPE?
-            $selected = optional_param('selected', null, PARAM_RAW);
+
+            $selected = optional_param(
+                'selected',
+                null,
+                PARAM_RAW
+            );
+
             if (!empty($selected)) {
                 $selected = json_decode($selected, true);
             }
         } else {
             if ($refreshtable) {
-                // Otherwise we get problems here, if we refresh and change from multiple groups to a single group!
+                // Avoid retaining a source when switching to a single group.
                 $source = null;
             } else {
-                $source = optional_param('source', null, PARAM_INT);
+                $source = optional_param(
+                    'source',
+                    null,
+                    PARAM_INT
+                );
             }
-            $selected = optional_param_array('selected', null, PARAM_INT);
+
+            $selected = optional_param_array(
+                'selected',
+                null,
+                PARAM_INT
+            );
+
             if (!empty($source) && !$refreshtable) {
                 $step = 1;
             }
         }
     } else {
         if ($step == 2) {
-            $source = optional_param('source', null, PARAM_RAW);
+            $source = optional_param(
+                'source',
+                null,
+                PARAM_RAW
+            );
+
             if (!empty($source)) {
                 $source = json_decode($source, true);
             }
-            $selected = optional_param('selected', null, PARAM_RAW);
+
+            $selected = optional_param(
+                'selected',
+                null,
+                PARAM_RAW
+            );
+
             if (!empty($selected)) {
                 $selected = json_decode($selected, true);
             }
         } else {
-            $source = optional_param_array('source', [], PARAM_INT);
-            $selected = optional_param_array('selected', [], PARAM_INT);
-            $copygroups = optional_param('copygrades', 0, PARAM_BOOL);
+            $source = optional_param_array(
+                'source',
+                [],
+                PARAM_INT
+            );
+            $selected = optional_param_array(
+                'selected',
+                [],
+                PARAM_INT
+            );
+            $copygroups = optional_param(
+                'copygrades',
+                0,
+                PARAM_BOOL
+            );
+
             if ($copygroups && !$refreshtable) {
                 $step = 1;
             }
         }
     }
+
     $confirm = optional_param('confirm', 0, PARAM_BOOL);
-    if (($step == 2) && !$confirm) {
+
+    if ($step == 2 && !$confirm) {
         $step = 0;
     }
 
-    // Reset process if some evil hacker tried to do smth!
+    // Reset the workflow for invalid or manipulated requests.
     if (!$confirm && (!data_submitted() || !confirm_sesskey())) {
         $step = 0;
     }
 
-    if (!empty($mygroupsonly)) {
-        $mygroupsonly = get_user_preferences('gradereport_gradinggroups_mygroups_only', 1, $USER->id);
-    }
-
     $missingsource = [];
 
-    if ($step == 1) {    // Show confirm message!
+    if ($step == 1) {
         if ($filter > 0) {
-            // Single group mode!
+            // Single-group mode.
             if (is_array($selected) && in_array($source, $selected)) {
                 foreach ($selected as $key => $cmp) {
                     if ($cmp == $source) {
@@ -162,6 +242,7 @@ function gradereport_gradinggroups_view_grading(
                     }
                 }
             }
+
             if (!empty($selected)) {
                 [, $preview] = gradereport_gradinggroups_copy_grades(
                     $activity,
@@ -173,64 +254,90 @@ function gradereport_gradinggroups_view_grading(
                     $overwrite,
                     true
                 );
-                $continue = new moodle_url("index.php?id=" . $id, [
-                    'tab' => 'grading',
-                    'confirm' => 'true',
-                    'sesskey' => sesskey(),
-                    'step' => '2',
-                    'activity' => $activity,
-                    'mygroups_only' => $mygroupsonly,
-                    'overwrite' => $overwrite,
-                    'selected' => json_encode($selected),
-                    'source' => json_encode($source),
-                ]);
-                $cancel = new moodle_url("index.php?id=" . $id, [
-                    'tab' => 'grading',
-                    'confirm' => 'false',
-                    'sesskey' => sesskey(),
-                    'step' => '2',
-                    'activity' => $activity,
-                    'mygroups_only' => $mygroupsonly,
-                    'overwrite' => $overwrite,
-                    'selected' => json_encode($selected),
-                    'source' => json_encode($source),
-                ]);
-                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
+
+                $continue = new moodle_url(
+                    'index.php',
+                    [
+                        'id' => $id,
+                        'tab' => 'grading',
+                        'confirm' => 1,
+                        'sesskey' => sesskey(),
+                        'step' => 2,
+                        'activity' => $activity,
+                        'mygroups_only' => $mygroupsonly,
+                        'overwrite' => $overwrite,
+                        'selected' => json_encode($selected),
+                        'source' => json_encode($source),
+                    ]
+                );
+
+                $cancel = new moodle_url(
+                    'index.php',
+                    [
+                        'id' => $id,
+                        'tab' => 'grading',
+                        'confirm' => 0,
+                        'sesskey' => sesskey(),
+                        'step' => 2,
+                        'activity' => $activity,
+                        'mygroups_only' => $mygroupsonly,
+                        'overwrite' => $overwrite,
+                        'selected' => json_encode($selected),
+                        'source' => json_encode($source),
+                    ]
+                );
+
+                $preview = $OUTPUT->heading(
+                        get_string('preview'),
+                        2,
+                        'centered'
+                    ) . $preview;
+
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string(
+                                'copy_grades_overwrite_confirm',
+                                'gradereport_gradinggroups'
+                            ),
+                            $continue,
+                            $cancel
+                        );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string(
+                                'copy_grades_confirm',
+                                'gradereport_gradinggroups'
+                            ),
+                            $continue,
+                            $cancel
+                        );
                 }
             } else {
                 $boxcontent = $OUTPUT->notification(
-                    get_string('no_target_selected', 'gradereport_gradinggroups'),
+                    get_string(
+                        'no_target_selected',
+                        'gradereport_gradinggroups'
+                    ),
                     \core\output\notification::NOTIFY_ERROR
                 );
+
                 echo $OUTPUT->box($boxcontent, 'generalbox');
                 unset($boxcontent);
+
                 $step = 0;
             }
         } else if (
             $filter == GRADINGGROUPS_FILTER_ALL
             || $filter == GRADINGGROUPS_FILTER_NONCONFLICTING
         ) {
-            // All or nonconflicting mode?
-            foreach ($selected as $key => $grp) {
-                // If no grade is choosen add this group to missing-source-list!
+            // All-groups or nonconflicting-groups mode.
+            foreach ($selected as $grp) {
                 if (empty($source[$grp])) {
                     $missingsource[] = $grp;
                 }
             }
 
-            if (!empty($selected) && (count($missingsource) == 0)) {
+            if (!empty($selected) && count($missingsource) == 0) {
                 [, $preview] = gradereport_gradinggroups_copy_grades(
                     $activity,
                     $mygroupsonly,
@@ -241,59 +348,92 @@ function gradereport_gradinggroups_view_grading(
                     $overwrite,
                     true
                 );
-                $continue = new moodle_url("index.php?id=" . $id, [
-                    'tab' => 'grading',
-                    'confirm' => 'true',
-                    'sesskey' => sesskey(),
-                    'activity' => $activity,
-                    'mygroups_only' => $mygroupsonly,
-                    'overwrite' => $overwrite,
-                    'step' => '2',
-                    'selected' => json_encode($selected),
-                    'source' => json_encode($source),
-                ]);
-                $cancel = new moodle_url("index.php?id=" . $id, [
-                    'tab' => 'grading',
-                    'confirm' => 'false',
-                    'sesskey' => sesskey(),
-                    'activity' => $activity,
-                    'mygroups_only' => $mygroupsonly,
-                    'overwrite' => $overwrite,
-                    'step' => '2',
-                    'selected' => json_encode($selected),
-                    'source' => json_encode($source),
-                ]);
-                $preview = $OUTPUT->heading(get_string('preview'), 2, 'centered') . $preview;
+
+                $continue = new moodle_url(
+                    'index.php',
+                    [
+                        'id' => $id,
+                        'tab' => 'grading',
+                        'confirm' => 1,
+                        'sesskey' => sesskey(),
+                        'activity' => $activity,
+                        'mygroups_only' => $mygroupsonly,
+                        'overwrite' => $overwrite,
+                        'step' => 2,
+                        'selected' => json_encode($selected),
+                        'source' => json_encode($source),
+                    ]
+                );
+
+                $cancel = new moodle_url(
+                    'index.php',
+                    [
+                        'id' => $id,
+                        'tab' => 'grading',
+                        'confirm' => 0,
+                        'sesskey' => sesskey(),
+                        'activity' => $activity,
+                        'mygroups_only' => $mygroupsonly,
+                        'overwrite' => $overwrite,
+                        'step' => 2,
+                        'selected' => json_encode($selected),
+                        'source' => json_encode($source),
+                    ]
+                );
+
+                $preview = $OUTPUT->heading(
+                        get_string('preview'),
+                        2,
+                        'centered'
+                    ) . $preview;
+
                 if ($overwrite) {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_overwrite_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string(
+                                'copy_grades_overwrite_confirm',
+                                'gradereport_gradinggroups'
+                            ),
+                            $continue,
+                            $cancel
+                        );
                 } else {
                     echo $preview . gradereport_gradinggroups_confirm(
-                        get_string('copy_grades_confirm', 'gradereport_gradinggroups'),
-                        $continue,
-                        $cancel
-                    );
+                            get_string(
+                                'copy_grades_confirm',
+                                'gradereport_gradinggroups'
+                            ),
+                            $continue,
+                            $cancel
+                        );
                 }
             } else {
                 if (empty($selected)) {
                     $boxcontent = $OUTPUT->notification(
-                        get_string('no_target_selected', 'gradereport_gradinggroups'),
+                        get_string(
+                            'no_target_selected',
+                            'gradereport_gradinggroups'
+                        ),
                         \core\output\notification::NOTIFY_ERROR
                     );
+
                     echo $OUTPUT->box($boxcontent, 'generalbox');
                     unset($boxcontent);
+
                     $step = 0;
                 }
+
                 if (count($missingsource) != 0) {
                     $boxcontent = $OUTPUT->notification(
-                        get_string('sources_missing', 'gradereport_gradinggroups'),
+                        get_string(
+                            'sources_missing',
+                            'gradereport_gradinggroups'
+                        ),
                         \core\output\notification::NOTIFY_ERROR
                     );
+
                     echo $OUTPUT->box($boxcontent, 'generalbox');
                     unset($boxcontent);
+
                     $step = 0;
                 }
             }
@@ -302,8 +442,7 @@ function gradereport_gradinggroups_view_grading(
         }
     }
 
-    if ($step == 2) {    // Do action and continue with showing the form!
-        // if there was an error?
+    if ($step == 2) {
         [$error, $info] = gradereport_gradinggroups_copy_grades(
             $activity,
             $mygroupsonly,
@@ -314,25 +453,40 @@ function gradereport_gradinggroups_view_grading(
             $overwrite,
             false
         );
+
         if ($error) {
             $boxcontent = $OUTPUT->notification(
-                get_string('copy_grades_errors', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_ERROR
-            ) . $info;
-            echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
+                    get_string(
+                        'copy_grades_errors',
+                        'gradereport_gradinggroups'
+                    ),
+                    \core\output\notification::NOTIFY_ERROR
+                ) . $info;
+
+            echo $OUTPUT->box(
+                $boxcontent,
+                'generalbox tumargin'
+            );
             unset($boxcontent);
         } else {
             $boxcontent = $OUTPUT->notification(
-                get_string('copy_grades_success', 'gradereport_gradinggroups'),
-                \core\output\notification::NOTIFY_SUCCESS
-            ) . $info;
-            echo $OUTPUT->box($boxcontent, 'generalbox tumargin');
+                    get_string(
+                        'copy_grades_success',
+                        'gradereport_gradinggroups'
+                    ),
+                    \core\output\notification::NOTIFY_SUCCESS
+                ) . $info;
+
+            echo $OUTPUT->box(
+                $boxcontent,
+                'generalbox tumargin'
+            );
             unset($boxcontent);
         }
     }
 
-    if ($step != 1 || count($missingsource)) {    // Show form if step is either 0 or 2!
-        // Prepare form content!
+    // Show the form unless the confirmation page is currently displayed.
+    if ($step != 1 || count($missingsource)) {
         if ($filter > 0) {
             $table = gradereport_gradinggroups_get_grading_table(
                 $activity,
@@ -356,9 +510,12 @@ function gradereport_gradinggroups_view_grading(
             );
         }
 
-        $formdata = ['id' => $id,
+        $formdata = [
+            'id' => $id,
             'course' => $course,
             'mygroupsonly' => $mygroupsonly,
+            'mygroupsonlylocked' => !$cangradeall,
+            'cancopygrades' => $cancopygrades,
             'incompleteonly' => $incompleteonly,
             'overwrite' => $overwrite,
             'grouping' => $grouping,
@@ -367,14 +524,29 @@ function gradereport_gradinggroups_view_grading(
             'gradeitems' => $gradeitems,
             'context' => $context,
         ];
-        $mform = new \gradereport_gradinggroups\grading_form($PAGE->url, $formdata, 'post', '', ['class' => 'mform',
-            'id' => 'grading_form',
-            'name' => 'grading_form',
-        ]);
+
+        $mform = new \gradereport_gradinggroups\grading_form(
+            $PAGE->url,
+            $formdata,
+            'post',
+            '',
+            [
+                'class' => 'mform',
+                'id' => 'grading_form',
+                'name' => 'grading_form',
+            ]
+        );
+
         $params = new stdClass();
         $params->lang = current_language();
         $params->contextid = $context->id;
-        $PAGE->requires->js_call_amd('gradereport_gradinggroups/grading', 'initializer', [$params]);
+
+        $PAGE->requires->js_call_amd(
+            'gradereport_gradinggroups/grading',
+            'initializer',
+            [$params]
+        );
+
         $mform->display();
     }
 }
@@ -1052,7 +1224,7 @@ function gradereport_gradinggroups_get_grading_table(
                     shorten_text($finalgrade->feedback . "", 15),
                     ['class' => 'feedback' . $groupmember->id]
                 );
-                if ($mygroupsonly && ($finalgrade->usermodified != $USER->id)) {
+                if ($mygroupsonly && ($finalgrade->usermodified != $USER->id) && ($finalgrade->finalgrade != null)) {
                     $row[] = html_writer::tag('div', get_string('not_graded_by_me', 'gradereport_gradinggroups'));
                 } else {
                     if ($finalgradeformatted == get_string('no_grade_yet', 'gradereport_gradinggroups')) {

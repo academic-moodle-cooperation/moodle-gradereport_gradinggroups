@@ -1,6 +1,12 @@
-
 CHANGELOG
 =========
+5.2.0 (2026-08-05)
+------------------
+* [FEATURE] #8411 Add log entry when group grading is opened
+* [BUG] #8602 Fix inconsistently generated feedback
+* [BUG] #8603 Fix capability checks for grade and grade_own_submission
+* [FEATURE] #8607 Improve display of filter options
+* Update for Moodle 5.2
 
 5.1.0 (2026-02-02)
 ------------------

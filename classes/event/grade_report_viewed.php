@@ -57,8 +57,10 @@ class grade_report_viewed extends \core\event\base {
      * @return string
      */
     public function get_description(): string {
-        return "The user with id '{$this->userid}' viewed the grading groups report " .
-            "for the course with id '{$this->courseid}'.";
+        return get_string('eventgradinggroupsreportviewed_description', 'mod_grouptool', [
+            'userid' => $this->userid,
+            'courseid' => $this->courseid,
+        ]);
     }
 
     /**

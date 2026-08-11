@@ -39,8 +39,8 @@ $string['copy_grades_success'] = 'The following grades where successfully update
 $string['copy_refgrades_feedback'] = 'Copy reference grades and feedback of selected groups to other group members';
 $string['copygrade'] = 'Copy grade';
 $string['coursesum'] = 'Course sum';
-$string['eventgradereportviewed'] = 'Grade report gradinggroups viewed';
-$string['eventgroupgraded'] = 'Group graded';
+$string['eventgradinggroupsviewed'] = 'Grade report gradinggroups viewed';
+$string['eventgradinggroupsreportviewed_description'] = 'The user with the ID {$a->userid} viewed the grading groups report for the course with the ID {$a->courseid}.';$string['eventgroupgraded'] = 'Group graded';
 $string['filters_legend'] = 'Filter data';
 $string['grade'] = 'Grade';
 $string['gradereport_gradinggroups'] = 'Groupgrade';

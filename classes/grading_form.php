@@ -151,7 +151,7 @@ class grading_form extends \moodleform {
         );
         $mform->addHelpButton('mygroups_only', 'mygroups_only', 'gradereport_gradinggroups');
         $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
-        $mform->disabledIf('mygroups_only', 'filter', 'eq', -1);
+        $mform->disabledIf('mygroups_only', 'filter', 'in', [-1, 0]);
         if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
             $mform->setConstant('mygroups_only', 1);
             $mform->freeze('mygroups_only');

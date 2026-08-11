@@ -40,7 +40,8 @@ $string['copy_refgrades_feedback'] = 'Copy reference grades and feedback of sele
 $string['copygrade'] = 'Copy grade';
 $string['coursesum'] = 'Course sum';
 $string['eventgradinggroupsviewed'] = 'Grade report gradinggroups viewed';
-$string['eventgradinggroupsreportviewed_description'] = 'The user with the ID {$a->userid} viewed the grading groups report for the course with the ID {$a->courseid}.';$string['eventgroupgraded'] = 'Group graded';
+$string['eventgradinggroupsreportviewed_description'] = 'The user with the ID {$a->userid} viewed the grading groups report for the course with the ID {$a->courseid}.';
+$string['eventgroupgraded'] = 'Group graded';
 $string['filters_legend'] = 'Filter data';
 $string['grade'] = 'Grade';
 $string['gradereport_gradinggroups'] = 'Groupgrade';

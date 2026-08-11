@@ -22,6 +22,7 @@
  * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace gradereport_gradinggroups;
 
 defined('MOODLE_INTERNAL') || die();
@@ -44,6 +45,22 @@ if (isset($CFG)) {
 class grading_form extends \moodleform {
     /** @var \context_module context object */
     protected $context = null;
+
+    /**
+     * Validation for import form
+     * If there are errors return array of errors ("fieldname"=>"error message"),
+     * otherwise true if ok.
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *               or an empty array if everything is OK.
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+
+        return $errors;
+    }
 
     /**
      * Definition of import form
@@ -69,7 +86,7 @@ class grading_form extends \moodleform {
         $label = get_string('grading_activity_title', 'gradereport_gradinggroups');
 
         if ($gradeitems = $this->_customdata['gradeitems']) {
-            $grades  = [];
+            $grades = [];
             foreach ($gradeitems as $gradeitem) {
                 $grades[$gradeitem->gid] = $gradeitem->name;
             }
@@ -97,7 +114,7 @@ class grading_form extends \moodleform {
 
         $options = [
             "-1" => get_string('nonconflicting', 'gradereport_gradinggroups'),
-            "0"  => get_string('all'),
+            "0" => get_string('all'),
         ];
         $groups = groups_get_all_groups($this->_customdata['course']->id, null, $this->_customdata['grouping'], 'g.id, g.name');
         $groupids = [];
@@ -123,7 +140,7 @@ class grading_form extends \moodleform {
         );
         $mform->addHelpButton('incomplete_only', 'incomplete_only', 'gradereport_gradinggroups');
         $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
-        $mform->hideIf('incomplete_only', 'filter', 'in', $groupids);
+        $mform->disabledIf('incomplete_only', 'filter', 'in', $groupids);
         $mform->addElement(
             'advcheckbox',
             'mygroups_only',
@@ -134,7 +151,7 @@ class grading_form extends \moodleform {
         );
         $mform->addHelpButton('mygroups_only', 'mygroups_only', 'gradereport_gradinggroups');
         $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
-        $mform->hideIf('mygroups_only', 'filter', 'eq', -1);
+        $mform->disabledIf('mygroups_only', 'filter', 'eq', -1);
         if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
             $mform->setConstant('mygroups_only', 1);
             $mform->freeze('mygroups_only');
@@ -146,21 +163,5 @@ class grading_form extends \moodleform {
         $mform->addHelpButton('gradingtable', 'groupselection', 'gradereport_gradinggroups');
 
         $mform->addElement('html', $this->_customdata['table']);
-    }
-
-    /**
-     * Validation for import form
-     * If there are errors return array of errors ("fieldname"=>"error message"),
-     * otherwise true if ok.
-     *
-     * @param array $data array of ("fieldname"=>value) of submitted data
-     * @param array $files array of uploaded files "element_name"=>tmp_file_path
-     * @return array of "element_name"=>"error_description" if there are errors,
-     *               or an empty array if everything is OK.
-     */
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-
-        return $errors;
     }
 }

@@ -119,6 +119,13 @@ function gradereport_gradinggroups_view_grading(
         PARAM_INT
     );
 
+    // Each option only applies to the filter modes in which it is available.
+    if ($filter > GRADINGGROUPS_FILTER_ALL) {
+        $incompleteonly = 0;
+    } else if ($cangradeall) {
+        $mygroupsonly = 0;
+    }
+
     // Steps: 0 = show, 1 = confirm, 2 = perform action.
     $step = optional_param('step', 0, PARAM_INT);
 

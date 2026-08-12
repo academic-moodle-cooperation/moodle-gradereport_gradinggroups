@@ -22,6 +22,7 @@
  * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace gradereport_gradinggroups;
 
 defined('MOODLE_INTERNAL') || die();
@@ -44,6 +45,22 @@ if (isset($CFG)) {
 class grading_form extends \moodleform {
     /** @var \context_module context object */
     protected $context = null;
+
+    /**
+     * Validation for import form
+     * If there are errors return array of errors ("fieldname"=>"error message"),
+     * otherwise true if ok.
+     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @return array of "element_name"=>"error_description" if there are errors,
+     *               or an empty array if everything is OK.
+     */
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+
+        return $errors;
+    }
 
     /**
      * Definition of import form
@@ -79,30 +96,6 @@ class grading_form extends \moodleform {
 
         $mform->addElement(
             'advcheckbox',
-            'mygroups_only',
-            null,
-            get_string('mygroups_only_label', 'gradereport_gradinggroups'),
-            ['group' => '1'],
-            [0, 1]
-        );
-        $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
-        if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
-            $mform->setConstant('mygroups_only', 1);
-            $mform->freeze('mygroups_only');
-        }
-
-        $mform->addElement(
-            'advcheckbox',
-            'incomplete_only',
-            null,
-            get_string('incomplete_only_label', 'gradereport_gradinggroups'),
-            ['group' => '1'],
-            [0, 1]
-        );
-        $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
-
-        $mform->addElement(
-            'advcheckbox',
             'overwrite',
             null,
             get_string('overwrite_label', 'gradereport_gradinggroups'),
@@ -121,11 +114,13 @@ class grading_form extends \moodleform {
 
         $options = [
             "-1" => get_string('nonconflicting', 'gradereport_gradinggroups'),
-            "0"  => get_string('all'),
+            "0" => get_string('all'),
         ];
         $groups = groups_get_all_groups($this->_customdata['course']->id, null, $this->_customdata['grouping'], 'g.id, g.name');
+        $groupids = [];
         foreach ($groups as $key => $group) {
             $membercount = $DB->count_records('groups_members', ['groupid' => $group->id]);
+            $groupids[] = $group->id;
             if ($membercount == 0) {
                 continue;
             }
@@ -135,27 +130,38 @@ class grading_form extends \moodleform {
         $mform->addHelpButton('filter', 'grading_filter_select_title', 'gradereport_gradinggroups');
         $mform->setDefault('filter', $this->_customdata['filter']);
 
+        $mform->addElement(
+            'advcheckbox',
+            'incomplete_only',
+            null,
+            get_string('incomplete_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
+        $mform->addHelpButton('incomplete_only', 'incomplete_only', 'gradereport_gradinggroups');
+        $mform->setDefault('incomplete_only', $this->_customdata['incompleteonly']);
+        $mform->disabledIf('incomplete_only', 'filter', 'in', $groupids);
+        $mform->addElement(
+            'advcheckbox',
+            'mygroups_only',
+            null,
+            get_string('mygroups_only_label', 'gradereport_gradinggroups'),
+            ['group' => '1'],
+            [0, 1]
+        );
+        $mform->addHelpButton('mygroups_only', 'mygroups_only', 'gradereport_gradinggroups');
+        $mform->setDefault('mygroups_only', $this->_customdata['mygroupsonly']);
+        $mform->disabledIf('mygroups_only', 'filter', 'in', [-1, 0]);
+        if (!has_capability('gradereport/gradinggroups:grade', $this->context)) {
+            $mform->setConstant('mygroups_only', 1);
+            $mform->freeze('mygroups_only');
+        }
+
         $mform->addElement('submit', 'refresh_table', get_string('refresh_table_button', 'gradereport_gradinggroups'));
 
         $mform->addElement('header', 'gradingtable', get_string('groupselection', 'gradereport_gradinggroups'));
         $mform->addHelpButton('gradingtable', 'groupselection', 'gradereport_gradinggroups');
 
         $mform->addElement('html', $this->_customdata['table']);
-    }
-
-    /**
-     * Validation for import form
-     * If there are errors return array of errors ("fieldname"=>"error message"),
-     * otherwise true if ok.
-     *
-     * @param array $data array of ("fieldname"=>value) of submitted data
-     * @param array $files array of uploaded files "element_name"=>tmp_file_path
-     * @return array of "element_name"=>"error_description" if there are errors,
-     *               or an empty array if everything is OK.
-     */
-    public function validation($data, $files) {
-        $errors = parent::validation($data, $files);
-
-        return $errors;
     }
 }

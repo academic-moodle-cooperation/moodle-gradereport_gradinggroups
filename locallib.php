@@ -1873,7 +1873,8 @@ function gradereport_gradinggroups_get_grading_table(
                 $row[] = '';
             } else if (
                 $mygroupsonly
-                && (int)$finalgrade->usermodified !== (int)$USER->id
+                && $finalgrade->finalgrade !== null
+                && (int) $finalgrade->usermodified !== (int) $USER->id
             ) {
                 $row[] = html_writer::tag(
                     'div',

@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use core\context\course;
+
 /**
  * GRADINGGROUPS_FILTER_NONCONFLICTING - Show just those groups, which have just 1 graded member
  * for this activity
@@ -462,12 +464,6 @@ function gradereport_gradinggroups_view_grading(
                 ),
                 \core\output\notification::NOTIFY_ERROR
             ) . $info;
-
-            echo $OUTPUT->box(
-                $boxcontent,
-                'generalbox tumargin'
-            );
-            unset($boxcontent);
         } else {
             $boxcontent = $OUTPUT->notification(
                 get_string(
@@ -476,13 +472,12 @@ function gradereport_gradinggroups_view_grading(
                 ),
                 \core\output\notification::NOTIFY_SUCCESS
             ) . $info;
-
-            echo $OUTPUT->box(
-                $boxcontent,
-                'generalbox tumargin'
-            );
-            unset($boxcontent);
         }
+        echo $OUTPUT->box(
+            $boxcontent,
+            'generalbox tumargin'
+        );
+        unset($boxcontent);
     }
 
     // Show the form unless the confirmation page is currently displayed.
@@ -844,8 +839,17 @@ function gradereport_gradinggroups_copy_grades(
                         $noerror = $currentgrade->insert();
                     }
 
-                    $currentgrade->set_overridden(true, false);
-                    $currentgrade->grade_item->force_regrading();
+                    if ($noerror) {
+                        $currentgrade->set_overridden(true, false);
+                        $currentgrade->grade_item->force_regrading();
+
+                        // Trigger Moodle's standard "User graded" event.
+                        $event = \core\event\user_graded::create_from_grade(
+                            $currentgrade,
+                            $USER->id
+                        );
+                        $event->trigger();
+                    }
 
                     $fullname = fullname(
                         $groupmembers[$currentgrade->userid]
@@ -924,6 +928,16 @@ function gradereport_gradinggroups_copy_grades(
                     $grpinfo,
                     ['class' => 'box1embottom']
                 );
+                // Trigger event for the group graded.
+                $logdata = new stdClass();
+                $logdata->groupid = $group;
+
+                $event = \gradereport_gradinggroups\event\group_graded::create_direct(
+                    $context,
+                    $gradeitem,
+                    $logdata
+                );
+                $event->trigger();
             }
         }
     } else {
@@ -1122,8 +1136,17 @@ function gradereport_gradinggroups_copy_grades(
                     $noerror = $currentgrade->insert();
                 }
 
-                $currentgrade->set_overridden(true, false);
-                $currentgrade->grade_item->force_regrading();
+                if ($noerror) {
+                    $currentgrade->set_overridden(true, false);
+                    $currentgrade->grade_item->force_regrading();
+
+                    // Trigger Moodle's standard "User graded" event.
+                    $event = \core\event\user_graded::create_from_grade(
+                        $currentgrade,
+                        $USER->id
+                    );
+                    $event->trigger();
+                }
 
                 $fullname = fullname(
                     $targetusers[$currentgrade->userid]
@@ -1203,6 +1226,17 @@ function gradereport_gradinggroups_copy_grades(
                 ),
                 ['class' => 'gradeinfo']
             );
+            // Trigger event for the users graded.
+            $logdata = new stdClass();
+            $logdata->source = $source;
+            $logdata->selected = $selected;
+
+            $event = \gradereport_gradinggroups\event\group_graded::create_without_groupid(
+                $context,
+                $gradeitem,
+                $logdata
+            );
+            $event->trigger();
         }
     }
 
@@ -1460,7 +1494,7 @@ function gradereport_gradinggroups_get_grading_table(
 
                 if (
                     $mygroupsonly
-                    && (int) $gradegrade->usermodified !== (int) $USER->id
+                    && (int)$gradegrade->usermodified !== (int)$USER->id
                 ) {
                     continue;
                 }
@@ -1829,7 +1863,7 @@ function gradereport_gradinggroups_get_grading_table(
             $row[] = html_writer::tag(
                 'div',
                 shorten_text(
-                    (string) $finalgrade->feedback,
+                    (string)$finalgrade->feedback,
                     15
                 ),
                 ['class' => 'feedback' . $groupmember->id]

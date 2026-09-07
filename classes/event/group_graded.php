@@ -12,159 +12,194 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * The gradereport_gradinggroups_group_graded event.
+ * The gradereport_gradinggroups group_graded event.
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace gradereport_gradinggroups\event;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The \gradereport_gradinggroups\group_graded class holds the logic for the event
+ * Event triggered when grades are copied to a group or selected users.
  *
  * @package   gradereport_gradinggroups
  * @author    Anne Kreppenhofer
- * @copyright 2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @copyright 2024 Academic Moodle Cooperation
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class group_graded extends \core\event\base {
     /**
-     * Init method.
+     * Initialise the event.
      *
      * @return void
      */
-    protected function init() {
+    protected function init(): void {
         $this->data['crud'] = 'u';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
+        $this->data['objecttable'] = 'grade_items';
     }
 
     /**
-     * Convenience method to create event object from data when grading group with certain id
+     * Create the event when grades are copied to a group.
      *
-     * @param \stdClass $cm course module object
-     * @param \stdClass $data grading data to log
-     * @return \core\event\base event object
-     * @throws \coding_exception
+     * @param \core\context\course $context Course context
+     * @param \grade_item $gradeitem Grade item
+     * @param \stdClass $data Additional event data
+     * @return \core\event\base
      */
-    public static function create_direct(\stdClass $cm, \stdClass $data) {
-        // Trigger overview event.
+    public static function create_direct(
+        \core\context\course $context,
+        \grade_item $gradeitem,
+        \stdClass $data
+    ): \core\event\base {
         $data->type = 'group';
-        $event = self::create([
-            'objectid' => $cm->instance,
-            'context'  => \context_module::instance($cm->id),
-            'other'    => (array)$data,
+
+        return self::create([
+            'objectid' => $gradeitem->id,
+            'context' => $context,
+            'other' => (array) $data,
         ]);
-        return $event;
     }
 
     /**
-     * Convenience method to create event object from data when grading group without knowledge of the groups id
+     * Create the event when grades are copied to selected users.
      *
-     * @param \stdClass $cm course module object
-     * @param \stdClass $data grading data to log
-     * @return \core\event\base event object
-     * @throws \coding_exception
+     * @param \core\context\course $context Course context
+     * @param \grade_item $gradeitem Grade item
+     * @param \stdClass $data Additional event data
+     * @return \core\event\base
      */
-    public static function create_without_groupid(\stdClass $cm, \stdClass $data) {
-        // Trigger overview event.
+    public static function create_without_groupid(
+        \core\context\course $context,
+        \grade_item $gradeitem,
+        \stdClass $data
+    ): \core\event\base {
         $data->type = 'users';
-        $event = self::create([
-            'objectid' => $cm->instance,
-            'context'  => \context_module::instance($cm->id),
-            'other'    => (array)$data,
+
+        return self::create([
+            'objectid' => $gradeitem->id,
+            'context' => $context,
+            'other' => (array) $data,
         ]);
-        return $event;
     }
 
     /**
-     * Returns description of what happened.
+     * Return a description of what happened.
      *
      * @return string
      */
-    public function get_description() {
-        switch ($this->data['other']['type']) {
-            case 'group':
-                return "The user with id '" . $this->userid . "' group-graded group with id '" . $this->data['other']['groupid'] .
-                       "' using " . $this->objecttable . " with course module id '$this->contextinstanceid'.";
-            break;
-            case 'users':
-                return "The user with id '" . $this->userid . "' group-graded the user(s) with id(s) '" .
-                       implode(', ', $this->data['other']['selected']) . "' using " . $this->objecttable .
-                       " with course module id '$this->contextinstanceid'.";
-            break;
+    public function get_description(): string {
+        if ($this->other['type'] === 'group') {
+            return "The user with id '{$this->userid}' group-graded the group " .
+                "with id '{$this->other['groupid']}' using the grade item " .
+                "with id '{$this->objectid}'.";
+        }
+
+        if ($this->other['type'] === 'users') {
+            return "The user with id '{$this->userid}' group-graded the user(s) " .
+                "with id(s) '" . implode(', ', $this->other['selected']) .
+                "' using the grade item with id '{$this->objectid}'.";
         }
 
         return '';
     }
 
     /**
-     * Return localised event name.
+     * Return the localised event name.
      *
      * @return string
-     * @throws \coding_exception
      */
-    public static function get_name() {
-        return get_string('eventgroupgraded', 'gradereport_gradinggroups');
+    public static function get_name(): string {
+        return get_string(
+            'eventgroupgraded',
+            'gradereport_gradinggroups'
+        );
     }
 
     /**
-     * Get URL related to the action.
+     * Return the URL related to the event.
      *
      * @return \moodle_url
-     * @throws \moodle_exception
      */
-    public function get_url() {
-        if ($this->data['other']['type'] == 'users') {
-            return new \moodle_url("/mod/$this->objecttable/view.php", [
-                'id'            => $this->contextinstanceid,
-                'tab'           => 'grading',
-                'activity'      => $this->data['other']['cmtouse'],
-                'refresh_table' => 1,
-            ]);
-        }
-        return new \moodle_url("/mod/$this->objecttable/view.php", [
-            'id'            => $this->contextinstanceid,
-            'tab'           => 'grading',
-            'activity'      => $this->data['other']['cmtouse'],
-            'groupid'       => $this->data['other']['groupid'],
+    public function get_url(): \moodle_url {
+        $params = [
+            'id' => $this->contextinstanceid,
+            'activity' => $this->objectid,
             'refresh_table' => 1,
-        ]);
+        ];
+
+        if ($this->other['type'] === 'group') {
+            $params['filter'] = $this->other['groupid'];
+        }
+
+        return new \moodle_url(
+            '/grade/report/gradinggroups/index.php',
+            $params
+        );
     }
 
     /**
-     * Custom validation.
+     * Return the object ID mapping for backup and restore.
      *
-     * @throws \coding_exception
+     * @return array
+     */
+    public static function get_objectid_mapping(): array {
+        return [
+            'db' => 'grade_items',
+            'restore' => 'grade_item',
+        ];
+    }
+
+    /**
+     * Validate the event data.
+     *
      * @return void
      */
-    protected function validate_data() {
+    protected function validate_data(): void {
         parent::validate_data();
-        // Make sure this class is never used without proper object details.
-        if (empty($this->objectid) || empty($this->objecttable)) {
-            throw new \coding_exception('The registration_created event must define objectid and object table.');
-        }
-        // Make sure the context level is set to module.
-        if ($this->contextlevel != CONTEXT_MODULE) {
-            throw new \coding_exception('Context level must be CONTEXT_MODULE.');
+
+        if (empty($this->objectid)) {
+            throw new \coding_exception(
+                'The group_graded event must define a grade item ID.'
+            );
         }
 
-        if ($this->data['other']['type'] == 'group' && empty($this->data['other']['groupid'])) {
-            throw new \coding_exception('ID of group to be graded has to be specified!');
+        if ($this->contextlevel !== CONTEXT_COURSE) {
+            throw new \coding_exception(
+                'Context level must be CONTEXT_COURSE.'
+            );
         }
 
-        if ($this->data['other']['type'] == 'users' && empty($this->data['other']['selected'])) {
-            throw new \coding_exception('Users to be graded have to be specified!');
+        if (empty($this->other['type'])) {
+            throw new \coding_exception(
+                'The grading type must be specified.'
+            );
         }
 
-        if (empty($this->data['other']['cmtouse'])) {
-            throw new \coding_exception('Coursemodule to be graded has to be specified!');
+        if (
+            $this->other['type'] === 'group'
+            && empty($this->other['groupid'])
+        ) {
+            throw new \coding_exception(
+                'ID of group to be graded has to be specified.'
+            );
+        }
+
+        if (
+            $this->other['type'] === 'users'
+            && empty($this->other['selected'])
+        ) {
+            throw new \coding_exception(
+                'Users to be graded have to be specified.'
+            );
         }
     }
 }
